@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:timesmed_project/app/theme/app_theme.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
-import 'package:timesmed_project/theme/app_theme.dart';
 
 import 'app_text_theme.dart';
 

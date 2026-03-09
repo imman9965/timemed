@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:timesmed_project/app.dart';
+import 'package:timesmed_project/app/app.dart';
 import 'package:timesmed_project/modules/doctor/login/view/Doctor_login_page.dart';
 import 'package:timesmed_project/modules/patient/login_page/view/patient_login_page.dart';
 import 'package:timesmed_project/modules/splash/view/splash_view.dart';

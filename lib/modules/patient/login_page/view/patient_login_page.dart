@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/patient/login_page/controller/patient_login_controller.dart';
 
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});
@@ -9,13 +11,12 @@ class PatientLoginPage extends StatefulWidget {
 }
 
 class _PatientLoginPageState extends State<PatientLoginPage> {
+  PatientLoginController patientLoginController = Get.put(
+    PatientLoginController(),
+  );
+
   bool isOtpLogin = true;
   bool obscurePassword = true;
-
-  final TextEditingController mobileController = TextEditingController();
-  final TextEditingController otpController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +67,11 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                     /// Fields
                     if (isOtpLogin) ...[
                       _buildTextField(
-                        controller: mobileController,
+                        controller: patientLoginController.mobileController,
                         hint: "Enter Mobile Number",
                         icon: Icons.phone,
                         keyboard: TextInputType.phone,
+                        maxLength: 10,
                       ),
                       const SizedBox(height: 20),
                       Align(
@@ -84,14 +86,14 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                       ),
                     ] else ...[
                       _buildTextField(
-                        controller: emailController,
+                        controller: patientLoginController.emailController,
                         hint: "Enter Email",
                         icon: Icons.email,
                         keyboard: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 15),
                       _buildTextField(
-                        controller: passwordController,
+                        controller: patientLoginController.passwordController,
                         hint: "Enter Password",
                         icon: Icons.lock,
                         obscure: obscurePassword,
@@ -109,6 +111,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                           },
                         ),
                       ),
+
                       const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerRight,
@@ -205,19 +208,24 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
     TextInputType keyboard = TextInputType.text,
     bool obscure = false,
     Widget? suffix,
+    int? maxLength,
   }) {
     return TextField(
       controller: controller,
       keyboardType: keyboard,
       obscureText: obscure,
-      style: const TextStyle(color: Colors.white),
+      maxLength: maxLength,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         suffixIcon: suffix,
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.black),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(color: Colors.black),
         ),
       ),

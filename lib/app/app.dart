@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:timesmed_project/theme/app_text_theme.dart';
-import '../core/config/app_config.dart';
-import '../routes/app_pages.dart';
+import 'package:timesmed_project/app/theme/app_text_theme.dart';
+import '../../core/config/app_config.dart';
+import '../../routes/app_pages.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
