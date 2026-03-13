@@ -5,35 +5,83 @@ import 'package:timesmed_project/routes/app_pages.dart';
 class SuperHomeView extends StatelessWidget {
   const SuperHomeView({super.key});
 
+  Widget adminCard({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 120,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: Color(0xff0f674a)),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xfff5f7f6),
       appBar: AppBar(
-        backgroundColor: Color(0xff0f674a),
-        title: const Text("Super Admin Panel"),
+        backgroundColor: const Color(0xff0f674a),
+        elevation: 0,
+        title: const Text(
+          "Super Admin Panel",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
+        child: GridView.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
           children: [
-            ElevatedButton(
-              onPressed: () => Get.toNamed(AppRoutes.patientLogin),
-              child: const Text("Open Patient App"),
+            adminCard(
+              title: "Patient App",
+              icon: Icons.person,
+              onTap: () => Get.toNamed(AppRoutes.patientLogin),
             ),
 
-            ElevatedButton(
-              onPressed: () => Get.toNamed(AppRoutes.doctorLogin),
-              child: const Text("Open Doctor App"),
+            adminCard(
+              title: "Doctor App",
+              icon: Icons.medical_services,
+              onTap: () => Get.toNamed(AppRoutes.doctorLogin),
             ),
 
-            ElevatedButton(
-              onPressed: () => Get.toNamed('/pharmacyHome'),
-              child: const Text("Open Pharmacy App"),
+            adminCard(
+              title: "Pharmacy App",
+              icon: Icons.local_pharmacy,
+              onTap: () => Get.toNamed('/pharmacyHome'),
             ),
 
-            ElevatedButton(
-              onPressed: () => Get.toNamed('/adminDashboard'),
-              child: const Text("Open Admin App"),
+            adminCard(
+              title: "Admin Dashboard",
+              icon: Icons.admin_panel_settings,
+              onTap: () => Get.toNamed('/adminDashboard'),
             ),
           ],
         ),

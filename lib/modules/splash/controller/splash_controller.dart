@@ -49,7 +49,7 @@ class SplashController extends GetxController {
         break;
 
       case 'doctor':
-        Get.offAllNamed(AppRoutes.doctorDashboard);
+        Get.offAllNamed(AppRoutes.doctorHome);
         break;
 
       case 'pharmacy':
@@ -61,7 +61,7 @@ class SplashController extends GetxController {
         break;
 
       default:
-        Get.offAllNamed(AppRoutes.patientLogin);
+        Get.offAllNamed(AppRoutes.splash);
     }
   }
 }
