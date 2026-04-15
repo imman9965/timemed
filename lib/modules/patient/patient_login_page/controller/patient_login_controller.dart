@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:timesmed_project/routes/app_pages.dart';
 
 class PatientLoginController extends GetxController {
   final TextEditingController mobileController = TextEditingController();
@@ -8,6 +9,15 @@ class PatientLoginController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
 
   var isLoading = false.obs;
+
+  @override
+  void onClose() {
+    mobileController.dispose();
+    otpController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
 
   /// Send OTP
   void sendOtp() async {
@@ -22,7 +32,7 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.toNamed("/patientOtp");
+    Get.toNamed(AppRoutes.patientOtp);
   }
 
   /// Verify OTP
@@ -38,7 +48,7 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.offAllNamed("/patientHome");
+    Get.offAllNamed(AppRoutes.patientHome);
   }
 
   /// Email Login
@@ -54,6 +64,6 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.offAllNamed("/patientHome");
+    Get.offAllNamed(AppRoutes.patientHome);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:timesmed_project/core/constants/sapce.dart';
-import 'package:timesmed_project/core/constants/title_Text_form_field.dart';
+import 'package:timesmed_project/core/widgets/sapce.dart';
+import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 
 class PatientSignupPage extends StatelessWidget {
   PatientSignupPage({super.key});

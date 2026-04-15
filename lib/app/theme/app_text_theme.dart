@@ -1,43 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:timesmed_project/app/theme/app_theme.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 
-import 'app_text_theme.dart';
-
-class AppTheme {
-  static ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-
-    scaffoldBackgroundColor: AppColors.background,
-
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      primary: AppColors.primary,
+class AppTextTheme {
+  static const TextTheme lightTextTheme = TextTheme(
+    headlineLarge: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: AppColors.textDark,
     ),
-
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primary,
-      foregroundColor: Colors.white,
-      elevation: 0,
-      centerTitle: true,
+    titleMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: AppColors.textDark,
     ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-      ),
+    bodyMedium: TextStyle(fontSize: 16, color: AppColors.textDark),
+    labelLarge: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: AppColors.textLight,
     ),
-
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-        borderSide: const BorderSide(color: AppColors.border),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-      ),
-    ),
-
-    textTheme: AppTextTheme.lightTextTheme,
   );
 }

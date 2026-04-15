@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import '../controller/patient_login_controller.dart';
 
 class PatientOtpPage extends StatelessWidget {
   PatientOtpPage({super.key});
 
-  final PatientLoginController controller = Get.find();
+  final controller = Get.find<PatientLoginController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff0f674a),
+      backgroundColor: AppColors.primaryBackground,
       body: Stack(
         children: [
           Center(
@@ -40,7 +42,9 @@ class PatientOtpPage extends StatelessWidget {
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xff0f674a)),
+                        border: Border.all(
+                          color: AppColors.secondaryBackground,
+                        ),
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
@@ -48,7 +52,9 @@ class PatientOtpPage extends StatelessWidget {
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xff0f674a)),
+                        border: Border.all(
+                          color: AppColors.secondaryBackground,
+                        ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -56,22 +62,19 @@ class PatientOtpPage extends StatelessWidget {
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xff0f674a)),
+                        border: Border.all(
+                          color: AppColors.secondaryBackground,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff0f674a),
-                      ),
-                      onPressed: controller.verifyOtp,
-                      child: const Text("Verify OTP"),
-                    ),
+                  CommonButton(
+                    title: "Verify",
+                    width: 150,
+                    onPressed: controller.verifyOtp,
                   ),
                 ],
               ),

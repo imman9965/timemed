@@ -4,9 +4,15 @@ class AppColors {
   AppColors._(); // prevents instantiation
 
   /// 🌟 Primary Theme Colors
-  static const Color primary = Color(0xff0f674a);
-  static const Color primaryColor = Color(0xff1a434e);
+  static const Color primary = Color(0xff0673de);
+  static const Color primaryBackground = Color(0xffd5e6f3);
   static const Color secondary = Color(0xff2f6f7e);
+  static const Color secondaryBackground = Color(0xff61c24a);
+  static const Color button = Color(0xff61c24a);
+
+  /// white and black color
+  static const Color white = Color(0xffffffff);
+  static const Color black = Color(0xff000000);
 
   /// ❌ Error & Alert Colors
   static const Color error = Color(0xffc72c41);

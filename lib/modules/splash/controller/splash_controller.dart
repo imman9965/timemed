@@ -36,7 +36,7 @@ class SplashController extends GetxController {
           break;
 
         case AppFlavor.superApp:
-          Get.offAllNamed(AppRoutes.superHome);
+          Get.offAllNamed(AppRoutes.superAdminHome);
           break;
       }
       return;

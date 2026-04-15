@@ -1,0 +1,12 @@
+import 'package:get/get.dart';
+import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
+import 'package:timesmed_project/modules/patient/paient_home_page/controller/patient_home_controller.dart';
+
+class PatientHomePageBinding extends Bindings {
+  @override
+  void dependencies() {
+    // TODO: implement dependencies
+    Get.lazyPut(() => PatientHomeController());
+    Get.lazyPut(() => AuthController());
+  }
+}

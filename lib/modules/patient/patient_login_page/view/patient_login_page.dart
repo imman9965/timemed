@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
-import 'package:timesmed_project/core/constants/sapce.dart';
-import 'package:timesmed_project/core/constants/title_Text_form_field.dart';
+import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
+import 'package:timesmed_project/core/widgets/sapce.dart';
+import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/patient/patient_login_page/controller/patient_login_controller.dart';
+import 'package:timesmed_project/routes/app_pages.dart';
 
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});
@@ -13,9 +15,7 @@ class PatientLoginPage extends StatefulWidget {
 }
 
 class _PatientLoginPageState extends State<PatientLoginPage> {
-  PatientLoginController patientLoginController = Get.put(
-    PatientLoginController(),
-  );
+  final patientLoginController = Get.find<PatientLoginController>();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -25,203 +25,225 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          /// MAIN PAGE
-          Container(
-            color: Color(0xff0f674a),
-            child: SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-                  child: Container(
-                    padding: const EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.local_hospital, size: 70),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Patient Login",
-                            style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
+      backgroundColor: AppColors.primaryBackground,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Logo
+              Center(
+                child: Image.asset(
+                  "assets/logo/healthcare.png",
+                  height: 100,
+                  width: 100,
+                ),
+              ),
+              Stack(
+                children: [
+                  /// MAIN PAGE
+                  SafeArea(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(25),
                           ),
-
-                          const SizedBox(height: 25),
-
-                          /// Toggle Buttons
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                _toggleButton("Mobile Login", true),
-                                _toggleButton("Email Login", false),
+                                const Text(
+                                  "Patient Login",
+                                  style: TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 25),
+
+                                /// Toggle Buttons
+                                Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      _toggleButton("Mobile Login", true),
+                                      _toggleButton("Email Login", false),
+                                    ],
+                                  ),
+                                ),
+
+                                const SizedBox(height: 25),
+
+                                /// Fields
+                                if (isOtpLogin) ...[
+                                  TitleTextFormField(
+                                    controller:
+                                        patientLoginController.mobileController,
+                                    filled: true,
+                                    fillColor: AppColors.white,
+                                    hintText: "Enter Mobile Number",
+                                    prefixIcon: Icon(Icons.phone),
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 10,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please enter mobile number";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ] else ...[
+                                  TitleTextFormField(
+                                    controller:
+                                        patientLoginController.emailController,
+                                    hintText: "Enter Email",
+                                    prefixIcon: Icon(Icons.email),
+                                    filled: true,
+                                    fillColor: AppColors.white,
+                                    validator: (value) {
+                                      if (patientLoginController
+                                          .emailController
+                                          .text
+                                          .isEmpty) {
+                                        return "Please enter email";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 15),
+
+                                  TitleTextFormField(
+                                    controller: patientLoginController
+                                        .passwordController,
+                                    hintText: "Enter Password",
+                                    prefixIcon: Icon(Icons.lock),
+                                    obscureText: obscurePassword,
+                                    filled: true,
+                                    fillColor: AppColors.white,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          obscurePassword = !obscurePassword;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        obscurePassword
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (patientLoginController
+                                          .passwordController
+                                          .text
+                                          .isEmpty) {
+                                        return "Please enter password";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+
+                                const SizedBox(height: 25),
+
+                                /// Button
+                                CommonButton(
+                                  title: isOtpLogin ? "Send OTP" : "LOGIN",
+                                  width: 150,
+                                  borderRadius: 12,
+                                  onPressed: () {
+                                    if (isOtpLogin) {
+                                      if (formKey.currentState!.validate()) {
+                                        patientLoginController.sendOtp();
+                                      }
+                                      patientLoginController.mobileController
+                                          .clear();
+                                    } else {
+                                      if (formKey.currentState!.validate()) {
+                                        patientLoginController.loginWithEmail();
+                                      }
+                                      patientLoginController.emailController
+                                          .clear();
+                                      patientLoginController.passwordController
+                                          .clear();
+                                    }
+                                  },
+                                ),
+                                const Space(height: 10),
+
+                                /// Forgot Password
+                                isOtpLogin
+                                    ? const SizedBox()
+                                    : Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton(
+                                          onPressed: () {},
+                                          child: const Text(
+                                            "Forgot Password !",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                /// Sign Up
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("Don't have an account?"),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.toNamed(AppRoutes.patientSignup);
+                                      },
+                                      child: const Text(
+                                        "Sign Up",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-
-                          const SizedBox(height: 25),
-
-                          /// Fields
-                          if (isOtpLogin) ...[
-                            TitleTextFormField(
-                              controller:
-                                  patientLoginController.mobileController,
-                              hintText: "Enter Mobile Number",
-                              prefixIcon: Icon(Icons.phone),
-                              keyboardType: TextInputType.number,
-                              maxLength: 10,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Please enter mobile number";
-                                }
-                                return null;
-                              },
-                            ),
-                          ] else ...[
-                            TitleTextFormField(
-                              controller:
-                                  patientLoginController.emailController,
-                              hintText: "Enter Email",
-                              prefixIcon: Icon(Icons.email),
-                              validator: (value) {
-                                if (patientLoginController
-                                    .emailController
-                                    .text
-                                    .isEmpty) {
-                                  return "Please enter email";
-                                }
-                                return null;
-                              },
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            TitleTextFormField(
-                              controller:
-                                  patientLoginController.passwordController,
-                              hintText: "Enter Password",
-                              prefixIcon: Icon(Icons.lock),
-                              obscureText: obscurePassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    obscurePassword = !obscurePassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (patientLoginController
-                                    .passwordController
-                                    .text
-                                    .isEmpty) {
-                                  return "Please enter password";
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-
-                          const SizedBox(height: 25),
-
-                          /// Button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                              onPressed: () {
-                                if (isOtpLogin) {
-                                  if (formKey.currentState!.validate()) {
-                                    patientLoginController.sendOtp();
-                                  }
-                                  patientLoginController.mobileController
-                                      .clear();
-                                } else {
-                                  if (formKey.currentState!.validate()) {
-                                    patientLoginController.loginWithEmail();
-                                  }
-                                  patientLoginController.emailController
-                                      .clear();
-                                  patientLoginController.passwordController
-                                      .clear();
-                                }
-                              },
-                              child: Text(
-                                isOtpLogin ? "Send OTP" : "LOGIN",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Space(height: 15),
-
-                          /// Sign Up
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("Don't have an account?"),
-                              TextButton(
-                                onPressed: () {
-                                  Get.toNamed("/patientSignup");
-                                },
-                                child: const Text(
-                                  "Sign Up",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+
+                  /// LOADING OVERLAY
+                  Obx(() {
+                    if (!patientLoginController.isLoading.value) {
+                      return const SizedBox();
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      ),
+                    );
+                  }),
+                ],
               ),
-            ),
+            ],
           ),
-
-          /// LOADING OVERLAY
-          Obx(() {
-            if (!patientLoginController.isLoading.value) {
-              return const SizedBox();
-            }
-
-            return Container(
-              color: Colors.black.withOpacity(0.4),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 3,
-                ),
-              ),
-            );
-          }),
-        ],
+        ),
       ),
     );
   }
@@ -233,7 +255,6 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
           setState(() {
             isOtpLogin = value;
             formKey.currentState?.reset();
-
             patientLoginController.mobileController.clear();
             patientLoginController.emailController.clear();
             patientLoginController.passwordController.clear();
@@ -242,14 +263,16 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isOtpLogin == value ? AppColors.primary : Colors.transparent,
+            color: isOtpLogin == value
+                ? AppColors.secondaryBackground
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(25),
           ),
           alignment: Alignment.center,
           child: Text(
             text,
             style: TextStyle(
-              color: isOtpLogin == value ? Colors.white : AppColors.primary,
+              color: isOtpLogin == value ? Colors.white : AppColors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
