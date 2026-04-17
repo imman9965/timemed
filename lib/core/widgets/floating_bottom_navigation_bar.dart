@@ -30,7 +30,9 @@ class FloatingBottomNavigationBar extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Container(
           height: height,
-
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(borderRadius),
