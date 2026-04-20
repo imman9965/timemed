@@ -51,7 +51,8 @@ class PatientLoginController extends GetxController {
     isLoading.value = false;
 
     // Get.offAllNamed(AppRoutes.patientHome);
-    AppRouter.router.go(AppRoutes.patientHome);
+    // AppRouter.router.go(AppRoutes.patientHome);
+    AppRouter.router.go(AppRoutes.patientSelection);
   }
 
   /// Email Login
@@ -67,6 +68,7 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    AppRouter.router.go(AppRoutes.patientHome);
+    // AppRouter.router.go(AppRoutes.patientHome);
+    AppRouter.router.go(AppRoutes.patientSelection);
   }
 }

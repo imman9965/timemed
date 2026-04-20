@@ -206,7 +206,11 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                     : Align(
                                         alignment: Alignment.centerRight,
                                         child: TextButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            context.push(
+                                              AppRoutes.patientForgotPassword,
+                                            );
+                                          },
                                           child: const Text(
                                             "Forgot Password !",
                                             style: TextStyle(
@@ -268,7 +272,9 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.aiChat, extra: 'patient');
+                  },
 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

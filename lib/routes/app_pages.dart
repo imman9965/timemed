@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
+import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
+import 'package:timesmed_project/modules/patient/patient_add_page/view/patient_add_page.dart';
+import 'package:timesmed_project/modules/patient/patient_login_page/view/patient_forgot_password_page.dart';
+import 'package:timesmed_project/modules/patient/patient_select_page/view/patient_selection_page.dart';
 import 'package:timesmed_project/modules/patient/patient_signup_page/binding/patient_signup_binding.dart';
 
 // Views
@@ -29,6 +33,16 @@ class AppRouter {
     },
 
     routes: [
+      /// 🔹 AI Chat
+      GoRoute(
+        path: AppRoutes.aiChat,
+        builder: (context, state) {
+          final userType = state.extra as String? ?? 'patient';
+
+          return AIChatPage(userType: userType);
+        },
+      ),
+
       /// 🔹 Splash
       GoRoute(
         path: AppRoutes.splash,
@@ -65,6 +79,26 @@ class AppRouter {
         builder: (context, state) {
           PatientSignupBinding().dependencies();
           return PatientSignupPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientForgotPassword,
+        builder: (context, state) {
+          return PatientForgotPasswordPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.patientSelection,
+        builder: (context, state) {
+          return PatientSelectionPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.addPatient,
+        builder: (context, state) {
+          return PatientAddPage();
         },
       ),
 

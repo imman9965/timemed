@@ -24,6 +24,9 @@ class TitleTextFormField extends StatefulWidget {
 
   final double? borderRadius;
 
+  /// Border color
+  final Color? borderColor;
+
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
 
@@ -46,6 +49,8 @@ class TitleTextFormField extends StatefulWidget {
     this.filled = false,
     this.fillColor,
     this.borderRadius,
+    this.borderColor,
+
     this.validator,
     this.onChanged,
     this.inputFormatters,
@@ -124,8 +129,9 @@ class _TitleTextFormFieldState extends State<TitleTextFormField> {
                   )
                 : widget.suffixIcon,
 
-            border: borderStyle(Colors.black),
-            enabledBorder: borderStyle(Colors.black),
+            border: borderStyle(widget.borderColor ?? Colors.black),
+            errorBorder: borderStyle(Colors.black),
+            enabledBorder: borderStyle(widget.borderColor ?? Colors.black),
             focusedBorder: borderStyle(Theme.of(context).primaryColor),
 
             // contentPadding: const EdgeInsets.symmetric(

@@ -17,12 +17,15 @@ class PatientSignupController extends GetxController {
   final TextEditingController dobController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
-  final TextEditingController materialStatusController =
-      TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+
+  /// selectedGender
+  /// selectedMaterialStatus
+  var selectedGender = "".obs;
+  var selectedMaterialStatus = "".obs;
 
   var isLoading = false.obs;
 }

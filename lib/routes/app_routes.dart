@@ -4,6 +4,12 @@ abstract class AppRoutes {
   /// ================================
   /// 🔹 SUPER ADMIN
   /// ================================
+  /// aichat
+  static const aiChat = '/aiChat';
+
+  /// ================================
+  /// 🔹 SUPER ADMIN
+  /// ================================
   static const superAdminHome = '/superAdminHome';
 
   /// ================================
@@ -20,7 +26,11 @@ abstract class AppRoutes {
   static const patientLogin = '/patientLogin';
   static const patientOtp = '/patientOtp';
   static const patientSignup = '/patientSignup';
+  static const patientForgotPassword = '/patientForgotPassword';
   static const patientHome = '/patientHome';
+  static const patientSelection = '/patientSelection';
+  static const addPatient = '/addPatient';
+  static const patientProfile = '/patientProfile';
 
   /// ================================
   /// 🔹 DOCTOR
