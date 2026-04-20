@@ -9,24 +9,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
 
-      /// 🔥 Dynamic App Name
       title: AppConfig.instance.appName,
 
-      /// 🌍 Global Theme
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.lightTheme,
 
-      /// 🚀 Initial Route
-      initialRoute: AppRoutes.splash,
-
-      /// 📌 All Routes
-      getPages: AppPages.routes,
-
-      /// 🌐 Default Transition
-      defaultTransition: Transition.cupertino,
+      routerConfig: AppRouter.router,
     );
   }
 
@@ -44,24 +35,4 @@ class MyApp extends StatelessWidget {
   //       return AppRoutes.login;
   //   }
   // }
-
-  /// 🎨 Flavor Based Color
-  MaterialColor _getPrimaryColor() {
-    switch (AppConfig.instance.flavor) {
-      case AppFlavor.superApp:
-        return Colors.purple;
-
-      case AppFlavor.patient:
-        return Colors.blue;
-
-      case AppFlavor.doctor:
-        return Colors.green;
-
-      case AppFlavor.pharmacy:
-        return Colors.orange;
-
-      case AppFlavor.admin:
-        return Colors.red;
-    }
-  }
 }

@@ -1,36 +1,34 @@
-import 'package:get/get.dart';
 import 'package:timesmed_project/core/config/app_config.dart';
 import 'package:timesmed_project/core/storage/secure_storage.dart';
 import 'package:timesmed_project/routes/app_pages.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
-class AuthController extends GetxController {
+class AuthController {
   Future<void> logout() async {
-    final SecureStorage storage = SecureStorage();
+    final storage = SecureStorage();
 
-    /// remove token and role
     await storage.clearAll();
     await storage.logout();
 
-    /// redirect based on flavor
     switch (AppConfig.instance.flavor) {
       case AppFlavor.patient:
-        Get.offAllNamed(AppRoutes.patientLogin);
+        AppRouter.router.go(AppRoutes.patientLogin);
         break;
 
       case AppFlavor.doctor:
-        Get.offAllNamed(AppRoutes.doctorLogin);
+        AppRouter.router.go(AppRoutes.doctorLogin);
         break;
 
       case AppFlavor.pharmacy:
-        Get.offAllNamed(AppRoutes.pharmacyLogin);
+        AppRouter.router.go(AppRoutes.pharmacyLogin);
         break;
 
       case AppFlavor.admin:
-        Get.offAllNamed(AppRoutes.adminLogin);
+        AppRouter.router.go(AppRoutes.adminLogin);
         break;
 
       case AppFlavor.superApp:
-        Get.offAllNamed(AppRoutes.superAdminHome);
+        AppRouter.router.go(AppRoutes.superAdminHome);
         break;
     }
   }

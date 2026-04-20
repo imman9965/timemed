@@ -22,6 +22,8 @@ class TitleTextFormField extends StatefulWidget {
   final bool filled;
   final Color? fillColor;
 
+  final double? borderRadius;
+
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
 
@@ -43,6 +45,7 @@ class TitleTextFormField extends StatefulWidget {
     this.suffixIcon,
     this.filled = false,
     this.fillColor,
+    this.borderRadius,
     this.validator,
     this.onChanged,
     this.inputFormatters,
@@ -63,7 +66,7 @@ class _TitleTextFormFieldState extends State<TitleTextFormField> {
 
   OutlineInputBorder borderStyle(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
       borderSide: BorderSide(color: color),
     );
   }

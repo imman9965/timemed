@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/patient/patient_login_page/controller/patient_login_controller.dart';
 import 'package:timesmed_project/routes/app_pages.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});
@@ -33,12 +36,14 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
             children: [
               /// Logo
               Center(
-                child: Image.asset(
-                  "assets/logo/healthcare.png",
+                child: SvgPicture.asset(
+                  "assets/logos/svg/timesmed_logo.svg",
                   height: 100,
                   width: 100,
                 ),
               ),
+
+              /// Main Page
               Stack(
                 children: [
                   /// MAIN PAGE
@@ -50,7 +55,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                           padding: const EdgeInsets.all(25),
                           decoration: BoxDecoration(
                             color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(50),
                           ),
                           child: Form(
                             key: formKey,
@@ -58,15 +63,24 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Text(
-                                  "Patient Login",
+                                  "Login",
                                   style: TextStyle(
-                                    fontSize: 26,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.white,
                                   ),
                                 ),
 
-                                const SizedBox(height: 25),
+                                const Space(height: 25),
+                                const Text(
+                                  "Please sign in to continue",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                                const Space(height: 25),
 
                                 /// Toggle Buttons
                                 Container(
@@ -88,6 +102,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                 /// Fields
                                 if (isOtpLogin) ...[
                                   TitleTextFormField(
+                                    borderRadius: 25,
                                     controller:
                                         patientLoginController.mobileController,
                                     filled: true,
@@ -111,6 +126,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                     prefixIcon: Icon(Icons.email),
                                     filled: true,
                                     fillColor: AppColors.white,
+                                    borderRadius: 25,
                                     validator: (value) {
                                       if (patientLoginController
                                           .emailController
@@ -132,6 +148,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                     obscureText: obscurePassword,
                                     filled: true,
                                     fillColor: AppColors.white,
+                                    borderRadius: 25,
                                     suffixIcon: IconButton(
                                       onPressed: () {
                                         setState(() {
@@ -204,16 +221,22 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text("Don't have an account?"),
+                                    const Text(
+                                      "Don't have an account?",
+                                      style: TextStyle(
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     TextButton(
                                       onPressed: () {
-                                        Get.toNamed(AppRoutes.patientSignup);
+                                        context.push(AppRoutes.patientSignup);
                                       },
                                       child: const Text(
                                         "Sign Up",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: AppColors.white,
+                                          color: Colors.yellow,
                                         ),
                                       ),
                                     ),
@@ -240,6 +263,43 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                     );
                   }),
                 ],
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: GestureDetector(
+                  onTap: () {},
+
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    spacing: 5,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25),
+                            bottomLeft: Radius.circular(25),
+                          ),
+                        ),
+                        child: Text(
+                          "How can i help you ?",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: SvgPicture.asset("assets/icons/ai_robot.svg"),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

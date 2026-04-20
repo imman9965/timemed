@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timesmed_project/routes/app_pages.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientLoginController extends GetxController {
   final TextEditingController mobileController = TextEditingController();
@@ -32,7 +33,8 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.toNamed(AppRoutes.patientOtp);
+    // Get.toNamed(AppRoutes.patientOtp);
+    AppRouter.router.push(AppRoutes.patientOtp);
   }
 
   /// Verify OTP
@@ -48,7 +50,8 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.offAllNamed(AppRoutes.patientHome);
+    // Get.offAllNamed(AppRoutes.patientHome);
+    AppRouter.router.go(AppRoutes.patientHome);
   }
 
   /// Email Login
@@ -64,6 +67,6 @@ class PatientLoginController extends GetxController {
 
     isLoading.value = false;
 
-    Get.offAllNamed(AppRoutes.patientHome);
+    AppRouter.router.go(AppRoutes.patientHome);
   }
 }

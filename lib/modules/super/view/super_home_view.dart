@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/routes/app_pages.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class SuperHomeView extends StatelessWidget {
   const SuperHomeView({super.key});
@@ -63,25 +65,25 @@ class SuperHomeView extends StatelessWidget {
             adminCard(
               title: "Patient App",
               icon: Icons.person,
-              onTap: () => Get.toNamed(AppRoutes.patientLogin),
+              onTap: () => context.push(AppRoutes.patientLogin),
             ),
 
             adminCard(
               title: "Doctor App",
               icon: Icons.medical_services,
-              onTap: () => Get.toNamed(AppRoutes.doctorLogin),
+              onTap: () => context.push(AppRoutes.doctorLogin),
             ),
 
             adminCard(
               title: "Pharmacy App",
               icon: Icons.local_pharmacy,
-              onTap: () => Get.toNamed('/pharmacyHome'),
+              onTap: () => context.push(AppRoutes.pharmacyLogin),
             ),
 
             adminCard(
               title: "Admin Dashboard",
               icon: Icons.admin_panel_settings,
-              onTap: () => Get.toNamed('/adminDashboard'),
+              onTap: () => context.push(AppRoutes.adminLogin),
             ),
           ],
         ),
