@@ -7,7 +7,7 @@ import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/selection_card.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
-import 'package:timesmed_project/modules/patient/patient_signup_page/controller/patient_signup_controller.dart';
+import 'package:timesmed_project/modules/patient/patient_signup/controller/patient_signup_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientSignupPage extends StatefulWidget {

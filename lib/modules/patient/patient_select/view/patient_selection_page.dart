@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
-import 'package:timesmed_project/modules/patient/patient_select_page/model/patient_selection_model.dart';
+import 'package:timesmed_project/modules/patient/patient_select/model/patient_selection_model.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientSelectionPage extends StatefulWidget {

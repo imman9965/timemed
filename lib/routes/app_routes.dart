@@ -27,10 +27,16 @@ abstract class AppRoutes {
   static const patientOtp = '/patientOtp';
   static const patientSignup = '/patientSignup';
   static const patientForgotPassword = '/patientForgotPassword';
-  static const patientHome = '/patientHome';
+
+  /// MAin ?????
+  static const patientMain = '/patientMain';
+  static const patientHome = '/home';
+  static const patientProfile = '/profile';
+  static const patientOrder = '/order';
+
+  ///
   static const patientSelection = '/patientSelection';
   static const addPatient = '/addPatient';
-  static const patientProfile = '/patientProfile';
 
   /// ================================
   /// 🔹 DOCTOR
