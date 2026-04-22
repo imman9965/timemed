@@ -15,13 +15,14 @@ class PatientMainPage extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: Color(0xffFFFCF5),
       body: child, // 👈 VERY IMPORTANT
 
       bottomNavigationBar: SizedBox(
         height: 100,
         child: FloatingBottomNavigationBar(
           currentIndex: currentIndex,
-          label: const ['Home', 'Profile', 'Order'],
+          label: const ['Home', 'Profile', 'My Orders'],
           icons: const [Icons.home, Icons.person, Icons.backpack_sharp],
           onTap: (index) {
             switch (index) {
