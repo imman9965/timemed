@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
+import 'package:timesmed_project/core/widgets/premium_app_bar.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
 import 'package:timesmed_project/modules/patient/paient_home/controller/patient_home_controller.dart';
@@ -24,33 +25,16 @@ class _PatientHomePageState extends State<PatientHomePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 70,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          color: AppColors.primary,
-          child: Row(
-            children: [
-              Center(
-                child: Text(
-                  "Home Page",
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const Spacer(),
-
-              IconButton(
-                onPressed: () {
-                  authController.logout();
-                },
-                icon: Icon(Icons.logout),
-              ),
-            ],
-          ),
+        PremiumAppBar(
+          title: "Home",
+          showProfile: true,
+          profileImage: "https://i.pravatar.cc/150?img=5",
+          showNotification: true,
+          notificationCount: 3,
+          showLogout: true,
+          onLogout: () {
+            authController.logout();
+          },
         ),
         Expanded(
           child: SingleChildScrollView(

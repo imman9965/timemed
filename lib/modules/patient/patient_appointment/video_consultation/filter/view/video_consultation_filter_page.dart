@@ -154,7 +154,7 @@ class _VideoConsultationFilterPageState
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Get.toNamed('/video-schedule');
+                      context.push(AppRoutes.videoSchedule);
                     },
                     child: const Text("Schedule"),
                   ),

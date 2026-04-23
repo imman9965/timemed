@@ -3,11 +3,17 @@ import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
 import 'package:timesmed_project/modules/patient/paient_home/binding/patient_home_page_binding.dart';
 import 'package:timesmed_project/modules/patient/paient_home/view/patient_home_page.dart';
 import 'package:timesmed_project/modules/patient/patient_add/view/patient_add_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/doctor_details/view/clinical_doctor_details_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/doctor_list/view/clinical_doctor_list_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/filter/view/clinical_filter_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/schedule/view/clinical_schedule_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/doctor_list/binding/video_doctor_list_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/doctor_list/view/video_doctor_list_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/filter/binding/Vvdeo_filter_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/filter/view/video_consultation_filter_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/payment/view/video_payment_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/queue/view/video_queue_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/schedule/view/video_schedule_page.dart';
 import 'package:timesmed_project/modules/patient/patient_login/Binding/patient_login_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_login/view/patient_forgot_password_page.dart';
 import 'package:timesmed_project/modules/patient/patient_login/view/patient_login_page.dart';
@@ -150,21 +156,23 @@ class AppRouter {
         path: AppRoutes.clinicalFilter,
         builder: (context, state) => ClinicalFilterPage(),
       ),
-
-      /*GoRoute(
+      GoRoute(
         path: AppRoutes.clinicalDoctorList,
         builder: (context, state) => ClinicalDoctorListPage(),
       ),
-
       GoRoute(
         path: AppRoutes.clinicalDoctorDetails,
         builder: (context, state) => ClinicalDoctorDetailsPage(),
       ),
-
       GoRoute(
         path: AppRoutes.clinicalSchedule,
         builder: (context, state) => ClinicalSchedulePage(),
       ),
+      /*
+
+
+
+
 
       GoRoute(
         path: AppRoutes.clinicalPayment,
@@ -191,6 +199,22 @@ class AppRouter {
           VideoDoctorListBinding().dependencies();
           return VideoDoctorListPage();
         },
+      ),
+      // 🔹 Common
+      GoRoute(
+        path: AppRoutes.videoPayment,
+        builder: (context, state) => VideoPaymentPage(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.videoQueue,
+        builder: (context, state) => VideoQueuePage(),
+      ),
+
+      // 🔹 Schedule Flow
+      GoRoute(
+        path: AppRoutes.videoSchedule,
+        builder: (context, state) => VideoSchedulePage(),
       ),
 
       /*

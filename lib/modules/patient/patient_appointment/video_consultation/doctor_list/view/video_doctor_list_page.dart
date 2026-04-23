@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/waiting/view/video_waiting_page.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 import '../controller/video_doctor_list_controller.dart';
 
 class VideoDoctorListPage extends StatefulWidget {
@@ -149,7 +150,7 @@ class _VideoDoctorListPageState extends State<VideoDoctorListPage> {
                     WaitingDialog.show(
                       context,
                       onAccept: () {
-                        context.push('/video-payment');
+                        context.push(AppRoutes.videoPayment);
                       },
                     );
                   },

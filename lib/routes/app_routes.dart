@@ -58,6 +58,7 @@ abstract class AppRoutes {
   // Common
   static const videoPayment = '/video-payment';
   static const videoConfirmation = '/video-confirmation';
+  static const videoQueue = '/video-queue';
 
   // .................................... //
   static const patientSelection = '/patientSelection';
