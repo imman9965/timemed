@@ -13,9 +13,9 @@ import 'package:timesmed_project/modules/patient/patient_login_page/view/patient
 import 'package:timesmed_project/modules/patient/patient_signup_page/view/patient_signup_page.dart';
 import 'package:timesmed_project/modules/patient/paient_home_page/view/patient_home_page.dart';
 
+import 'package:timesmed_project/modules/doctor/login/view/Doctor_login_page.dart';
+
 // Bindings
-import 'package:timesmed_project/modules/patient/patient_login_page/Binding/patient_login_binding.dart';
-import 'package:timesmed_project/modules/patient/paient_home_page/binding/patient_home_page_binding.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 import '../modules/doctor/call_page/call_page.dart';
@@ -26,9 +26,11 @@ import '../modules/doctor/medical_records/medical_records.dart';
 import '../modules/doctor/schedule_appointment/schedule_appointment.dart';
 import '../modules/doctor/schedule_appointment_list/schedule_appointmnet_list.dart';
 
+import '../modules/patient/patient_main/binding/patient_main_binding.dart';
+
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.patientHome,
 
     /// 🔥 GLOBAL REDIRECT (optional auth check later)
     redirect: (context, state) {
@@ -36,6 +38,16 @@ class AppRouter {
     },
 
     routes: [
+      /// 🔹 AI Chat
+      GoRoute(
+        path: AppRoutes.aiChat,
+        builder: (context, state) {
+          final userType = state.extra as String? ?? 'patient';
+
+          return AIChatPage(userType: userType);
+        },
+      ),
+
       /// 🔹 Splash
       GoRoute(
         path: AppRoutes.splash,
@@ -74,14 +86,41 @@ class AppRouter {
           return PatientSignupPage();
         },
       ),
-
       GoRoute(
-        path: AppRoutes.patientHome,
+        path: AppRoutes.patientForgotPassword,
         builder: (context, state) {
-          PatientHomePageBinding().dependencies();
-          return PatientHomePage();
+          return PatientForgotPasswordPage();
         },
       ),
+
+      GoRoute(
+        path: AppRoutes.patientSelection,
+        builder: (context, state) {
+          return PatientSelectionPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.addPatient,
+        builder: (context, state) {
+          return PatientAddPage();
+        },
+      ),
+
+      /// 🔥 Bottom Navigation Wrapper
+      ShellRoute(
+        builder: (context, state, child) {
+          PatientMainBinding().dependencies();
+          return PatientMainPage(child: child);
+        },
+        routes: [
+          GoRoute(
+            path: AppRoutes.patientHome,
+            builder: (context, state) {
+              PatientHomePageBinding().dependencies();
+              return PatientHomePage();
+            },
+          ),
 
       /// ================================
       /// 🔹 DOCTOR

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:timesmed_project/app/theme/app_theme.dart';
 import '../../core/config/app_config.dart';
 import '../../routes/app_pages.dart';

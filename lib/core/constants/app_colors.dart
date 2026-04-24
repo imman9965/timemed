@@ -26,11 +26,12 @@ class AppColors {
   static const Color background = Color(0xfff5f7fa);
   static const Color scaffold = Color(0xffffffff);
   static const Color card = Color(0xfffdfdfd);
+  static const Color backgroundLight = Color(0xff9e9e9e);
 
   /// 🔤 Text Colors
   static const Color textDark = Color(0xff000000);
   static const Color textLight = Color(0xffffffff);
-  static const Color textPrimary = Color(0xff212121);
+  static const Color textPrimary = Color(0xff0673de);
   static const Color textSecondary = Color(0xff757575);
   static const Color textHint = Color(0xff9e9e9e);
 
