@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
+import 'package:timesmed_project/modules/patient/patient_signup_page/binding/patient_signup_binding.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
 import 'package:timesmed_project/modules/patient/paient_home/binding/patient_home_page_binding.dart';
 import 'package:timesmed_project/modules/patient/paient_home/view/patient_home_page.dart';
@@ -31,10 +35,23 @@ import 'package:timesmed_project/modules/patient/patient_signup/view/patient_sig
 import 'package:timesmed_project/modules/splash/view/splash_view.dart';
 import 'package:timesmed_project/modules/super/view/super_home_view.dart';
 
+import 'package:timesmed_project/modules/patient/patient_login_page/view/patient_login_page.dart';
+import 'package:timesmed_project/modules/patient/patient_login_page/view/patient_otp_page.dart';
+import 'package:timesmed_project/modules/patient/patient_signup_page/view/patient_signup_page.dart';
+import 'package:timesmed_project/modules/patient/paient_home_page/view/patient_home_page.dart';
+
 import 'package:timesmed_project/modules/doctor/login/view/Doctor_login_page.dart';
 
 // Bindings
 import 'package:timesmed_project/routes/app_routes.dart';
+
+import '../modules/doctor/call_page/call_page.dart';
+import '../modules/doctor/doctor_basic_details/doctor_basic_details.dart';
+import '../modules/doctor/doctor_login_page/view/login_page.dart';
+import '../modules/doctor/hospital_list_doctor/hospital_list_based_on_doctor.dart';
+import '../modules/doctor/medical_records/medical_records.dart';
+import '../modules/doctor/schedule_appointment/schedule_appointment.dart';
+import '../modules/doctor/schedule_appointment_list/schedule_appointmnet_list.dart';
 
 import '../modules/patient/patient_main/binding/patient_main_binding.dart';
 
@@ -169,107 +186,68 @@ class AppRouter {
         path: AppRoutes.clinicalDoctorList,
         builder: (context, state) => ClinicalDoctorListPage(),
       ),
-      GoRoute(
-        path: AppRoutes.clinicalDoctorDetails,
-        builder: (context, state) => ClinicalDoctorDetailsPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.clinicalSchedule,
-        builder: (context, state) => ClinicalSchedulePage(),
-      ),
-      /*
-
-
-
-
-
-      GoRoute(
-        path: AppRoutes.clinicalPayment,
-        builder: (context, state) => ClinicalPaymentPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.clinicalConfirmation,
-        builder: (context, state) => ClinicalConfirmationPage(),
-      ),*/
-
-      // 🔹 Video Consultation
-      GoRoute(
-        path: AppRoutes.videoFilter,
-        builder: (context, state) {
-          VideoFilterBinding().dependencies();
-          return VideoConsultationFilterPage();
-        },
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoDoctorList,
-        builder: (context, state) {
-          VideoDoctorListBinding().dependencies();
-          return VideoDoctorListPage();
-        },
-      ),
-      // 🔹 Common
-      GoRoute(
-        path: AppRoutes.videoPayment,
-        builder: (context, state) => VideoPaymentPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoQueue,
-        builder: (context, state) => VideoQueuePage(),
-      ),
-
-      // 🔹 Schedule Flow
-      GoRoute(
-        path: AppRoutes.videoSchedule,
-        builder: (context, state) => VideoSchedulePage(),
-      ),
-
-      /*
-      // 🔹 Instant Flow
-      GoRoute(
-        path: AppRoutes.videoInstant,
-        builder: (context, state) => VideoInstantPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoWaiting,
-        builder: (context, state) => VideoWaitingPage(),
-      ),
-
-      // 🔹 Schedule Flow
-      GoRoute(
-        path: AppRoutes.videoSchedule,
-        builder: (context, state) => VideoSchedulePage(),
-      ),
-
-      // 🔹 Common
-      GoRoute(
-        path: AppRoutes.videoPayment,
-        builder: (context, state) => VideoPaymentPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoConfirmation,
-        builder: (context, state) => VideoConfirmationPage(),
-      ),*/
-
       /// ================================
       /// 🔹 DOCTOR
       /// ================================
       GoRoute(
         path: AppRoutes.doctorLogin,
-        builder: (context, state) => DoctorLoginPage(),
+        builder: (context, state) => LoginPage(),
       ),
 
-      /// ================================
-      /// 🔹 ADMIN (add when ready)
-      /// ================================
+      GoRoute(
+        path: AppRoutes.doctorHome,
+        builder: (context, state) => CalendarScreen(),
+      ),
 
-      /// ================================
-      /// 🔹 PHARMACY (add when ready)
-      /// ================================
+      GoRoute(
+        path: AppRoutes.calendar,
+        builder: (context, state) => CalendarScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.hospitalList,
+        name: AppRoutes.hospitalList,
+        builder: (context, state) => HospitalListScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.basicDetails,
+        name: AppRoutes.basicDetails,
+        builder: (context, state) => DoctorBasicDetailsScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.rescheduleAppointment,
+        name: AppRoutes.rescheduleAppointment,
+        builder: (context, state) => ScheduleAppointmentScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.scheduleAppointment,
+        name: AppRoutes.scheduleAppointment,
+        builder: (context, state) => ScheduledAppointmentListScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.medicalRecords,
+        name: AppRoutes.medicalRecords,
+        builder: (context, state) => MedicalRecordsScreen(),
+      ),
+
+
+      GoRoute(
+        path: AppRoutes.videoPage,
+        name: AppRoutes.videoPage,
+        builder: (context, state) => VideoCallScreen(),
+      ),
+
+
+
+
+
+
+
+
     ],
   );
 }

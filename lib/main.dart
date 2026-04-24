@@ -7,8 +7,7 @@ void main() {
   AppConfig(
     baseUrl: "https://yourapi.com/api", // Same base URL
     appName: "TimesMed Health Care",
-    flavor: AppFlavor.superApp,
+    flavor: AppFlavor.doctor,
   );
-
   runApp(const MyApp());
 }

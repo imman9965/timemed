@@ -14,7 +14,6 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showBack = false,
     this.actions,
   });
-
   @override
   Widget build(BuildContext context) {
     return AppBar(

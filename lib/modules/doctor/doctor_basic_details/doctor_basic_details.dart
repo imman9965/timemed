@@ -1,0 +1,1156 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// void main() => runApp(const MaterialApp(
+//   debugShowCheckedModeBanner: false,
+//   home: DoctorBasicDetailsScreen(),
+// ));
+
+// ════════════════════════════════════════════════════════
+//  APP COLORS
+// ════════════════════════════════════════════════════════
+
+class AppColors1 {
+  static const primaryBlue  = Color(0xFF1A6BF5);
+  static const scaffoldBg   = Colors.white;
+  static const inputBg      = Color(0xFFF2F2F2);
+  static const textDark     = Color(0xFF1A1A2E);
+  static const textMuted    = Color(0xFF9E9E9E);
+  static const textSecond   = Color(0xFF6B7280);
+  static const dividerColor = Color(0xFFE5E5E5);
+}
+
+// ════════════════════════════════════════════════════════
+//  APP DIMENSIONS
+// ════════════════════════════════════════════════════════
+
+class AppDimens1 {
+  static const xs  = 4.0;
+  static const s   = 8.0;
+  static const m   = 12.0;
+  static const l   = 16.0;
+  static const xl  = 20.0;
+  static const xxl = 24.0;
+  static const radiusMd       = 10.0;
+  static const inputHeight    = 46.0;
+  static const screenHPadding = 20.0;
+}
+
+// ════════════════════════════════════════════════════════
+//  TEXT STYLES
+// ════════════════════════════════════════════════════════
+
+class AppTextStyles {
+  static const sectionLabel = TextStyle(
+      fontSize: 16, fontWeight: FontWeight.w700, color: AppColors1.textDark);
+  static const inputHint = TextStyle(
+      fontSize: 14, color: AppColors1.textMuted);
+  static const inputText = TextStyle(
+      fontSize: 14, fontWeight: FontWeight.w500, color: AppColors1.textDark);
+  static const chipLabel = TextStyle(
+      fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white);
+}
+
+// ════════════════════════════════════════════════════════
+//  DATA MODELS
+// ════════════════════════════════════════════════════════
+
+enum Gender { male, female, others }
+
+class DropdownOption {
+  final String value;
+  final String label;
+  const DropdownOption({required this.value, required this.label});
+}
+
+class DoctorFormData {
+  String       firstName      = '';
+  String       lastName       = '';
+  DateTime?    dateOfBirth;
+  Gender       gender         = Gender.male;
+  String       mobile         = '';
+  String       email          = '';
+  int          experience     = 0;
+  String?      qualification;
+  List<String> specialisations = ['Dental', 'Cardiology'];
+  String?      category;
+  List<String> languages      = ['Tamil'];
+  String       address        = '';
+}
+
+// ════════════════════════════════════════════════════════
+//  STATIC DATA
+// ════════════════════════════════════════════════════════
+
+const List<Gender> _genderOptions = [
+  Gender.male, Gender.female, Gender.others,
+];
+
+const List<DropdownOption> _qualificationOptions = [
+  DropdownOption(value: 'mbbs', label: 'MBBS'),
+  DropdownOption(value: 'bds',  label: 'BDS'),
+  DropdownOption(value: 'md',   label: 'MD'),
+  DropdownOption(value: 'ms',   label: 'MS'),
+  DropdownOption(value: 'bams', label: 'BAMS'),
+  DropdownOption(value: 'bhms', label: 'BHMS'),
+];
+
+const List<DropdownOption> _categoryOptions = [
+  DropdownOption(value: 'allergist',         label: 'Allergist'),
+  DropdownOption(value: 'anesthesiologist',  label: 'Anesthesiologist'),
+  DropdownOption(value: 'audiologist',       label: 'Audiologist'),
+  DropdownOption(value: 'cardiologist',      label: 'Cardiologist'),
+  DropdownOption(value: 'dermatologist',     label: 'Dermatologist'),
+  DropdownOption(value: 'endocrinologist',   label: 'Endocrinologist'),
+  DropdownOption(value: 'neurologist',       label: 'Neurologist'),
+  DropdownOption(value: 'pediatrician',      label: 'Pediatrician'),
+];
+
+const List<String> _specialisationSuggestions = [
+  'Dental','Cardiology','Neurology','Orthopedics',
+  'Pediatrics','Dermatology','Ophthalmology','ENT',
+  'Gynecology','Pulmonology','Psychiatry','Radiology',
+];
+
+const List<DropdownOption> _languageOptions = [
+  DropdownOption(value: 'tamil',     label: 'Tamil'),
+  DropdownOption(value: 'english',   label: 'English'),
+  DropdownOption(value: 'hindi',     label: 'Hindi'),
+  DropdownOption(value: 'telugu',    label: 'Telugu'),
+  DropdownOption(value: 'kannada',   label: 'Kannada'),
+  DropdownOption(value: 'malayalam', label: 'Malayalam'),
+];
+
+const List<String> _addressSuggestions = [
+  'Chennai, Tamilnadu',
+  'Coimbatore, Tamilnadu',
+  'Madurai, Tamilnadu',
+  'Bangalore, Karnataka',
+  'Mumbai, Maharashtra',
+  'Delhi, India',
+  'Hyderabad, Telangana',
+];
+
+// ════════════════════════════════════════════════════════
+//  REUSABLE WIDGETS
+// ════════════════════════════════════════════════════════
+
+class CurvedHeader extends StatelessWidget {
+  final String title;
+  const CurvedHeader({super.key, required this.title});
+  @override
+  Widget build(BuildContext ctx) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: AppColors1.primaryBlue,
+        borderRadius: BorderRadius.only(
+            bottomLeft:  Radius.circular(28),
+            bottomRight: Radius.circular(28)),
+      ),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(ctx).padding.top + 16, bottom: 22),
+      child: Text(title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+              fontSize: 22)),
+    );
+  }
+}
+
+class SectionLabel extends StatelessWidget {
+  final String text;
+  const SectionLabel({super.key, required this.text});
+  @override
+  Widget build(BuildContext ctx) => Padding(
+      padding: const EdgeInsets.only(bottom: AppDimens1.s),
+      child: Text(text, style: AppTextStyles.sectionLabel));
+}
+
+class SelectionChip extends StatelessWidget {
+  final String label;
+  final VoidCallback onRemove;
+  const SelectionChip({
+    super.key, required this.label, required this.onRemove});
+  @override
+  Widget build(BuildContext ctx) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+          color: AppColors1.primaryBlue,
+          borderRadius: BorderRadius.circular(20)),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Text(label, style: AppTextStyles.chipLabel),
+        const SizedBox(width: 6),
+        GestureDetector(
+            onTap: onRemove,
+            child: Container(
+              width: 16, height: 16,
+              decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  shape: BoxShape.circle),
+              child: const Icon(Icons.close, color: Colors.white, size: 11),
+            )),
+      ]),
+    );
+  }
+}
+
+class GenderButton extends StatelessWidget {
+  final String label;
+  final bool   isSelected;
+  final VoidCallback onTap;
+  const GenderButton({
+    super.key, required this.label,
+    required this.isSelected, required this.onTap});
+
+  @override
+  Widget build(BuildContext ctx) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+        decoration: BoxDecoration(
+            color: isSelected ? AppColors1.primaryBlue : AppColors1.inputBg,
+            borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+        child: Text(label,
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.w700,
+                color: isSelected ? Colors.white : AppColors1.textDark)),
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  MAIN SCREEN
+// ════════════════════════════════════════════════════════
+
+class DoctorBasicDetailsScreen extends StatefulWidget {
+  const DoctorBasicDetailsScreen({super.key});
+  @override
+  State<DoctorBasicDetailsScreen> createState() =>
+      _DoctorBasicDetailsScreenState();
+}
+
+class _DoctorBasicDetailsScreenState
+    extends State<DoctorBasicDetailsScreen> {
+
+  final _form = DoctorFormData();
+
+  // Controllers
+  final _firstNameCtrl      = TextEditingController();
+  final _lastNameCtrl       = TextEditingController();
+  final _dobCtrl            = TextEditingController();
+  final _mobileCtrl         = TextEditingController();
+  final _emailCtrl          = TextEditingController();
+  final _experienceCtrl     = TextEditingController();
+  final _specialisationCtrl = TextEditingController();
+  final _addressCtrl        = TextEditingController();
+  final _categoryCtrl       = TextEditingController();
+
+  // Dropdown open states
+  bool _qualificationOpen      = false;
+  bool _categoryOpen           = true;
+  bool _languageOpen           = false;
+  bool _showSpecSuggestions    = false;
+  bool _showAddressSuggestions = false;
+
+  // Filtered lists
+  List<String>         _filteredSpec     = [];
+  List<String>         _filteredAddress  = [];
+  List<DropdownOption> _filteredCategory = List.from(_categoryOptions);
+
+  // Errors
+  String? _emailError;
+  String? _mobileError;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameCtrl.addListener(() => _form.firstName = _firstNameCtrl.text);
+    _lastNameCtrl.addListener (() => _form.lastName  = _lastNameCtrl.text);
+    _addressCtrl.addListener  (() => _form.address   = _addressCtrl.text);
+
+    _mobileCtrl.addListener(() {
+      _form.mobile = _mobileCtrl.text;
+      setState(() =>
+      _mobileError = _validateMobile(_mobileCtrl.text));
+    });
+    _emailCtrl.addListener(() {
+      _form.email = _emailCtrl.text;
+      setState(() => _emailError = _validateEmail(_emailCtrl.text));
+    });
+    _experienceCtrl.addListener(() {
+      _form.experience = int.tryParse(_experienceCtrl.text) ?? 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    _firstNameCtrl.dispose();
+    _lastNameCtrl.dispose();
+    _dobCtrl.dispose();
+    _mobileCtrl.dispose();
+    _emailCtrl.dispose();
+    _experienceCtrl.dispose();
+    _specialisationCtrl.dispose();
+    _addressCtrl.dispose();
+    _categoryCtrl.dispose();
+    super.dispose();
+  }
+
+  // ── Validators ────────────────────────────────────────
+  String? _validateEmail(String v) {
+    if (v.isEmpty) return null;
+    return RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$').hasMatch(v)
+        ? null : 'Invalid email';
+  }
+
+  String? _validateMobile(String v) {
+    if (v.isEmpty) return null;
+    return v.length == 10 ? null : 'Must be 10 digits';
+  }
+
+  // ── Actions ────────────────────────────────────────────
+  Future<void> _pickDob() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _form.dateOfBirth ?? DateTime(1990),
+      firstDate:   DateTime(1940),
+      lastDate:    DateTime.now(),
+      builder: (c, w) => Theme(
+        data: Theme.of(c).copyWith(
+            colorScheme: const ColorScheme.light(
+                primary: AppColors1.primaryBlue, onPrimary: Colors.white)),
+        child: w!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        _form.dateOfBirth = picked;
+        _dobCtrl.text =
+        '${picked.day.toString().padLeft(2,'0')}/'
+            '${picked.month.toString().padLeft(2,'0')}/${picked.year}';
+      });
+    }
+  }
+
+  void _incrementExp() {
+    final v = int.tryParse(_experienceCtrl.text) ?? 0;
+    setState(() => _experienceCtrl.text = (v + 1).toString());
+  }
+
+  void _decrementExp() {
+    final v = int.tryParse(_experienceCtrl.text) ?? 0;
+    if (v > 0) setState(() => _experienceCtrl.text = (v - 1).toString());
+  }
+
+  void _onSpecialisationChanged(String q) {
+    setState(() {
+      if (q.trim().isEmpty) {
+        _filteredSpec = [];
+        _showSpecSuggestions = false;
+      } else {
+        _filteredSpec = _specialisationSuggestions
+            .where((s) =>
+        s.toLowerCase().contains(q.toLowerCase()) &&
+            !_form.specialisations.contains(s))
+            .toList();
+        _showSpecSuggestions = _filteredSpec.isNotEmpty;
+      }
+    });
+  }
+
+  void _addSpecialisation(String v) {
+    final t = v.trim();
+    if (t.isEmpty) return;
+    if (!_form.specialisations.contains(t)) {
+      setState(() {
+        _form.specialisations.add(t);
+        _specialisationCtrl.clear();
+        _showSpecSuggestions = false;
+      });
+    }
+  }
+
+  void _onCategorySearch(String q) {
+    setState(() {
+      _filteredCategory = q.trim().isEmpty
+          ? List.from(_categoryOptions)
+          : _categoryOptions
+          .where((o) =>
+          o.label.toLowerCase().contains(q.toLowerCase()))
+          .toList();
+      _categoryOpen = true;
+    });
+  }
+
+  void _addLanguage(String label) {
+    if (!_form.languages.contains(label)) {
+      setState(() => _form.languages.add(label));
+    }
+  }
+
+  void _onAddressChanged(String q) {
+    setState(() {
+      if (q.trim().isEmpty) {
+        _filteredAddress = [];
+        _showAddressSuggestions = false;
+      } else {
+        _filteredAddress = _addressSuggestions
+            .where((a) =>
+            a.toLowerCase().contains(q.toLowerCase()))
+            .toList();
+        _showAddressSuggestions = _filteredAddress.isNotEmpty;
+      }
+    });
+  }
+
+  void _closeAllDropdowns() {
+    setState(() {
+      _qualificationOpen      = false;
+      _languageOpen           = false;
+      _showSpecSuggestions    = false;
+      _showAddressSuggestions = false;
+    });
+  }
+
+  void _onSave() {
+    final errors = <String>[];
+    if (_form.firstName.isEmpty)           errors.add('First name');
+    if (_form.lastName.isEmpty)            errors.add('Last name');
+    if (_form.dateOfBirth == null)         errors.add('DOB');
+    if (_form.mobile.length != 10)         errors.add('10-digit mobile');
+    if (_validateEmail(_form.email) != null) errors.add('Valid email');
+    if (_form.qualification == null)       errors.add('Qualification');
+    if (_form.specialisations.isEmpty)     errors.add('Specialisation');
+    if (_form.category == null)            errors.add('Category');
+    if (_form.languages.isEmpty)           errors.add('Language');
+    if (_form.address.isEmpty)             errors.add('Address');
+
+    if (errors.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Missing: ${errors.join(', ')}'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Saved ✓'),
+        content: Text(
+          'Name: ${_form.firstName} ${_form.lastName}\n'
+              'DOB: ${_form.dateOfBirth!.day}/${_form.dateOfBirth!.month}/${_form.dateOfBirth!.year}\n'
+              'Gender: ${_form.gender.name}\n'
+              'Mobile: ${_form.mobile}\n'
+              'Email: ${_form.email}\n'
+              'Experience: ${_form.experience} yrs\n'
+              'Qualification: ${_form.qualification}\n'
+              'Specialisations: ${_form.specialisations.join(", ")}\n'
+              'Category: ${_form.category}\n'
+              'Languages: ${_form.languages.join(", ")}\n'
+              'Address: ${_form.address}',
+          style: const TextStyle(fontSize: 12),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
+  // ════════════════════════════════════════════════════
+  //  BUILD
+  // ════════════════════════════════════════════════════
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors1.scaffoldBg,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          _closeAllDropdowns();
+        },
+        child: Column(
+          children: [
+            const CurvedHeader(title: 'Doctor Basic Details'),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(
+                    AppDimens1.screenHPadding, AppDimens1.xl,
+                    AppDimens1.screenHPadding, AppDimens1.xxl),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildAvatar(),
+                    const SizedBox(height: AppDimens1.xl),
+                    _buildNameFields(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildDobField(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildGenderSection(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildContactDetails(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildExperienceQualification(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildSpecialisationSection(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildCategorySection(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildLanguageSection(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildAddressSection(),
+                    const SizedBox(height: AppDimens1.xxl),
+                    _buildSaveButton(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ════════════════════════════════════════════════════
+  //  SECTION BUILDERS
+  // ════════════════════════════════════════════════════
+
+  Widget _buildAvatar() {
+    return Center(
+      child: Stack(children: [
+        Container(
+          width: 90, height: 90,
+          decoration: const BoxDecoration(
+              color: Color(0xFFBDBDBD), shape: BoxShape.circle),
+          child: const Icon(Icons.person,
+              color: Colors.white, size: 56),
+        ),
+        Positioned(
+          bottom: 2, right: 2,
+          child: Container(
+            width: 26, height: 26,
+            decoration: BoxDecoration(
+                color: const Color(0xFFBDBDBD),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2)),
+            child: const Icon(Icons.camera_alt,
+                color: Colors.white, size: 13),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget _buildNameFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Name'),
+        Row(children: [
+          Expanded(child: _inputBox(_firstNameCtrl, 'First name')),
+          const SizedBox(width: AppDimens1.m),
+          Expanded(child: _inputBox(_lastNameCtrl, 'Last name')),
+        ]),
+      ],
+    );
+  }
+
+  Widget _buildDobField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Date Of Birth'),
+        GestureDetector(
+          onTap: _pickDob,
+          child: AbsorbPointer(
+            child: _inputBox(
+              _dobCtrl, 'DD/MM/YYYY',
+              suffix: const Icon(Icons.calendar_month,
+                  color: AppColors1.primaryBlue, size: 20),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGenderSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Gender'),
+        Row(
+          children: _genderOptions.map((g) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: GenderButton(
+                label: _genderLabel(g),
+                isSelected: _form.gender == g,
+                onTap: () => setState(() => _form.gender = g),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Contact Details'),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _inputBox(
+                    _mobileCtrl, 'Mobile number',
+                    keyboardType: TextInputType.phone,
+                    formatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                  ),
+                  if (_mobileError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(_mobileError!,
+                          style: const TextStyle(
+                              fontSize: 11, color: Colors.red)),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppDimens1.m),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _inputBox(
+                    _emailCtrl, 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  if (_emailError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(_emailError!,
+                          style: const TextStyle(
+                              fontSize: 11, color: Colors.red)),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExperienceQualification() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SectionLabel(text: 'Experience'),
+              Container(
+                height: AppDimens1.inputHeight,
+                decoration: BoxDecoration(
+                    color: AppColors1.inputBg,
+                    borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+                child: Row(children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _experienceCtrl,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(2),
+                      ],
+                      style: AppTextStyles.inputText,
+                      decoration: const InputDecoration(
+                        hintText:  'Years',
+                        hintStyle: AppTextStyles.inputHint,
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 13),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: _incrementExp,
+                        child: const Icon(Icons.keyboard_arrow_up,
+                            color: AppColors1.textMuted, size: 18),
+                      ),
+                      GestureDetector(
+                        onTap: _decrementExp,
+                        child: const Icon(Icons.keyboard_arrow_down,
+                            color: AppColors1.textMuted, size: 18),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                ]),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: AppDimens1.m),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SectionLabel(text: 'Qualification'),
+              _buildDropdownSelector(
+                hint:    'Mbbs,Bds,...',
+                value:   _form.qualification,
+                options: _qualificationOptions,
+                isOpen:  _qualificationOpen,
+                onToggle: () => setState(() {
+                  _qualificationOpen = !_qualificationOpen;
+                  _languageOpen = false;
+                }),
+                onSelect: (v) => setState(() {
+                  _form.qualification = v;
+                  _qualificationOpen  = false;
+                }),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSpecialisationSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Specialisation'),
+        Container(
+          height: AppDimens1.inputHeight,
+          decoration: BoxDecoration(
+              color: AppColors1.inputBg,
+              borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+          child: Row(children: [
+            Expanded(
+              child: TextField(
+                controller: _specialisationCtrl,
+                onChanged: _onSpecialisationChanged,
+                onSubmitted: _addSpecialisation,
+                style: AppTextStyles.inputText,
+                decoration: const InputDecoration(
+                  hintText:  '(e.g Dental, Cardiologist)',
+                  hintStyle: AppTextStyles.inputHint,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 13),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => _addSpecialisation(_specialisationCtrl.text),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 12),
+                child: Icon(Icons.search,
+                    color: AppColors1.primaryBlue, size: 20),
+              ),
+            ),
+          ]),
+        ),
+
+        if (_showSpecSuggestions) ...[
+          const SizedBox(height: 4),
+          Container(
+            decoration: BoxDecoration(
+                color: AppColors1.inputBg,
+                borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
+                border: Border.all(color: AppColors1.dividerColor)),
+            constraints: const BoxConstraints(maxHeight: 180),
+            child: ListView(
+              shrinkWrap: true,
+              children: _filteredSpec.map((s) => ListTile(
+                dense: true,
+                title: Text(s, style: AppTextStyles.inputText),
+                onTap: () => _addSpecialisation(s),
+              )).toList(),
+            ),
+          ),
+        ],
+
+        const SizedBox(height: AppDimens1.s),
+
+        // Chips iterated
+        if (_form.specialisations.isNotEmpty)
+          Wrap(
+            spacing: 8, runSpacing: 6,
+            children: _form.specialisations.map((s) =>
+                SelectionChip(
+                  label: s,
+                  onRemove: () =>
+                      setState(() => _form.specialisations.remove(s)),
+                )).toList(),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildCategorySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Category'),
+        Container(
+          height: AppDimens1.inputHeight,
+          decoration: BoxDecoration(
+              color: AppColors1.inputBg,
+              borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+          child: Row(children: [
+            Expanded(
+              child: TextField(
+                controller: _categoryCtrl,
+                onChanged: _onCategorySearch,
+                onTap: () => setState(() => _categoryOpen = true),
+                style: AppTextStyles.inputText,
+                decoration: const InputDecoration(
+                  hintText:  '(e.g Cardiologist)',
+                  hintStyle: AppTextStyles.inputHint,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 13),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => setState(() => _categoryOpen = !_categoryOpen),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 12),
+                child: Icon(Icons.search,
+                    color: AppColors1.primaryBlue, size: 20),
+              ),
+            ),
+          ]),
+        ),
+
+        if (_categoryOpen) ...[
+          const SizedBox(height: AppDimens1.s),
+          Container(
+            decoration: BoxDecoration(
+                color: AppColors1.primaryBlue,
+                borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+            child: Column(
+              children: _filteredCategory.asMap().entries.map((entry) {
+                final idx   = entry.key;
+                final opt   = entry.value;
+                final isLast = idx == _filteredCategory.length - 1;
+                final isFirst = idx == 0;
+                final isSel = _form.category == opt.value;
+
+                return Column(children: [
+                  GestureDetector(
+                    onTap: () => setState(() {
+                      _form.category     = opt.value;
+                      _categoryCtrl.text = opt.label;
+                      _categoryOpen      = false;
+                    }),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 11),
+                      child: Row(children: [
+                        Expanded(
+                          child: Text(opt.label,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                        if (isFirst)
+                          GestureDetector(
+                            onTap: () => setState(() =>
+                            _categoryOpen = false),
+                            child: const Icon(Icons.keyboard_arrow_up,
+                                color: Colors.white, size: 22),
+                          ),
+                        if (isLast && !isFirst)
+                          const Icon(Icons.keyboard_arrow_down,
+                              color: Colors.white, size: 22),
+                        if (isSel && !isFirst && !isLast)
+                          const Icon(Icons.check,
+                              color: Colors.white, size: 18),
+                      ]),
+                    ),
+                  ),
+                  if (!isLast)
+                    Divider(
+                      height: 1, color: Colors.white.withOpacity(0.4),
+                      indent: 16, endIndent: 16,
+                    ),
+                ]);
+              }).toList(),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildLanguageSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Language'),
+        _buildDropdownSelector(
+          hint:    '(e.g Tamil,English,..)',
+          value:   null,
+          options: _languageOptions,
+          isOpen:  _languageOpen,
+          onToggle: () => setState(() {
+            _languageOpen      = !_languageOpen;
+            _qualificationOpen = false;
+          }),
+          onSelect: (v) {
+            final label = _languageOptions
+                .firstWhere((o) => o.value == v).label;
+            _addLanguage(label);
+            setState(() => _languageOpen = false);
+          },
+        ),
+        const SizedBox(height: AppDimens1.s),
+        if (_form.languages.isNotEmpty)
+          Wrap(
+            spacing: 8, runSpacing: 6,
+            children: _form.languages.map((l) =>
+                SelectionChip(
+                  label: l,
+                  onRemove: () =>
+                      setState(() => _form.languages.remove(l)),
+                )).toList(),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildAddressSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Address'),
+        Container(
+          height: AppDimens1.inputHeight,
+          decoration: BoxDecoration(
+              color: AppColors1.inputBg,
+              borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+          child: Row(children: [
+            Expanded(
+              child: TextField(
+                controller: _addressCtrl,
+                onChanged: _onAddressChanged,
+                style: AppTextStyles.inputText,
+                decoration: const InputDecoration(
+                  hintText:  'Chennai, Tamilnadu',
+                  hintStyle: AppTextStyles.inputHint,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 13),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(right: 12),
+              child: Icon(Icons.search,
+                  color: AppColors1.primaryBlue, size: 20),
+            ),
+          ]),
+        ),
+        if (_showAddressSuggestions) ...[
+          const SizedBox(height: 4),
+          Container(
+            decoration: BoxDecoration(
+                color: AppColors1.inputBg,
+                borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
+                border: Border.all(color: AppColors1.dividerColor)),
+            constraints: const BoxConstraints(maxHeight: 180),
+            child: ListView(
+              shrinkWrap: true,
+              children: _filteredAddress.map((a) => ListTile(
+                dense: true,
+                leading: const Icon(Icons.location_on_outlined,
+                    color: AppColors1.textMuted, size: 18),
+                title: Text(a, style: AppTextStyles.inputText),
+                onTap: () {
+                  setState(() {
+                    _addressCtrl.text = a;
+                    _form.address = a;
+                    _showAddressSuggestions = false;
+                  });
+                  FocusScope.of(context).unfocus();
+                },
+              )).toList(),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: GestureDetector(
+        onTap: _onSave,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+              color: AppColors1.primaryBlue,
+              borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+          child: const Text('Save',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16)),
+        ),
+      ),
+    );
+  }
+
+  // ════════════════════════════════════════════════════
+  //  HELPERS
+  // ════════════════════════════════════════════════════
+
+  Widget _inputBox(
+      TextEditingController ctrl,
+      String hint, {
+        TextInputType keyboardType = TextInputType.text,
+        List<TextInputFormatter>? formatters,
+        Widget? suffix,
+      }) {
+    return Container(
+      height: AppDimens1.inputHeight,
+      decoration: BoxDecoration(
+          color: AppColors1.inputBg,
+          borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+      child: TextField(
+        controller: ctrl,
+        keyboardType: keyboardType,
+        inputFormatters: formatters,
+        style: AppTextStyles.inputText,
+        decoration: InputDecoration(
+          hintText:  hint,
+          hintStyle: AppTextStyles.inputHint,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12, vertical: 13),
+          suffixIcon: suffix,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownSelector({
+    required String  hint,
+    required String? value,
+    required List<DropdownOption> options,
+    required bool    isOpen,
+    required VoidCallback onToggle,
+    required void Function(String) onSelect,
+  }) {
+    final label = value != null
+        ? options.firstWhere((o) => o.value == value).label
+        : null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: onToggle,
+          child: Container(
+            height: AppDimens1.inputHeight,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+                color: AppColors1.inputBg,
+                borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
+            child: Row(children: [
+              Expanded(
+                child: Text(label ?? hint,
+                    style: label != null
+                        ? AppTextStyles.inputText
+                        : AppTextStyles.inputHint),
+              ),
+              Icon(
+                  isOpen
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: AppColors1.primaryBlue, size: 20),
+            ]),
+          ),
+        ),
+        if (isOpen) ...[
+          const SizedBox(height: AppDimens1.xs),
+          Container(
+            decoration: BoxDecoration(
+                color: AppColors1.inputBg,
+                borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
+                border: Border.all(color: AppColors1.dividerColor)),
+            child: Column(
+              children: options.asMap().entries.map((entry) {
+                final isLast = entry.key == options.length - 1;
+                final opt    = entry.value;
+                return Column(children: [
+                  GestureDetector(
+                    onTap: () => onSelect(opt.value),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 11),
+                      child: Row(children: [
+                        Expanded(
+                          child: Text(opt.label,
+                              style: AppTextStyles.inputText),
+                        ),
+                        if (value == opt.value)
+                          const Icon(Icons.check,
+                              color: AppColors1.primaryBlue, size: 16),
+                      ]),
+                    ),
+                  ),
+                  if (!isLast)
+                    const Divider(
+                        height: 1, color: AppColors1.dividerColor),
+                ]);
+              }).toList(),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  String _genderLabel(Gender g) => g == Gender.male
+      ? 'Male'
+      : g == Gender.female
+      ? 'Female'
+      : 'Others';
+}

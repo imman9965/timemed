@@ -23,6 +23,7 @@ abstract class AppRoutes {
   /// ================================
   /// 🔹 PATIENT
   /// ================================
+
   static const patientLogin = '/patientLogin';
   static const patientOtp = '/patientOtp';
   static const patientSignup = '/patientSignup';
@@ -68,8 +69,37 @@ abstract class AppRoutes {
   /// ================================
   /// 🔹 DOCTOR
   /// ================================
+
   static const doctorLogin = '/doctorLogin';
   static const doctorHome = '/doctorHome';
+  static const calendar = '/calendar';
+  static const hospitalList = '/hospitalList';
+  static const basicDetails = '/basicDetails';
+  static const rescheduleAppointment = '/rescheduleAppointment';
+  static const scheduleAppointment = '/scheduleAppointment';
+  static const medicalRecords = '/medicalRecords';
+  static const videoPage = '/videoPage';
+  static const queue = '/queue';
+  static const history = '/history';
+  static const prescription = '/prescription';
+  static const labTest = '/labTest';
+  static const notes = '/notes';
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // static const logout = '/basicDetails';
+
+
 
   /// ================================
   /// 🔹 PHARMACY
