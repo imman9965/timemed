@@ -49,7 +49,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(radius: 28, child: Icon(Icons.person)),
+                          CircleAvatar(
+                            backgroundColor: AppColors.background,
+                            radius: 28,
+                            child: Icon(Icons.person),
+                          ),
                           const SizedBox(width: 12),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,69 +241,175 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   const SizedBox(height: 10),
 
                   Column(
-                    children: List.generate(1, (index) {
-                      return Card(
-                        color: AppColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 16,
-                                    child: Icon(Icons.person, size: 18),
-                                  ),
-                                  Space(width: 12),
-                                  Text(
-                                    "Mr. Andrew",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "Dentist",
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Appointment ID: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                    children: List.generate(2, (index) {
+                      final data = [
+                        {
+                          "name": "Dr. Andrew",
+                          "role": "Dentist",
+                          "id": "35648",
+                          "type": "Instant",
+                          "statusColor": Colors.green,
+                          "date": "15 Sep 2024",
+                          "time": "10:30 AM",
+                        },
+                        {
+                          "name": "Dr. John",
+                          "role": "Cardiologist",
+                          "id": "78521",
+                          "type": "Scheduled",
+                          "statusColor": Colors.orange,
+                          "date": "15 Sep 2024",
+                          "time": "10:30 AM",
+                        },
+                      ];
 
-                                  Text("35648"),
-                                ],
-                              ),
-                              Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Type: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                      final item = data[index];
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 14),
+                        child: Card(
+                          color: AppColors.primary.withOpacity(0.10),
+                          elevation: 6,
+                          shadowColor: Colors.black.withOpacity(0.08),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                /// 🔹 Top Row
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor: AppColors.primary
+                                          .withOpacity(0.1),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: AppColors.primary,
+                                      ),
                                     ),
+                                    const SizedBox(width: 12),
+
+                                    /// Name & Role
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            item["name"].toString(),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Text(
+                                            item["role"].toString(),
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    /// Status Badge
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: (item["statusColor"] as Color)
+                                            .withOpacity(0.15),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        item["type"].toString(),
+                                        style: TextStyle(
+                                          color: item["statusColor"] as Color,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 14),
+
+                                /// 🔹 Date & Time Row
+                                Row(
+                                  children: [
+                                    _infoIconText(
+                                      Icons.calendar_today,
+                                      item["date"].toString(),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    _infoIconText(
+                                      Icons.access_time,
+                                      item["time"].toString(),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                /// 🔹 Info Section
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  Text("Instant"),
-                                ],
-                              ),
-                            ],
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.confirmation_number,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          const Text(
+                                            "Appointment ID:",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(item["id"].toString()),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 8),
+
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.medical_services,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          const Text(
+                                            "Type:",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(item["type"].toString()),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -589,6 +699,23 @@ class _PatientHomePageState extends State<PatientHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _infoIconText(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.textSecondary),
+        const SizedBox(width: 6),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 13,
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

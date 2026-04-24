@@ -291,11 +291,11 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                         ),
                         child: Text(
                           "How can i help you ?",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(25),

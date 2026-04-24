@@ -173,6 +173,9 @@ class _AIChatPageState extends State<AIChatPage> {
   }
 
   Widget _buildMessageBubble(ChatMessage message) {
+    if (message.type == MessageType.appointmentType) {
+      return _buildAppointmentTypeBubble(message);
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -333,7 +336,7 @@ class _AIChatPageState extends State<AIChatPage> {
         Text(
           'Hi, $patientName!',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 24,
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
           ),
@@ -342,7 +345,7 @@ class _AIChatPageState extends State<AIChatPage> {
         Text(
           'How can I assist you today?',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w400,
             color: AppColors.textSecondary,
           ),
@@ -360,76 +363,32 @@ class _AIChatPageState extends State<AIChatPage> {
             Expanded(
               child: _buildQuickActionCard(
                 index: 1,
-                icon: Icons.chat_outlined,
+                icon: "assets/icons/stethoscope.svg",
                 label: 'New Consult',
                 subtitle: 'Describe symptoms',
                 onTap: () {
-                  // Add consultation message to chat
-                  final consultMessage = ChatMessage(
+                  final aiMessage = ChatMessage(
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     text:
-                        'I\'d like to start a new consultation. Can you help me describe my symptoms?',
-                    isUser: true,
+                        'Hi $patientName! Tell me what you\'re experiencing and I\'ll help you get the appointment.',
+                    isUser: false,
                     timestamp: DateTime.now(),
+                    type: MessageType.appointmentType,
                   );
 
                   setState(() {
-                    messages.add(consultMessage);
-                    isLoading = true;
+                    messages.add(aiMessage);
                   });
 
                   _scrollToBottom();
-
-                  // Simulate AI response
-                  Future.delayed(const Duration(seconds: 2), () {
-                    if (mounted) {
-                      final aiResponse = ChatMessage(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        text:
-                            'Of course! I\'m here to help you with your consultation. Please describe your symptoms in detail, including:\n\n• What symptoms are you experiencing?\n• How long have you had them?\n• Any other relevant details?\n\nThis will help me suggest the right doctor for you.',
-                        isUser: false,
-                        timestamp: DateTime.now(),
-                      );
-
-                      setState(() {
-                        messages.add(aiResponse);
-                        isLoading = false;
-                      });
-
-                      _scrollToBottom();
-                    }
-                  });
                 },
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: _buildQuickActionCard(
-                index: 2,
-                icon: Icons.receipt_outlined,
-                label: 'Prescriptions',
-                subtitle: 'View & refill',
-                onTap: () {
-                  // Navigate to Prescriptions
-                  Get.snackbar(
-                    'Prescriptions',
-                    'Opening your prescriptions...',
-                    backgroundColor: Colors.green,
-                    colorText: Colors.white,
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        // Second row - 2 cards
-        Row(
-          children: [
-            Expanded(
-              child: _buildQuickActionCard(
                 index: 3,
-                icon: Icons.calendar_today,
+                icon: "assets/icons/my_appointments.svg",
                 label: 'My Appointments',
                 subtitle: 'View Upcoming',
                 onTap: () {
@@ -443,11 +402,34 @@ class _AIChatPageState extends State<AIChatPage> {
                 },
               ),
             ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        // Second row - 2 cards
+        Row(
+          children: [
+            Expanded(
+              child: _buildQuickActionCard(
+                index: 2,
+                icon: "assets/icons/prescriptions.svg",
+                label: 'Prescriptions',
+                subtitle: 'View & refill',
+                onTap: () {
+                  // Navigate to Prescriptions
+                  Get.snackbar(
+                    'Prescriptions',
+                    'Opening your prescriptions...',
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                },
+              ),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: _buildQuickActionCard(
                 index: 4,
-                icon: Icons.assessment_outlined,
+                icon: "assets/icons/lab_reports.svg",
                 label: 'Lab Reports',
                 subtitle: 'Recent results',
                 onTap: () {
@@ -470,7 +452,7 @@ class _AIChatPageState extends State<AIChatPage> {
 
   Widget _buildQuickActionCard({
     required int index,
-    required IconData icon,
+    required String icon,
     required String label,
     String? subtitle,
     required VoidCallback onTap,
@@ -496,7 +478,7 @@ class _AIChatPageState extends State<AIChatPage> {
           borderRadius: BorderRadius.circular(12),
 
           border: Border.all(
-            color: isSelected ? const Color(0xff0673de) : AppColors.black,
+            color: isSelected ? const Color(0xff0673de) : AppColors.border,
             width: 1,
           ),
 
@@ -513,11 +495,7 @@ class _AIChatPageState extends State<AIChatPage> {
 
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: isSelected ? AppColors.white : AppColors.primary,
-              size: 30,
-            ),
+            SvgPicture.asset(icon, height: 30, width: 30),
 
             const SizedBox(width: 12),
 
@@ -555,18 +533,141 @@ class _AIChatPageState extends State<AIChatPage> {
       ),
     );
   }
+
+  Widget _buildAppointmentTypeBubble(ChatMessage message) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: message.isUser ? AppColors.primary : Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// AI TEXT
+            _buildNormalBubble(message),
+
+            const SizedBox(height: 10),
+
+            /// TITLE
+            Text(
+              "Appointment Type",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// OPTIONS
+            Row(
+              children: [
+                _appointmentOption("Instant"),
+                const SizedBox(width: 14),
+                _appointmentOption("Schedule"),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _appointmentOption(String type) {
+    final isSelected = selectedAppointmentType == type;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedAppointmentType = type;
+        });
+
+        /// Add user selection message
+        final userMsg = ChatMessage(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          text: type,
+          isUser: true,
+          timestamp: DateTime.now(),
+        );
+
+        messages.add(userMsg);
+
+        /// If schedule → ask date
+        if (type == "Schedule") {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            setState(() {
+              messages.add(
+                ChatMessage(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  text: "Please enter your preferred appointment date.",
+                  isUser: false,
+                  timestamp: DateTime.now(),
+                ),
+              );
+            });
+            _scrollToBottom();
+          });
+        }
+
+        _scrollToBottom();
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.white : Colors.transparent,
+              border: Border.all(color: AppColors.primary, width: 2),
+            ),
+            child: Center(
+              child: Icon(
+                isSelected ? Icons.check : null,
+                size: isSelected ? 12 : 0,
+                color: isSelected ? AppColors.primary : AppColors.primary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(type, style: TextStyle(fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNormalBubble(ChatMessage message) {
+    return Row(
+      mainAxisAlignment: message.isUser
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Text(
+            message.text,
+            style: TextStyle(
+              color: message.isUser ? Colors.white : Colors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
+
+enum MessageType { text, appointmentType }
 
 class ChatMessage {
   final String id;
   final String text;
   final bool isUser;
   final DateTime timestamp;
+  final MessageType type;
 
   ChatMessage({
     required this.id,
     required this.text,
     required this.isUser,
     required this.timestamp,
+    this.type = MessageType.text,
   });
 }

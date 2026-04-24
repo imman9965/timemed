@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
 import 'package:timesmed_project/modules/patient/paient_home/controller/patient_home_controller.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 // import your TitleTextFormField
 
 class PatientProfilePage extends StatefulWidget {
@@ -224,13 +226,80 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                   const SizedBox(height: 25),
 
                   /// SAVE BUTTON
-                  CommonButton(
-                    title: "Save",
-                    borderRadius: 25,
-                    width: 200,
-                    onPressed: () {
-                      // Save API call
-                    },
+                  Row(
+                    children: [
+                      /// ✏️ Edit Profile
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Enable editing / navigate
+                            context.push(AppRoutes.addPatient); // Example route
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(color: AppColors.primary),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.edit, color: AppColors.primary),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Edit Profile",
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      /// 🔐 Change Password
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Navigate to change password page
+                            context.push(
+                              AppRoutes.patientForgotPassword,
+                            ); // Example route
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.primary,
+                                  AppColors.primary.withOpacity(0.7),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.lock, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Change Password",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

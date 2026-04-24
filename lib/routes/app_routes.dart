@@ -33,6 +33,7 @@ abstract class AppRoutes {
   static const patientHome = '/home';
   static const patientProfile = '/profile';
   static const patientOrder = '/order';
+  static const patientPreviousAppointments = '/appointments';
 
   // ...........Appointments ............ //
 

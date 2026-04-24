@@ -21,6 +21,7 @@ import 'package:timesmed_project/modules/patient/patient_login/view/patient_otp_
 import 'package:timesmed_project/modules/patient/patient_main/view/patient_main_page.dart';
 import 'package:timesmed_project/modules/patient/patient_order/binding/patient_order_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_order/view/patient_order_page.dart';
+import 'package:timesmed_project/modules/patient/patient_previous_appointment/view/patient_previous_appointment%20_page.dart';
 import 'package:timesmed_project/modules/patient/patient_profile/view/patient_profile_page.dart';
 import 'package:timesmed_project/modules/patient/patient_select/view/patient_selection_page.dart';
 import 'package:timesmed_project/modules/patient/patient_signup/binding/patient_signup_binding.dart';
@@ -136,6 +137,14 @@ class AppRouter {
             builder: (context, state) {
               PatientHomePageBinding().dependencies();
               return PatientProfilePage();
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.patientPreviousAppointments,
+            builder: (context, state) {
+              // PatientOrderBinding().dependencies();
+              return PatientPreviousAppointmentPage();
             },
           ),
 

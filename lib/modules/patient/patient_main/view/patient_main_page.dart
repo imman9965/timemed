@@ -14,37 +14,51 @@ class PatientMainPage extends StatelessWidget {
       GoRouterState.of(context).uri.toString(),
     );
 
-    return Scaffold(
-      backgroundColor: Color(0xffFFFCF5),
-      body: child, // 👈 VERY IMPORTANT
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        backgroundColor: Color(0xffFFFCF5),
+        extendBody: true, // 🔥 allows body behind bottom nav
+        body: child, // 👈 VERY IMPORTANT
 
-      bottomNavigationBar: SizedBox(
-        height: 100,
-        child: FloatingBottomNavigationBar(
-          currentIndex: currentIndex,
-          label: const ['Home', 'Profile', 'My Orders'],
-          icons: const [Icons.home, Icons.person, Icons.backpack_sharp],
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                context.go(AppRoutes.patientHome);
-                break;
-              case 1:
-                context.go(AppRoutes.patientProfile);
-                break;
-              case 2:
-                context.go(AppRoutes.patientOrder);
-                break;
-            }
-          },
+        bottomNavigationBar: SizedBox(
+          height: 100,
+          child: FloatingBottomNavigationBar(
+            currentIndex: currentIndex,
+            label: const ['Home', 'Appointments', 'My Orders', 'Profile'],
+            icons: const [
+              Icons.home,
+              Icons.date_range,
+              Icons.backpack_sharp,
+              Icons.person,
+            ],
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  context.go(AppRoutes.patientHome);
+                  break;
+
+                case 1:
+                  context.go(AppRoutes.patientPreviousAppointments);
+                  break;
+                case 2:
+                  context.go(AppRoutes.patientOrder);
+                  break;
+                case 3:
+                  context.go(AppRoutes.patientProfile);
+                  break;
+              }
+            },
+          ),
         ),
       ),
     );
   }
 
   int _getIndexFromLocation(String location) {
-    if (location.contains(AppRoutes.patientProfile)) return 1;
+    if (location.contains(AppRoutes.patientPreviousAppointments)) return 1;
     if (location.contains(AppRoutes.patientOrder)) return 2;
+    if (location.contains(AppRoutes.patientProfile)) return 3;
     return 0;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
@@ -17,10 +16,34 @@ class PatientSelectionPage extends StatefulWidget {
 class _PatientSelectionPageState extends State<PatientSelectionPage> {
   // Sample patient data - replace with actual data from controller
   final List<PatientSelectionModel> patients = [
-    PatientSelectionModel(id: '1', name: 'John Doe', relation: 'Self'),
-    PatientSelectionModel(id: '2', name: 'Sarah Doe', relation: 'Spouse'),
-    PatientSelectionModel(id: '3', name: 'Emma Doe', relation: 'Daughter'),
-    PatientSelectionModel(id: '4', name: 'Robert Doe', relation: 'Father'),
+    PatientSelectionModel(
+      id: '1',
+      name: 'John Doe',
+      relation: 'Self',
+      gender: "Male",
+      age: 30,
+    ),
+    PatientSelectionModel(
+      id: '2',
+      name: 'Sarah Doe',
+      relation: 'Spouse',
+      gender: "Female",
+      age: 28,
+    ),
+    PatientSelectionModel(
+      id: '3',
+      name: 'Emma Doe',
+      relation: 'Daughter',
+      gender: "Female",
+      age: 5,
+    ),
+    PatientSelectionModel(
+      id: '4',
+      name: 'Robert Doe',
+      relation: 'Father',
+      gender: "Male",
+      age: 60,
+    ),
   ];
 
   PatientSelectionModel? selectedPatient;
@@ -307,11 +330,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xff0673de), Color(0xff2f6f7e)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: AppColors.primary,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(18),
                     topRight: Radius.circular(18),
@@ -370,7 +389,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: const EdgeInsets.only(bottom: 18),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -380,6 +399,8 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
         child: Row(
           children: [
             Container(
+              height: 40,
+              width: 40,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -387,9 +408,18 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(50),
+                image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage(
+                    patient.gender == "Male"
+                        ? "assets/icons/gender/male.png"
+                        : patient.gender == "Female"
+                        ? "assets/icons/gender/female.png"
+                        : "assets/icons/gender/other_gender.png",
+                  ),
+                ),
               ),
-              child: const Icon(Icons.person, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -410,6 +440,14 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textSecondary,
+                    ),
+                  ),
+                  Text(
+                    "${patient.age} yrs",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 ],
