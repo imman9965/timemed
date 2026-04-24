@@ -17,7 +17,6 @@ class SplashController extends GetxController {
     final token = await _storage.getToken();
     final role = await _storage.getRole();
 
-    /// 🟢 If No Token → Go To Correct Login Based On Flavor
     if (token == null || token.isEmpty) {
       switch (AppConfig.instance.flavor) {
         case AppFlavor.patient:
@@ -47,7 +46,7 @@ class SplashController extends GetxController {
     switch (role) {
       case 'patient':
         // Get.offAllNamed(AppRoutes.patientHome);
-        AppRouter.router.go(AppRoutes.patientHome);
+        AppRouter.router.go(AppRoutes.doctorHome);
         break;
 
       case 'doctor':

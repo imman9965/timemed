@@ -11,28 +11,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-
       title: AppConfig.instance.appName,
-
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.lightTheme,
-
       routerConfig: AppRouter.router,
     );
   }
 
-  /// 🔥 Decide First Screen
-  // String _initialRoute() {
-  //   switch (AppConfig.instance.flavor) {
-  //     case AppFlavor.superApp:
-  //       return AppRoutes.superHome;
-  //     //return AppRoutes.login;
-  //
-  //     case AppFlavor.patient:
-  //     case AppFlavor.doctor:
-  //     case AppFlavor.pharmacy:
-  //     case AppFlavor.admin:
-  //       return AppRoutes.login;
-  //   }
-  // }
 }
