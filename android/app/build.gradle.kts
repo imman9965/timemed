@@ -30,6 +30,35 @@ android {
         versionName = flutter.versionName
     }
 
+
+    lint {
+        checkReleaseBuilds = false
+    }
+
+    flavorDimensions += "app"
+    productFlavors {
+        create("doctor") {
+            dimension = "app"
+            applicationId = "com.timesmed.timesmed_project.doctor"
+            versionCode = flutter.versionCode
+            versionName = flutter.versionName
+        }
+
+        create("patient") {
+            dimension = "app"
+            applicationId = "com.timesmed.timesmed_project.patient"
+            versionCode = flutter.versionCode
+            versionName = flutter.versionName
+        }
+
+        create("superApp") {
+            dimension = "app"
+            applicationId = "com.timesmed.timesmed_project"
+            versionCode = flutter.versionCode
+            versionName = flutter.versionName
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

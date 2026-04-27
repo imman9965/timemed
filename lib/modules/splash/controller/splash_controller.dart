@@ -46,12 +46,12 @@ class SplashController extends GetxController {
     switch (role) {
       case 'patient':
         // Get.offAllNamed(AppRoutes.patientHome);
-        AppRouter.router.go(AppRoutes.doctorHome);
+        AppRouter.router.go(AppRoutes.patientHome);
         break;
 
       case 'doctor':
         // Get.offAllNamed(AppRoutes.doctorHome);
-        AppRouter.router.go(AppRoutes.doctorHome);
+        AppRouter.router.go(AppRoutes.doctorWaitingList);
         break;
 
       case 'pharmacy':

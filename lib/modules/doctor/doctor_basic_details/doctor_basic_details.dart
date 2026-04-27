@@ -1,164 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// void main() => runApp(const MaterialApp(
-//   debugShowCheckedModeBanner: false,
-//   home: DoctorBasicDetailsScreen(),
-// ));
+import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/common/curved_header.dart';
+import 'dummy_data_5.dart';
 
-// ════════════════════════════════════════════════════════
-//  APP COLORS
-// ════════════════════════════════════════════════════════
 
-class AppColors1 {
-  static const primaryBlue  = Color(0xFF1A6BF5);
-  static const scaffoldBg   = Colors.white;
-  static const inputBg      = Color(0xFFF2F2F2);
-  static const textDark     = Color(0xFF1A1A2E);
-  static const textMuted    = Color(0xFF9E9E9E);
-  static const textSecond   = Color(0xFF6B7280);
-  static const dividerColor = Color(0xFFE5E5E5);
-}
 
-// ════════════════════════════════════════════════════════
-//  APP DIMENSIONS
-// ════════════════════════════════════════════════════════
 
-class AppDimens1 {
-  static const xs  = 4.0;
-  static const s   = 8.0;
-  static const m   = 12.0;
-  static const l   = 16.0;
-  static const xl  = 20.0;
-  static const xxl = 24.0;
-  static const radiusMd       = 10.0;
-  static const inputHeight    = 46.0;
-  static const screenHPadding = 20.0;
-}
 
-// ════════════════════════════════════════════════════════
-//  TEXT STYLES
-// ════════════════════════════════════════════════════════
-
-class AppTextStyles {
-  static const sectionLabel = TextStyle(
-      fontSize: 16, fontWeight: FontWeight.w700, color: AppColors1.textDark);
-  static const inputHint = TextStyle(
-      fontSize: 14, color: AppColors1.textMuted);
-  static const inputText = TextStyle(
-      fontSize: 14, fontWeight: FontWeight.w500, color: AppColors1.textDark);
-  static const chipLabel = TextStyle(
-      fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white);
-}
-
-// ════════════════════════════════════════════════════════
-//  DATA MODELS
-// ════════════════════════════════════════════════════════
-
-enum Gender { male, female, others }
-
-class DropdownOption {
-  final String value;
-  final String label;
-  const DropdownOption({required this.value, required this.label});
-}
-
-class DoctorFormData {
-  String       firstName      = '';
-  String       lastName       = '';
-  DateTime?    dateOfBirth;
-  Gender       gender         = Gender.male;
-  String       mobile         = '';
-  String       email          = '';
-  int          experience     = 0;
-  String?      qualification;
-  List<String> specialisations = ['Dental', 'Cardiology'];
-  String?      category;
-  List<String> languages      = ['Tamil'];
-  String       address        = '';
-}
-
-// ════════════════════════════════════════════════════════
-//  STATIC DATA
-// ════════════════════════════════════════════════════════
-
-const List<Gender> _genderOptions = [
-  Gender.male, Gender.female, Gender.others,
-];
-
-const List<DropdownOption> _qualificationOptions = [
-  DropdownOption(value: 'mbbs', label: 'MBBS'),
-  DropdownOption(value: 'bds',  label: 'BDS'),
-  DropdownOption(value: 'md',   label: 'MD'),
-  DropdownOption(value: 'ms',   label: 'MS'),
-  DropdownOption(value: 'bams', label: 'BAMS'),
-  DropdownOption(value: 'bhms', label: 'BHMS'),
-];
-
-const List<DropdownOption> _categoryOptions = [
-  DropdownOption(value: 'allergist',         label: 'Allergist'),
-  DropdownOption(value: 'anesthesiologist',  label: 'Anesthesiologist'),
-  DropdownOption(value: 'audiologist',       label: 'Audiologist'),
-  DropdownOption(value: 'cardiologist',      label: 'Cardiologist'),
-  DropdownOption(value: 'dermatologist',     label: 'Dermatologist'),
-  DropdownOption(value: 'endocrinologist',   label: 'Endocrinologist'),
-  DropdownOption(value: 'neurologist',       label: 'Neurologist'),
-  DropdownOption(value: 'pediatrician',      label: 'Pediatrician'),
-];
-
-const List<String> _specialisationSuggestions = [
-  'Dental','Cardiology','Neurology','Orthopedics',
-  'Pediatrics','Dermatology','Ophthalmology','ENT',
-  'Gynecology','Pulmonology','Psychiatry','Radiology',
-];
-
-const List<DropdownOption> _languageOptions = [
-  DropdownOption(value: 'tamil',     label: 'Tamil'),
-  DropdownOption(value: 'english',   label: 'English'),
-  DropdownOption(value: 'hindi',     label: 'Hindi'),
-  DropdownOption(value: 'telugu',    label: 'Telugu'),
-  DropdownOption(value: 'kannada',   label: 'Kannada'),
-  DropdownOption(value: 'malayalam', label: 'Malayalam'),
-];
-
-const List<String> _addressSuggestions = [
-  'Chennai, Tamilnadu',
-  'Coimbatore, Tamilnadu',
-  'Madurai, Tamilnadu',
-  'Bangalore, Karnataka',
-  'Mumbai, Maharashtra',
-  'Delhi, India',
-  'Hyderabad, Telangana',
-];
-
-// ════════════════════════════════════════════════════════
-//  REUSABLE WIDGETS
-// ════════════════════════════════════════════════════════
-
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({super.key, required this.title});
-  @override
-  Widget build(BuildContext ctx) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors1.primaryBlue,
-        borderRadius: BorderRadius.only(
-            bottomLeft:  Radius.circular(28),
-            bottomRight: Radius.circular(28)),
-      ),
-      padding: EdgeInsets.only(
-          top: MediaQuery.of(ctx).padding.top + 16, bottom: 22),
-      child: Text(title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              fontSize: 22)),
-    );
-  }
-}
 
 class SectionLabel extends StatelessWidget {
   final String text;
@@ -179,7 +29,7 @@ class SelectionChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-          color: AppColors1.primaryBlue,
+          color: AppColors.primaryBlue3,
           borderRadius: BorderRadius.circular(20)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Text(label, style: AppTextStyles.chipLabel),
@@ -213,12 +63,12 @@ class GenderButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
         decoration: BoxDecoration(
-            color: isSelected ? AppColors1.primaryBlue : AppColors1.inputBg,
+            color: isSelected ? AppColors.primaryBlue3 : AppColors.inputBg3,
             borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
         child: Text(label,
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : AppColors1.textDark)),
+                color: isSelected ? Colors.white : AppColors.textDark3)),
       ),
     );
   }
@@ -261,7 +111,7 @@ class _DoctorBasicDetailsScreenState
   // Filtered lists
   List<String>         _filteredSpec     = [];
   List<String>         _filteredAddress  = [];
-  List<DropdownOption> _filteredCategory = List.from(_categoryOptions);
+  List<DropdownOption> _filteredCategory = List.from(categoryOptions);
 
   // Errors
   String? _emailError;
@@ -324,7 +174,7 @@ class _DoctorBasicDetailsScreenState
       builder: (c, w) => Theme(
         data: Theme.of(c).copyWith(
             colorScheme: const ColorScheme.light(
-                primary: AppColors1.primaryBlue, onPrimary: Colors.white)),
+                primary: AppColors.primaryBlue3, onPrimary: Colors.white)),
         child: w!,
       ),
     );
@@ -354,7 +204,7 @@ class _DoctorBasicDetailsScreenState
         _filteredSpec = [];
         _showSpecSuggestions = false;
       } else {
-        _filteredSpec = _specialisationSuggestions
+        _filteredSpec = specialisationSuggestions
             .where((s) =>
         s.toLowerCase().contains(q.toLowerCase()) &&
             !_form.specialisations.contains(s))
@@ -379,8 +229,8 @@ class _DoctorBasicDetailsScreenState
   void _onCategorySearch(String q) {
     setState(() {
       _filteredCategory = q.trim().isEmpty
-          ? List.from(_categoryOptions)
-          : _categoryOptions
+          ? List.from(categoryOptions)
+          : categoryOptions
           .where((o) =>
           o.label.toLowerCase().contains(q.toLowerCase()))
           .toList();
@@ -400,7 +250,7 @@ class _DoctorBasicDetailsScreenState
         _filteredAddress = [];
         _showAddressSuggestions = false;
       } else {
-        _filteredAddress = _addressSuggestions
+        _filteredAddress = addressSuggestions
             .where((a) =>
             a.toLowerCase().contains(q.toLowerCase()))
             .toList();
@@ -477,7 +327,7 @@ class _DoctorBasicDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors1.scaffoldBg,
+      backgroundColor: AppColors.scaffoldBg3,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -580,7 +430,7 @@ class _DoctorBasicDetailsScreenState
             child: _inputBox(
               _dobCtrl, 'DD/MM/YYYY',
               suffix: const Icon(Icons.calendar_month,
-                  color: AppColors1.primaryBlue, size: 20),
+                  color: AppColors.primaryBlue3, size: 20),
             ),
           ),
         ),
@@ -594,7 +444,7 @@ class _DoctorBasicDetailsScreenState
       children: [
         const SectionLabel(text: 'Gender'),
         Row(
-          children: _genderOptions.map((g) {
+          children: genderOptions.map((g) {
             return Padding(
               padding: const EdgeInsets.only(right: 10),
               child: GenderButton(
@@ -676,7 +526,7 @@ class _DoctorBasicDetailsScreenState
               Container(
                 height: AppDimens1.inputHeight,
                 decoration: BoxDecoration(
-                    color: AppColors1.inputBg,
+                    color: AppColors.inputBg3,
                     borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
                 child: Row(children: [
                   Expanded(
@@ -688,11 +538,11 @@ class _DoctorBasicDetailsScreenState
                         LengthLimitingTextInputFormatter(2),
                       ],
                       style: AppTextStyles.inputText,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText:  'Years',
                         hintStyle: AppTextStyles.inputHint,
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 13),
                       ),
                     ),
@@ -703,12 +553,12 @@ class _DoctorBasicDetailsScreenState
                       GestureDetector(
                         onTap: _incrementExp,
                         child: const Icon(Icons.keyboard_arrow_up,
-                            color: AppColors1.textMuted, size: 18),
+                            color: AppColors.textMuted3, size: 18),
                       ),
                       GestureDetector(
                         onTap: _decrementExp,
                         child: const Icon(Icons.keyboard_arrow_down,
-                            color: AppColors1.textMuted, size: 18),
+                            color: AppColors.textMuted3, size: 18),
                       ),
                     ],
                   ),
@@ -727,7 +577,7 @@ class _DoctorBasicDetailsScreenState
               _buildDropdownSelector(
                 hint:    'Mbbs,Bds,...',
                 value:   _form.qualification,
-                options: _qualificationOptions,
+                options: qualificationOptions,
                 isOpen:  _qualificationOpen,
                 onToggle: () => setState(() {
                   _qualificationOpen = !_qualificationOpen;
@@ -753,7 +603,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors1.inputBg,
+              color: AppColors.inputBg3,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -762,11 +612,11 @@ class _DoctorBasicDetailsScreenState
                 onChanged: _onSpecialisationChanged,
                 onSubmitted: _addSpecialisation,
                 style: AppTextStyles.inputText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText:  '(e.g Dental, Cardiologist)',
                   hintStyle: AppTextStyles.inputHint,
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 13),
                 ),
               ),
@@ -776,7 +626,7 @@ class _DoctorBasicDetailsScreenState
               child: const Padding(
                 padding: EdgeInsets.only(right: 12),
                 child: Icon(Icons.search,
-                    color: AppColors1.primaryBlue, size: 20),
+                    color: AppColors.primaryBlue3, size: 20),
               ),
             ),
           ]),
@@ -786,9 +636,9 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors1.inputBg,
+                color: AppColors.inputBg3,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors1.dividerColor)),
+                border: Border.all(color: AppColors.dividerColor3)),
             constraints: const BoxConstraints(maxHeight: 180),
             child: ListView(
               shrinkWrap: true,
@@ -826,7 +676,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors1.inputBg,
+              color: AppColors.inputBg3,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -835,11 +685,11 @@ class _DoctorBasicDetailsScreenState
                 onChanged: _onCategorySearch,
                 onTap: () => setState(() => _categoryOpen = true),
                 style: AppTextStyles.inputText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText:  '(e.g Cardiologist)',
                   hintStyle: AppTextStyles.inputHint,
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 13),
                 ),
               ),
@@ -849,7 +699,7 @@ class _DoctorBasicDetailsScreenState
               child: const Padding(
                 padding: EdgeInsets.only(right: 12),
                 child: Icon(Icons.search,
-                    color: AppColors1.primaryBlue, size: 20),
+                    color: AppColors.primaryBlue3, size: 20),
               ),
             ),
           ]),
@@ -859,7 +709,7 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: AppDimens1.s),
           Container(
             decoration: BoxDecoration(
-                color: AppColors1.primaryBlue,
+                color: AppColors.primaryBlue3,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
             child: Column(
               children: _filteredCategory.asMap().entries.map((entry) {
@@ -925,14 +775,14 @@ class _DoctorBasicDetailsScreenState
         _buildDropdownSelector(
           hint:    '(e.g Tamil,English,..)',
           value:   null,
-          options: _languageOptions,
+          options: languageOptions,
           isOpen:  _languageOpen,
           onToggle: () => setState(() {
             _languageOpen      = !_languageOpen;
             _qualificationOpen = false;
           }),
           onSelect: (v) {
-            final label = _languageOptions
+            final label = languageOptions
                 .firstWhere((o) => o.value == v).label;
             _addLanguage(label);
             setState(() => _languageOpen = false);
@@ -961,7 +811,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors1.inputBg,
+              color: AppColors.inputBg3,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -969,11 +819,11 @@ class _DoctorBasicDetailsScreenState
                 controller: _addressCtrl,
                 onChanged: _onAddressChanged,
                 style: AppTextStyles.inputText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText:  'Chennai, Tamilnadu',
                   hintStyle: AppTextStyles.inputHint,
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 13),
                 ),
               ),
@@ -981,7 +831,7 @@ class _DoctorBasicDetailsScreenState
             const Padding(
               padding: EdgeInsets.only(right: 12),
               child: Icon(Icons.search,
-                  color: AppColors1.primaryBlue, size: 20),
+                  color: AppColors.primaryBlue3, size: 20),
             ),
           ]),
         ),
@@ -989,16 +839,16 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors1.inputBg,
+                color: AppColors.inputBg3,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors1.dividerColor)),
+                border: Border.all(color: AppColors.dividerColor3)),
             constraints: const BoxConstraints(maxHeight: 180),
             child: ListView(
               shrinkWrap: true,
               children: _filteredAddress.map((a) => ListTile(
                 dense: true,
                 leading: const Icon(Icons.location_on_outlined,
-                    color: AppColors1.textMuted, size: 18),
+                    color: AppColors.textMuted3, size: 18),
                 title: Text(a, style: AppTextStyles.inputText),
                 onTap: () {
                   setState(() {
@@ -1024,7 +874,7 @@ class _DoctorBasicDetailsScreenState
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-              color: AppColors1.primaryBlue,
+              color: AppColors.primaryBlue3,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: const Text('Save',
               textAlign: TextAlign.center,
@@ -1051,7 +901,7 @@ class _DoctorBasicDetailsScreenState
     return Container(
       height: AppDimens1.inputHeight,
       decoration: BoxDecoration(
-          color: AppColors1.inputBg,
+          color: AppColors.inputBg3,
           borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
       child: TextField(
         controller: ctrl,
@@ -1091,7 +941,7 @@ class _DoctorBasicDetailsScreenState
             height: AppDimens1.inputHeight,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-                color: AppColors1.inputBg,
+                color: AppColors.inputBg3,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
             child: Row(children: [
               Expanded(
@@ -1104,7 +954,7 @@ class _DoctorBasicDetailsScreenState
                   isOpen
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
-                  color: AppColors1.primaryBlue, size: 20),
+                  color: AppColors.primaryBlue3, size: 20),
             ]),
           ),
         ),
@@ -1112,9 +962,9 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: AppDimens1.xs),
           Container(
             decoration: BoxDecoration(
-                color: AppColors1.inputBg,
+                color: AppColors.inputBg3,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors1.dividerColor)),
+                border: Border.all(color: AppColors.dividerColor3)),
             child: Column(
               children: options.asMap().entries.map((entry) {
                 final isLast = entry.key == options.length - 1;
@@ -1132,13 +982,13 @@ class _DoctorBasicDetailsScreenState
                         ),
                         if (value == opt.value)
                           const Icon(Icons.check,
-                              color: AppColors1.primaryBlue, size: 16),
+                              color: AppColors.primaryBlue3, size: 16),
                       ]),
                     ),
                   ),
                   if (!isLast)
                     const Divider(
-                        height: 1, color: AppColors1.dividerColor),
+                        height: 1, color: AppColors.dividerColor3),
                 ]);
               }).toList(),
             ),

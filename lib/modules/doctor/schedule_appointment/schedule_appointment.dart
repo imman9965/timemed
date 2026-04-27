@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ════════════════════════════════════════════════════════
-//  CONSTANTS
-// ════════════════════════════════════════════════════════
 
 class AppColors {
   static const primary     = Color(0xFF1A6BF5);
@@ -18,9 +15,7 @@ class AppColors {
   static const redHint     = Color(0xFFE53935);
 }
 
-// ════════════════════════════════════════════════════════
-//  DATA MODELS
-// ════════════════════════════════════════════════════════
+
 
 enum SessionType { morning, afternoon, evening, night }
 

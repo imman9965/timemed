@@ -2,159 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
-import '../call_logs/call_logs.dart';
+import '../../../core/constants/app_colors.dart';
 import '../missed_call_page/missed_call.dart';
 import '../widgets/doctor_stamp.dart';
+import 'dummy_data_9.dart' hide PaymentStatus;
 
-// ════════════════════════════════════════════════════════
-//  CONSTANTS
-// ════════════════════════════════════════════════════════
-
-class AppColors {
-  static const primary       = Color(0xFF1A6BF5);
-  static const scaffoldBg    = Color(0xFFF5F0E8);
-  static const cardBg        = Colors.white;
-  static const textDark      = Color(0xFF1A1A2E);
-  static const textSecond    = Color(0xFF6B7280);
-  static const green         = Color(0xFF4CAF50);
-  static const greenBg       = Color(0xFFE8F5E9);
-  static const paidGreen     = Color(0xFF2E7D32);
-  static const divider       = Color(0xFFE0E0E0);
-  static const waitingYellow = Color(0xFFFFF8E1);
-  static const waitingText   = Color(0xFFF59E0B);
-}
-
-// ════════════════════════════════════════════════════════
-//  DATA MODELS
-// ════════════════════════════════════════════════════════
-
-enum AppointmentType { instant, schedule }
-enum PaymentStatus  { paid, unpaid }
-enum WaitingStatus  { waiting, inProgress, done }
-
-class Doctor {
-  final String name;
-  const Doctor({required this.name});
-}
-
-class WaitingPatient {
-  final String appointmentId;
-  final AppointmentType type;
-  final String name;
-  final String phone;
-  final PaymentStatus paymentStatus;
-  final WaitingStatus waitingStatus;
-  final String date;
-  final String time;
-
-  const WaitingPatient({
-    required this.appointmentId,
-    required this.type,
-    required this.name,
-    required this.phone,
-    required this.paymentStatus,
-    required this.waitingStatus,
-    required this.date,
-    required this.time,
-  });
-}
-
-class NavItem {
-  final IconData icon;
-  final bool hasAvatar;
-  const NavItem({required this.icon, this.hasAvatar = false});
-}
-
-// ════════════════════════════════════════════════════════
-//  STATIC DATA
-// ════════════════════════════════════════════════════════
-
-
-final List<WaitingPatient> _onlinePatients = [
-  const WaitingPatient(
-    appointmentId: '259226',
-    type:          AppointmentType.instant,
-    name:          'Mr. Andrew',
-    phone:         '805XXXXXX4',
-    paymentStatus: PaymentStatus.paid,
-    waitingStatus: WaitingStatus.waiting,
-    date:          '1/7/2026',
-    time:          '12:20 PM',
-  ),
-  // const WaitingPatient(
-  //   appointmentId: '259227',
-  //   type:          AppointmentType.schedule,
-  //   name:          'Ms. Priya',
-  //   phone:         '901XXXXXX2',
-  //   paymentStatus: PaymentStatus.unpaid,
-  //   waitingStatus: WaitingStatus.inProgress,
-  //   date:          '1/7/2026',
-  //   time:          '01:00 PM',
-  // ),
-];
-
-final List<WaitingPatient> _inPersonPatients = [
-  const WaitingPatient(
-    appointmentId: '259230',
-    type:          AppointmentType.schedule,
-    name:          'Mr. Raj Kumar',
-    phone:         '700XXXXXX9',
-    paymentStatus: PaymentStatus.paid,
-    waitingStatus: WaitingStatus.waiting,
-    date:          '1/7/2026',
-    time:          '02:30 PM',
-  ),
-];
-
-const List<NavItem> _navItems = [
-  NavItem(icon: Icons.calendar_month_rounded),
-  NavItem(icon: Icons.person_search_rounded, hasAvatar: true),
-  NavItem(icon: Icons.contact_phone_rounded),
-  NavItem(icon: Icons.cut_rounded),
-  NavItem(icon: Icons.grid_view_rounded),
-];
-
-// ════════════════════════════════════════════════════════
-//  REUSABLE WIDGETS
-// ════════════════════════════════════════════════════════
-
-/// Curved blue header
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          bottomLeft:  Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 14,
-        bottom: 18,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontSize: 20,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
-}
-
-
-
-/// Section header: "Patients Available • Online"
 class SectionHeader extends StatelessWidget {
   final String label;
   final String statusText;
@@ -214,7 +66,7 @@ class PatientWaitingCard extends StatelessWidget {
     switch (patient.waitingStatus) {
       case WaitingStatus.waiting:    return AppColors.waitingYellow;
       case WaitingStatus.inProgress: return const Color(0xFFE3F2FD);
-      case WaitingStatus.done:       return AppColors.greenBg;
+      case WaitingStatus.done:       return AppColors.green2;
     }
   }
 
@@ -222,7 +74,7 @@ class PatientWaitingCard extends StatelessWidget {
     switch (patient.waitingStatus) {
       case WaitingStatus.waiting:    return AppColors.waitingText;
       case WaitingStatus.inProgress: return AppColors.primary;
-      case WaitingStatus.done:       return AppColors.green;
+      case WaitingStatus.done:       return AppColors.green2;
     }
   }
 
@@ -349,7 +201,6 @@ class PatientWaitingCard extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          // ── Row 3: Status pill + Date + Time ───────────────
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             decoration: BoxDecoration(
@@ -620,7 +471,7 @@ class _PatientWaitingListScreenState
                         const SizedBox(height: 12),
 
                         // Iterated from _inPersonPatients
-                        ..._inPersonPatients.map(
+                        ...inPersonPatients.map(
                               (p) => PatientWaitingCard(patient: p),
                         ),
 
@@ -659,7 +510,7 @@ class _PatientWaitingListScreenState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go(AppRoutes.videoPage);
+          context.push(AppRoutes.videoPage);
         },
 
         child:const Icon(Icons.video_call, color: Colors.blue),

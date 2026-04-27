@@ -67,6 +67,6 @@ class LoginController extends GetxController {
 
     isLoading.value = false;
 
-    AppRouter.router.go(AppRoutes.doctorHome);
+    AppRouter.router.go(AppRoutes.calendar);
   }
 }

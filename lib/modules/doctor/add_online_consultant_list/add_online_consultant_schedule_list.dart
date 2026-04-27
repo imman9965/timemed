@@ -107,8 +107,9 @@ class _AddOnlineConsultationScheduleDialogState
     final textFee  = int.tryParse(_textFeeCtrl.text)  ?? 0;
     final videoFee = int.tryParse(_videoFeeCtrl.text) ?? 0;
     final interval = int.tryParse(_intervalCtrl.text) ?? 0;
-
+    Navigator.pop(context);
     if (interval <= 0) {
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Call interval must be greater than 0'),
@@ -226,11 +227,10 @@ class _AddOnlineConsultationScheduleDialogState
             ),
           ),
 
-          // ── Red close button (overlapping top-right) ─
           Positioned(
             top: -12,
             right: -6,
-            child: GestureDetector(
+            child: InkWell(
               onTap: () => Navigator.pop(context),
               child: Container(
                 width: 36, height: 36,
@@ -551,47 +551,3 @@ class _AddOnlineConsultationScheduleDialogState
 }
 
 
-class DemoScreen extends StatelessWidget {
-  const DemoScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
-        title: const Text(
-          'Demo',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () =>
-              AddOnlineConsultationScheduleDialog.show(context),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryBlue,
-            padding: const EdgeInsets.symmetric(
-                horizontal: 30, vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: const Text(
-            'Open Schedule Dialog',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

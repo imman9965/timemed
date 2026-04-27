@@ -1,117 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/constants/app_colors.dart';
-import '../call_logs/call_logs.dart';
-import '../missed_call_page/missed_call.dart' hide AppColors;
-import '../patient_waiting_list/patient_waiting_list.dart' hide AppColors;
-import 'dashboard.dart';
+import '../../../core/widgets/common/curved_header.dart';
+import 'dummy_data_2.dart';
 
-
-enum AppointmentType { instant, schedule }
-
-class Appointment {
-  final String name;
-  final String time;
-  final AppointmentType type;
-  final String badgeLabel;
-  final DateTime date;
-
-  const Appointment({
-    required this.name,
-    required this.time,
-    required this.type,
-    required this.badgeLabel,
-    required this.date,
-  });
-}
-
-class CalendarRange {
-  final int start;
-  final int end;
-  const CalendarRange(this.start, this.end);
-}
-
-
-
-final List<Appointment> _allAppointments = [
-  Appointment(
-    name: 'Andrew Vijay',
-    time: '12:20 PM',
-    type: AppointmentType.instant,
-    badgeLabel: '4th',
-    date: DateTime(2026, 5, 4),
-  ),
-  Appointment(
-    name: 'Vijay',
-    time: '12:20 PM',
-    type: AppointmentType.schedule,
-    badgeLabel: '16th',
-    date: DateTime(2026, 5, 16),
-  ),
-  Appointment(
-    name: 'Andrew',
-    time: '12:20 PM',
-    type: AppointmentType.instant,
-    badgeLabel: '20th',
-    date: DateTime(2026, 5, 20),
-  ),
-  Appointment(
-    name: 'Dr. Kumar',
-    time: '10:00 AM',
-    type: AppointmentType.schedule,
-    badgeLabel: '5th',
-    date: DateTime(2026, 5, 5),
-  ),
-  Appointment(
-    name: 'Priya Sharma',
-    time: '03:00 PM',
-    type: AppointmentType.instant,
-    badgeLabel: '18th',
-    date: DateTime(2026, 5, 18),
-  ),
-];
-
-const List<String> _weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-
-
-
-
-/// Curved blue header
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primary1,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 14,
-        bottom: 18,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontSize: 20,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
-}
-
-/// Single appointment card
 class AppointmentCard extends StatelessWidget {
   final Appointment appointment;
   const AppointmentCard({Key? key, required this.appointment}) : super(key: key);
@@ -427,7 +319,7 @@ class MonthCalendar extends StatelessWidget {
 
         // ── Week day headers ────────────────────────────────
         Row(
-          children: _weekDays.map((d) => _WeekDayLabel(label: d)).toList(),
+          children: weekDays.map((d) => _WeekDayLabel(label: d)).toList(),
         ),
         const SizedBox(height: 6),
 
@@ -479,118 +371,8 @@ class NavItem {
   const NavItem({required this.iconPath, required this.label});
 }
 
-class CalendarBottomNav extends StatelessWidget {
-  final int activeIndex;
-  final void Function(int) onTap;
-
-  const CalendarBottomNav({
-    Key? key,
-    required this.activeIndex,
-    required this.onTap,
-  }) : super(key: key);
-
-  static const List<NavItem> _navItems = [
-    NavItem(iconPath: 'assets/bottom_nav_icon/calendar.png', label: 'Calendar'),
-    NavItem(iconPath: 'assets/bottom_nav_icon/person.png', label: 'Profile'),
-    NavItem(iconPath: 'assets/bottom_nav_icon/call_logs.png', label: 'Contacts'),
-    NavItem(iconPath: 'assets/bottom_nav_icon/call_direct.png', label: 'Verified'),
-    NavItem(iconPath: 'assets/bottom_nav_icon/dashboard.png', label: 'Dashboard'),
-
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(50),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.4),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _navItems.asMap().entries.map((entry) {
-          final index = entry.key;
-          final item = entry.value;
-          final active = index == activeIndex;
-
-          return GestureDetector(
-            onTap: () => onTap(index),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: active
-                    ? Colors.white
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(70),
-              ),
-              child: Center(
-                child: Image.asset(
-                  item.iconPath,
-                  width: 24,
-                  height: 24,
-                  color: active?Colors.blue:Colors.white, // Tints the PNG white
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
 // ════════════════════════════════════════════════════════
-//  PLACEHOLDER SCREENS for other nav tabs
-// ════════════════════════════════════════════════════════
-
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  const _PlaceholderScreen({required this.title, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBg1,
-      body: Column(
-        children: [
-          CurvedHeader(title: title),
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 64, color: AppColors.primary.withOpacity(0.3)),
-                  const SizedBox(height: 16),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textSecond,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ════════════════════════════════════════════════════════
-//  MAIN SCREEN (StatefulWidget — holds all state)
+//  MAIN CALENDAR SCREEN
 // ════════════════════════════════════════════════════════
 
 class CalendarScreen extends StatefulWidget {
@@ -601,9 +383,8 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  int      _activeNavIndex = 0;
   DateTime _displayMonth   = DateTime(2026, 5);
-  final DateTime _today          = DateTime(2026, 5, 1); // simulated today
+  final DateTime _today    = DateTime(2026, 5, 1); // simulated today
 
   final List<CalendarRange> _ranges = [
     const CalendarRange(4,  6),
@@ -617,10 +398,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   // ── Helpers ────────────────────────────────────────────
 
   List<Appointment> get _visibleAppointments {
-    return _allAppointments.where((a) {
+    return allAppointments.where((a) {
       if (a.date.year  != _displayMonth.year)  return false;
       if (a.date.month != _displayMonth.month) return false;
-      // If a range is active, only show appointments inside it
       final activeRanges = _ranges;
       if (activeRanges.isEmpty) return true;
       return activeRanges.any(
@@ -630,7 +410,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   List<DateTime> get _appointmentDates =>
-      _allAppointments.map((a) => a.date).toList();
+      allAppointments.map((a) => a.date).toList();
 
   void _goToPrevMonth() {
     setState(() {
@@ -651,13 +431,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void _onDayTap(int day) {
     setState(() {
       if (_rangeStartDay == null) {
-        // First tap → start of range
         _rangeStartDay = day;
         _ranges
           ..clear()
           ..add(CalendarRange(day, day));
       } else {
-        // Second tap → end of range
         final start = _rangeStartDay!;
         final end   = day;
         _ranges
@@ -666,33 +444,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
             start <= end ? start : end,
             start <= end ? end   : start,
           ));
-        _rangeStartDay = null; // reset for next selection
+        _rangeStartDay = null;
       }
     });
   }
 
-  void _onNavTap(int index) {
-    setState(() => _activeNavIndex = index);
-  }
-
-  // ── Body content per nav tab ───────────────────────────
-
-  Widget _buildBody() {
-    switch (_activeNavIndex) {
-      case 1:
-        return const PatientWaitingListScreen();
-      case 2:
-        return const CallLogsScreen();
-      case 3:
-        return const MissedCallPatientListScreen();
-      case 4:
-        return  DashboardScreen();
-      default:
-        return _buildCalendarTab();
-    }
-  }
-
-  Widget _buildCalendarTab() {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
       body: Column(
@@ -732,7 +490,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                   const SizedBox(height: 24),
 
-                  // ── Selection hint ───────────────────────
                   if (_rangeStartDay != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -747,7 +504,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
 
-                  // ── Appointment cards ────────────────────
                   if (_visibleAppointments.isEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -770,34 +526,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   const SizedBox(height: 20),
                 ],
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ── Build ──────────────────────────────────────────────
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      body: Stack(
-        children: [
-          // Main content
-          Padding(
-            padding: const EdgeInsets.only(bottom: 90),
-            child: _buildBody(),
-          ),
-
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: CalendarBottomNav(
-              activeIndex: _activeNavIndex,
-              onTap: _onNavTap,
             ),
           ),
         ],

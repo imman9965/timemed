@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/constants/app_colors.dart';
 import '../../../routes/app_routes.dart';
 import '../widgets/doctor_stamp.dart';
 
@@ -8,16 +9,16 @@ import '../widgets/doctor_stamp.dart';
 //  CONSTANTS
 // ════════════════════════════════════════════════════════
 
-class AppColors {
-  static const primary       = Color(0xFF1A6BF5);
-  static const scaffoldBg    = Color(0xFFF5F0E8);
-  static const cardBg        = Colors.white;
-  static const textDark      = Color(0xFF1A1A2E);
-  static const textSecond    = Color(0xFF6B7280);
-  static const green         = Color(0xFF4CAF50);
-  static const divider       = Color(0xFFE0E0E0);
-  static const paidGreen     = Color(0xFF2E7D32);
-}
+// class AppColors {
+//   static const primary       = Color(0xFF1A6BF5);
+//   static const scaffoldBg    = Color(0xFFF5F0E8);
+//   static const cardBg        = Colors.white;
+//   static const textDark      = Color(0xFF1A1A2E);
+//   static const textSecond    = Color(0xFF6B7280);
+//   static const green         = Color(0xFF4CAF50);
+//   static const divider       = Color(0xFFE0E0E0);
+//   static const paidGreen     = Color(0xFF2E7D32);
+// }
 
 // ════════════════════════════════════════════════════════
 //  DATA MODELS
@@ -361,7 +362,7 @@ class _MissedCallPatientListScreenState
                 style: TextStyle(
                     fontSize: 18, fontWeight: FontWeight.w700)),
             const SizedBox(height: 16),
-            _filterTile(Icons.check_circle, AppColors.green,
+            _filterTile(Icons.check_circle, AppColors.green2,
                 'Paid only', () => _applyFilter('Paid')),
             _filterTile(Icons.cancel, Colors.red,
                 'Unpaid only', () => _applyFilter('Unpaid')),
@@ -396,7 +397,7 @@ class _MissedCallPatientListScreenState
 
   // ── Reschedule action ─────────────────────────────────
   void _onReschedule(BuildContext context) {
-    context.go(
+    context.push(
       AppRoutes.rescheduleAppointment,
     );
   }
