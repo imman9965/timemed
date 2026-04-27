@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../core/widgets/doctor_call_card.dart';
 import 'dummy_data_4.dart';
 
-// ─── Data Model ──────────────────────────────────────────────────────────────
-
-// ─── Static Data ─────────────────────────────────────────────────────────────
-
-// ─── Screen ──────────────────────────────────────────────────────────────────
 
 class VideoCallScreen extends StatefulWidget {
   const VideoCallScreen({Key? key}) : super(key: key);
@@ -137,7 +131,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               InkWell(
                 onTap: () {
                   if (item.route.isNotEmpty) {
-                    context.go(item.route); // ✅ safe navigation
+                    context.push(item.route); // ✅ push so back button works
                   }
                 },
                 borderRadius: BorderRadius.only(

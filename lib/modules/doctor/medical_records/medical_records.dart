@@ -6,7 +6,6 @@ import '../../../core/widgets/common/curved_header.dart';
 import '../../../core/widgets/common/pill_button.dart';
 import '../../../core/widgets/common/primary_card.dart';
 
-// ─── Data Models ────────────────────────────────────────────────────────────
 
 class PatientInfo {
   final String name;

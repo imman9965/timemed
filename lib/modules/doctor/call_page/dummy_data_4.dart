@@ -15,6 +15,7 @@ class MenuItem {
     required this.route,
   });
 }
+
 final menuItems = [
   MenuItem(
     icon: Icons.biotech_outlined,

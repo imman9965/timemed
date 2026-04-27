@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../routes/app_routes.dart';
-import '../hospital_list_doctor/hospital_list_based_on_doctor.dart';
-import '../widgets/add_online_schedule_list.dart';
 
-// Assume these are already defined in your project
-// import 'add_online_consultation_dialog.dart';
 
-class Hospital {
-  final String name;
-  OnlineScheduleData? schedule;
 
-  Hospital({required this.name, this.schedule});
-}
+
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -24,38 +16,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
 
-  final List<Hospital> _hospitals = [
-    Hospital(name: "City Hospital"),
-    Hospital(name: "Apollo Clinic"),
-    // Hospital(name: "Global Health Center"),
-  ];
 
-  void _onEditHospital(Hospital h) async {
-    final result = await AddOnlineConsultationDialog.show(
-      context,
-      initialData: h.schedule,
-    );
-
-    if (result != null) {
-      setState(() {
-        h.schedule = result;
-      });
-    }
-  }
-
-  // 🧾 Format schedule text
-  String _formatSchedule(Hospital h) {
-    if (h.schedule == null ||
-        h.schedule!.fromTime == null ||
-        h.schedule!.toTime == null) {
-      return "No schedule added";
-    }
-
-    final from = h.schedule!.fromTime!.format(context);
-    final to = h.schedule!.toTime!.format(context);
-
-    return "$from → $to";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Center(
             child: GestureDetector(
               onTap: () {
-                context.go(AppRoutes.scheduleAppointment);
+                context.push(AppRoutes.scheduleAppointment);
               },
               child: Container(
                 width: 190,

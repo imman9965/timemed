@@ -110,4 +110,29 @@ class AppColors {
   static const greenBtn2     = Color(0xFF4CAF50);
   static const feeGreen2     = Color(0xFF2E7D32);
   static const radioOutline2 = Color(0xFFBDBDBD);
+
+
+  static const primaryBlue3  = Color(0xFF1A6BF5);
+  static const scaffoldBg3   = Colors.white;
+  static const inputBg3      = Color(0xFFF2F2F2);
+  static const textDark3     = Color(0xFF1A1A2E);
+  static const textMuted3    = Color(0xFF9E9E9E);
+  static const textSecond3   = Color(0xFF6B7280);
+  static const dividerColor3 = Color(0xFFE5E5E5);
+
+  static const primaryBlue4  = Color(0xFF1A6BF5);
+  static const scaffoldBg4   = Color(0xFFFAF5EC);
+  static const cardBg4       = Colors.white;
+  static final textDark4     = Color(0xFF1A1A2E);
+  static const textMuted4    = Color(0xFF9E9E9E);
+  static const textSecond4   = Color(0xFF6B7280);
+  static const inputBg4      = Color(0xFFF5F5F5);
+  static const dividerColor4 = Color(0xFFE5E5E5);
+  static const redDelete4    = Color(0xFFE53935);
+  static const feeGreen4     = Color(0xFF2E7D32);
+  static const orangeBadge4  = Color(0xFFFFB300);
+  static const typeBadgeBg4  = Color(0xFFE8EAF6);
+  static const paidGreen     = Color(0xFF2E7D32);
+  static const waitingYellow = Color(0xFFFFF8E1);
+  static const waitingText   = Color(0xFFF59E0B);
 }

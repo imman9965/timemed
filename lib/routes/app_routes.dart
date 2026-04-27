@@ -70,9 +70,17 @@ abstract class AppRoutes {
   /// 🔹 DOCTOR
   /// ================================
 
+
   static const doctorLogin = '/doctorLogin';
-  static const doctorHome = '/doctorHome';
-  static const calendar = '/calendar';
+
+  // Shell tab routes (bottom nav)
+  static const doctorCalendar = '/doctor/calendar';
+  static const doctorWaitingList = '/doctor/waiting-list';
+  static const doctorCallLogs = '/doctor/call-logs';
+  static const doctorMissedCalls = '/doctor/missed-calls';
+  static const doctorDashboard = '/doctor/dashboard';
+
+  // Sub-pages (pushed on top of shell)
   static const hospitalList = '/hospitalList';
   static const basicDetails = '/basicDetails';
   static const rescheduleAppointment = '/rescheduleAppointment';
@@ -84,6 +92,9 @@ abstract class AppRoutes {
   static const prescription = '/prescription';
   static const labTest = '/labTest';
   static const notes = '/notes';
+
+  // Legacy alias — points to the first shell tab
+  static const calendar = doctorCalendar;
 
 
 

@@ -38,17 +38,31 @@ import 'package:timesmed_project/modules/super/view/super_home_view.dart';
 // Bindings
 import 'package:timesmed_project/routes/app_routes.dart';
 
+import '../modules/doctor/calendar/dashboard.dart';
+import '../modules/doctor/call_logs/call_logs.dart';
 import '../modules/doctor/call_page/call_page.dart';
 import '../modules/doctor/doctor_basic_details/doctor_basic_details.dart';
 import '../modules/doctor/doctor_login_page/view/login_page.dart';
+import '../modules/doctor/doctor_shell/doctor_shell.dart';
 import '../modules/doctor/hospital_list_doctor/hospital_list_based_on_doctor.dart';
 import '../modules/doctor/medical_records/medical_records.dart';
+import '../modules/doctor/missed_call_page/missed_call.dart';
+import '../modules/doctor/patient_waiting_list/patient_waiting_list.dart';
 import '../modules/doctor/schedule_appointment/schedule_appointment.dart';
 import '../modules/doctor/schedule_appointment_list/schedule_appointmnet_list.dart';
 
 import '../modules/patient/patient_main/binding/patient_main_binding.dart';
 
+// Navigator keys for each shell branch
+final _calendarNavKey = GlobalKey<NavigatorState>(debugLabel: 'calendar');
+final _waitingListNavKey = GlobalKey<NavigatorState>(debugLabel: 'waitingList');
+final _callLogsNavKey = GlobalKey<NavigatorState>(debugLabel: 'callLogs');
+final _missedCallsNavKey = GlobalKey<NavigatorState>(debugLabel: 'missedCalls');
+final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
+
 class AppRouter {
+
+
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.patientHome,
 
@@ -273,16 +287,76 @@ class AppRouter {
         builder: (context, state) => LoginPage(),
       ),
 
-      GoRoute(
-        path: AppRoutes.doctorHome,
-        builder: (context, state) => CalendarScreen(),
+      /// ================================
+      /// 🔹 DOCTOR — Shell Route (bottom nav)
+      /// ================================
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return DoctorShellScreen(navigationShell: navigationShell);
+        },
+        branches: [
+          // Tab 0: Calendar
+          StatefulShellBranch(
+            navigatorKey: _calendarNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorCalendar,
+                builder: (context, state) => const CalendarScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 1: Patient Waiting List
+          StatefulShellBranch(
+            navigatorKey: _waitingListNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorWaitingList,
+                builder: (context, state) =>
+                const PatientWaitingListScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 2: Call Logs
+          StatefulShellBranch(
+            navigatorKey: _callLogsNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorCallLogs,
+                builder: (context, state) => const CallLogsScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 3: Missed Calls
+          StatefulShellBranch(
+            navigatorKey: _missedCallsNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorMissedCalls,
+                builder: (context, state) =>
+                const MissedCallPatientListScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 4: Dashboard
+          StatefulShellBranch(
+            navigatorKey: _dashboardNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorDashboard,
+                builder: (context, state) => const DashboardScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
 
-      GoRoute(
-        path: AppRoutes.calendar,
-        builder: (context, state) => CalendarScreen(),
-      ),
-
+      /// ================================
+      /// 🔹 DOCTOR — Sub-pages (pushed on top, no bottom nav)
+      /// ================================
       GoRoute(
         path: AppRoutes.hospitalList,
         name: AppRoutes.hospitalList,

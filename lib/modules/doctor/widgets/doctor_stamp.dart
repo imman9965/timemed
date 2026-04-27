@@ -22,10 +22,10 @@ class _DoctorBadgeState extends State<DoctorBadge> {
   void _handleMenuSelection(String value) {
     switch (value) {
       case _basicDetails:
-        context.go(AppRoutes.basicDetails);   // ✅ changed from goNamed → go
+        context.push(AppRoutes.basicDetails);
         break;
       case _hospitalList:
-        context.go(AppRoutes.hospitalList);   // ✅ changed from goNamed → go
+        context.push(AppRoutes.hospitalList);
         break;
       case _logout:
         _confirmLogout();
