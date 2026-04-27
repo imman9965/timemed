@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/floating_bottom_navigation_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
@@ -17,10 +18,8 @@ class PatientMainPage extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Scaffold(
-        backgroundColor: Color(0xffFFFCF5),
         extendBody: true, // 🔥 allows body behind bottom nav
         body: child, // 👈 VERY IMPORTANT
-
         bottomNavigationBar: SizedBox(
           height: 100,
           child: FloatingBottomNavigationBar(
