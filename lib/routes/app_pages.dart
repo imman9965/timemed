@@ -50,7 +50,7 @@ import '../modules/patient/patient_main/binding/patient_main_binding.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.patientHome,
 
     /// 🔥 GLOBAL REDIRECT (optional auth check later)
     redirect: (context, state) {

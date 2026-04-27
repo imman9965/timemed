@@ -213,17 +213,26 @@ class _PatientHomePageState extends State<PatientHomePage> {
   }
 
   final List<Map<String, dynamic>> specialities = [
-    {"name": "General Physician", "icon": Icons.local_hospital},
-    {"name": "Gynecology", "icon": Icons.pregnant_woman},
-    {"name": "Obstetrics", "icon": Icons.child_friendly},
-    {"name": "Pediatrics", "icon": Icons.child_care},
-    {"name": "Cardiology", "icon": Icons.favorite},
-    {"name": "Diabetology", "icon": Icons.bloodtype},
-    {"name": "Endocrinology", "icon": Icons.science},
-    {"name": "Neurology", "icon": Icons.psychology},
-    {"name": "Psychiatry", "icon": Icons.self_improvement},
-    {"name": "Pulmonology", "icon": Icons.air},
-    {"name": "Gastroenterology", "icon": Icons.restaurant},
+    {"name": "General Physician", "image": "General Physician.png"},
+    {"name": "Gynecology", "image": "Gynecology.png"},
+    {"name": "Obstetrics", "image": "Obstetrics.png"},
+    {"name": "Pediatrics", "image": "Pediatrics.png"},
+    {"name": "Cardiology", "image": "Cardiology.png"},
+    {"name": "Diabetology", "image": "Diabetology.png"},
+    {"name": "Endocrinology", "image": "Endocrinology.png"},
+    {"name": "Neurology", "image": "Neurology.png"},
+    {"name": "Psychiatry", "image": "Psychiatry.png"},
+    {"name": "Pulmonology", "image": "Pulmonology.png"},
+    {"name": "Gastroenterology", "image": "Gastroenterology.png"},
+    {"name": "Orthopedics", "image": "Orthopedics.png"},
+    {"name": "Dermatology", "image": "Dermatology.png"},
+    {"name": "Ophthalmology", "image": "Ophthalmology.png"},
+    {"name": "ENT (Ear, Nose, Throat)", "image": "ENT.png"},
+    {"name": "Urology", "image": "Urology.png"},
+    {"name": "Oncology", "image": "Oncology.png"},
+    {"name": "Physiotherapy", "image": "Physiotherapy.png"},
+    {"name": "Nephrology (Kidney-related care)", "image": "Nephrology.png"},
+    {"name": "General Surgery", "image": "General Surgery.png"},
   ];
 
   Widget _buildSpecialities() {
@@ -232,11 +241,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
     final displayList = isExpanded
         ? [
             ...specialities,
-            {"name": "Show Less", "icon": Icons.expand_less},
+            {"name": "Show Less", "image": "more.png"},
           ]
         : [
             ...specialities.take(7),
-            {"name": "View More", "icon": Icons.more_horiz},
+            {"name": "View More", "image": "more.png"},
           ];
 
     return Column(
@@ -287,13 +296,17 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           ? AppColors.primary.withOpacity(0.1)
                           : Colors.grey.shade100,
                     ),
-                    child: Icon(item["icon"], color: AppColors.primary),
+                    // child: Icon(item["icon"], color: AppColors.primary),
+                    child: Image.asset(
+                      "assets/icons/speciality/${item["image"]}",
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     name,
                     textAlign: TextAlign.center,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 11,
