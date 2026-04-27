@@ -64,7 +64,7 @@ class AppRouter {
 
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.patientHome,
+    initialLocation: AppRoutes.splash,
 
     /// 🔥 GLOBAL REDIRECT (optional auth check later)
     redirect: (context, state) {

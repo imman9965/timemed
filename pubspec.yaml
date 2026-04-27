@@ -85,6 +85,7 @@ flutter:
     - assets/icons/gender/
     - assets/images/
     - assets/icons/speciality/
+    - assets/bottom_nav_icon/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
