@@ -61,8 +61,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CommonAppBar(title: "Add Patient", showBack: true),
-
+      appBar: CommonAppBar(title: "Add Patient", showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

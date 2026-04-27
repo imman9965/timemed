@@ -6,7 +6,6 @@ import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
-import 'package:timesmed_project/modules/patient/patient_login_page/controller/patient_login_controller.dart';
 import 'package:timesmed_project/routes/app_pages.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
@@ -143,8 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 15),
 
                                   TitleTextFormField(
-                                    controller: LoginControllerctr
-                                        .passwordController,
+                                    controller:
+                                        LoginControllerctr.passwordController,
                                     hintText: "Enter Password",
                                     prefixIcon: Icon(Icons.lock),
                                     obscureText: obscurePassword,
