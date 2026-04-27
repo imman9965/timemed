@@ -50,6 +50,13 @@ android {
             versionCode = flutter.versionCode
             versionName = flutter.versionName
         }
+
+        create("superApp") {
+            dimension = "app"
+            applicationId = "com.timesmed.timesmed_project"
+            versionCode = flutter.versionCode
+            versionName = flutter.versionName
+        }
     }
 
     buildTypes {
