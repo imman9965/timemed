@@ -44,9 +44,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   const SizedBox(height: 20),
 
                   _buildPreviousList(),
-                  const SizedBox(height: 20),
 
-                  _buildPatientSection(),
+                  // _buildPatientSection(),
                 ],
               ),
             ),
@@ -167,7 +166,9 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   children: [
                     _actionIcon(Icons.notifications_none, () {}),
                     const SizedBox(height: 8),
-                    _actionIcon(Icons.sync_alt, () {}),
+                    _actionIcon(Icons.sync_alt, () {
+                      _showPatientSwitchSheet(context);
+                    }),
                   ],
                 ),
               ),
@@ -179,11 +180,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
           /// 🔹 SECTION TITLE (instead of divider)
           Text(
             "Personal Info",
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey.shade600,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
           ),
 
           const SizedBox(height: 10),
@@ -280,7 +277,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+                style: TextStyle(fontSize: 10),
               ),
               Text(
                 value,
@@ -324,7 +321,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Specialities",
+          "Book Appointment",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 10),
@@ -772,344 +769,141 @@ class _PatientHomePageState extends State<PatientHomePage> {
     );
   }
 
-  Widget _buildPatientSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// 🔹 HEADER
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "Patients",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            TextButton(
-              onPressed: () => context.push(AppRoutes.addPatient),
-              child: const Text("View All"),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 10),
-
-        /// 🔥 ACTIVE PATIENT CARD (MAIN)
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.25),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              /// Avatar
-              const CircleAvatar(
-                radius: 26,
-                backgroundImage: NetworkImage(
-                  "https://i.pravatar.cc/150?img=5",
-                ),
-              ),
-
-              const SizedBox(width: 12),
-
-              /// Info
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Andrew Vijay",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "30 yrs • Male • Self",
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "8056567194",
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// Switch Icon
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.sync_alt, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 14),
-
-        /// 🔹 HORIZONTAL PATIENT LIST
-        SizedBox(
-          height: 90,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              _patientMiniCard("Andrew", true),
-              _patientMiniCard("John", false),
-              _patientMiniCard("Maria", false),
-
-              /// ➕ ADD CARD
-              GestureDetector(
-                onTap: () => context.push(AppRoutes.addPatient),
-                child: Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add, color: AppColors.primary),
-                      SizedBox(height: 4),
-                      Text("Add", style: TextStyle(fontSize: 11)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _patientMiniCard(String name, bool isSelected) {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isSelected ? AppColors.primary : Colors.grey.shade200,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: Colors.grey.shade200,
-            child: const Icon(Icons.person, size: 18),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-
-  /*  /// Show Selection Clinical Visit And Video Consultation Dialog
-
-  void _showSelectionDialog() {
-    showDialog(
+  void _showPatientSwitchSheet(BuildContext context) {
+    showModalBottomSheet(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              /// Drag Handle
+              Container(
+                height: 4,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              /// Title
+              const Text(
+                "Switch Patient",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
+
+              const SizedBox(height: 16),
+
+              /// Patient List
+              ListView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  /// Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Choose Appointment Type",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  /// Clinical Visit Card
-                  _buildOptionCard(
-                    title: "Clinical Visit",
-                    subtitle: "Visit hospital & meet doctor",
-                    icon: Icons.local_hospital,
-                    isSelected: selectedType == 'clinical',
-                    onTap: () {
-                      setState(() {
-                        selectedType = 'clinical';
-                      });
-                    },
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// Video Consultation Card
-                  _buildOptionCard(
-                    title: "Video Consultation",
-                    subtitle: "Consult doctor from home",
-                    icon: Icons.video_call,
-                    isSelected: selectedType == 'video',
-                    onTap: () {
-                      setState(() {
-                        selectedType = 'video';
-                      });
-                    },
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// Submit Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selectedType == null
-                            ? Colors.grey
-                            : const Color(0xff0673de),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: selectedType == null
-                          ? null
-                          : () {
-                              if (selectedType == 'clinical') {
-                                context.push(AppRoutes.clinicalFilter);
-                              } else {
-                                context.push(AppRoutes.videoFilter);
-                              }
-                              Navigator.pop(context);
-                            },
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  _patientSwitchCard(),
+                  _patientSwitchCard(),
+                  _patientSwitchCard(),
                 ],
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        );
+      },
     );
-  }*/
-  /*
-  /// 🔹 Reusable Card Widget
-  Widget _buildOptionCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+  }
+
+  Widget _patientSwitchCard() {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context); // switch logic later
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xffe8f1ff) : Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isSelected ? const Color(0xff0673de) : Colors.grey.shade300,
-            width: 1.5,
-          ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
-            if (isSelected)
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.1),
-                blurRadius: 8,
-                spreadRadius: 1,
-              ),
+            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
           ],
         ),
         child: Row(
           children: [
-            /// Icon
+            /// Avatar
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: const Color(0xff0673de).withOpacity(0.1),
                 shape: BoxShape.circle,
+                border: Border.all(color: AppColors.primary.withOpacity(0.4)),
               ),
-              child: Icon(icon, color: const Color(0xff0673de)),
+              child: const CircleAvatar(
+                radius: 24,
+                backgroundImage: NetworkImage(
+                  "https://i.pravatar.cc/150?img=5",
+                ),
+              ),
             ),
 
             const SizedBox(width: 12),
 
-            /// Text
+            /// Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  const Text(
+                    "Andrew Vijay",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                   ),
+
                   const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+
+                  Row(
+                    children: [
+                      _miniChip("30 yrs"),
+                      const SizedBox(width: 6),
+                      _miniChip("Male"),
+                      const SizedBox(width: 6),
+                      _miniChip("O+"),
+                    ],
                   ),
                 ],
               ),
             ),
 
-            /// Check Icon
-            if (isSelected)
-              const Icon(Icons.check_circle, color: Color(0xff0673de)),
+            /// Select indicator
+            Icon(Icons.chevron_right, color: Colors.grey.shade400),
           ],
         ),
       ),
     );
-  }*/
+  }
+
+  Widget _miniChip(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 10,
+          color: AppColors.primary,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
 }

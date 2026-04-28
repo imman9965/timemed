@@ -36,7 +36,6 @@ class PatientMainPage extends StatelessWidget {
                 case 0:
                   context.go(AppRoutes.patientHome);
                   break;
-
                 case 1:
                   context.go(AppRoutes.patientPreviousAppointments);
                   break;

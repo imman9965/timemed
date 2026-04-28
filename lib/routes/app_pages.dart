@@ -61,8 +61,6 @@ final _missedCallsNavKey = GlobalKey<NavigatorState>(debugLabel: 'missedCalls');
 final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
 
 class AppRouter {
-
-
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.splash,
 
@@ -312,8 +310,7 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes.doctorWaitingList,
-                builder: (context, state) =>
-                const PatientWaitingListScreen(),
+                builder: (context, state) => const PatientWaitingListScreen(),
               ),
             ],
           ),
@@ -336,7 +333,7 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.doctorMissedCalls,
                 builder: (context, state) =>
-                const MissedCallPatientListScreen(),
+                    const MissedCallPatientListScreen(),
               ),
             ],
           ),
