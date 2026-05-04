@@ -10,7 +10,7 @@ class AppTextStyles {
 
   // Headers (white text over blue header banner)
   static const TextStyle headerTitle = TextStyle(
-    fontSize: 26,
+    fontSize: 23,
     fontWeight: FontWeight.w700,
     color: Colors.white,
     height: 1.2,

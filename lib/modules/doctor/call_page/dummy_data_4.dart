@@ -35,7 +35,7 @@ final menuItems = [
   MenuItem(
     icon: Icons.history_outlined,
     label: 'History',
-    route: AppRoutes.history,
+    route: AppRoutes.medicalRecordHistory,
   ),
   MenuItem(
     icon: Icons.note_add_outlined,

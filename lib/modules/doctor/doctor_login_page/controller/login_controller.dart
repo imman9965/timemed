@@ -34,7 +34,7 @@ class LoginController extends GetxController {
     isLoading.value = false;
 
     // Get.toNamed(AppRoutes.patientOtp);
-    AppRouter.router.push(AppRoutes.patientOtp);
+    AppRouter.router.push(AppRoutes.patientOtpScreen);
   }
 
   /// Verify OTP
@@ -51,7 +51,7 @@ class LoginController extends GetxController {
     isLoading.value = false;
 
     // Get.offAllNamed(AppRoutes.patientHome);
-    AppRouter.router.go(AppRoutes.patientHome);
+    AppRouter.router.go(AppRoutes.calendar);
   }
 
   /// Email Login

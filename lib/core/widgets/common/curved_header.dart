@@ -18,6 +18,8 @@ class CurvedHeader extends StatelessWidget {
     this.height,
     this.titleStyle,
     this.titleAlignment = TextAlign.center,
+    this.onNotificationTap,
+    this.showNotification = false,
   });
 
   final String title;
@@ -26,13 +28,16 @@ class CurvedHeader extends StatelessWidget {
   final TextStyle? titleStyle;
   final TextAlign titleAlignment;
 
+  /// 🔔 NEW
+  final VoidCallback? onNotificationTap;
+  final bool showNotification;
+
   @override
   Widget build(BuildContext context) {
-    final effectiveHeight = height ?? AppDimens.headerHeight;
     return ClipPath(
       clipper: _HeaderClipper(),
       child: Container(
-        height: effectiveHeight,
+        height: height ?? 80,
         width: double.infinity,
         color: AppColors.primaryBlue,
         padding: const EdgeInsets.symmetric(
@@ -41,18 +46,46 @@ class CurvedHeader extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: AppDimens.headerBottomRadius,
-                left: trailing != null ? 0 : AppDimens.l,
-                right: trailing != null ? 110 : AppDimens.l,
-              ),
+            /// 🏷 TITLE
+            Center(
               child: Text(
                 title,
                 textAlign: titleAlignment,
                 style: titleStyle ?? AppTextStyles.headerTitle,
               ),
             ),
+
+            /// 🔔 NOTIFICATION BUTTON
+            if (showNotification)
+              Positioned(
+                right: AppDimens.l,
+                top: 17,
+                child: Stack(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications_none,
+                          color: Colors.white),
+                      onPressed: onNotificationTap,
+                    ),
+
+                    /// 🔴 Badge
+                    Positioned(
+                      right: 6,
+                      top: 6,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            /// 👉 EXISTING TRAILING (kept safe)
             if (trailing != null)
               Positioned(
                 right: AppDimens.l,
@@ -65,7 +98,6 @@ class CurvedHeader extends StatelessWidget {
     );
   }
 }
-
 /// Carves a generous rounded bottom on the header, matching the mockups.
 class _HeaderClipper extends CustomClipper<Path> {
   @override

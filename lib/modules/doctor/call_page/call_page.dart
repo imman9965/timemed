@@ -151,7 +151,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                         size: 22,
                       ),
                       const SizedBox(width: 12),
-                      Expanded( // ✅ prevents overflow
+                      Expanded(
                         child: Text(
                           item.label,
                           style: const TextStyle(

@@ -1,3 +1,5 @@
+import 'package:timesmed_project/modules/doctor/medical_history/medical_history.dart';
+
 abstract class AppRoutes {
   static const splash = '/splash';
 
@@ -79,6 +81,10 @@ abstract class AppRoutes {
   static const doctorCallLogs = '/doctor/call-logs';
   static const doctorMissedCalls = '/doctor/missed-calls';
   static const doctorDashboard = '/doctor/dashboard';
+  static const doctorPrescription = '/doctor/prescription';
+  static const doctorClinicalNotes = '/doctor/clinical-notes';
+  static const doctorAppointments = '/doctor/appointments';
+  static const doctorNotifications = '/doctor/notifications';
 
   // Sub-pages (pushed on top of shell)
   static const hospitalList = '/hospitalList';
@@ -87,13 +93,49 @@ abstract class AppRoutes {
   static const scheduleAppointment = '/scheduleAppointment';
   static const medicalRecords = '/medicalRecords';
   static const videoPage = '/videoPage';
+
+
+
+
+
   static const queue = '/queue';
   static const history = '/history';
   static const prescription = '/prescription';
   static const labTest = '/labTest';
   static const notes = '/notes';
 
-  // Legacy alias — points to the first shell tab
+  static const requestScreen = '/requestScreen';
+  static const appointmentDashboard = '/appointment';
+  static const doctorProfile = '/doctorProfile';
+  static const medicalRecordHistory = '/medicalRecordHistory';
+  static const medicalRecordHistoryDetails = '/medicalRecordHistoryDetails';
+  static const patientRegister = '/patientRegister';
+  static const patientListScreen = '/patientListScreen';
+  static const  addPatientScreen = '/addPatientScreen';
+  static const  patientOtpScreen = '/OtpPage';
+  static const templateList = '/TemplateListScreen';
+
+
+
+  static const  medicalRecordsScreenHistory = '/medicalRecordsScreenHistory';
+
+
+
+  // MedicalRecordsScreenHistory
+
+
+
+
+  // static const medicalRecordHistoryDetails = '/medicalRecordHistoryDetails/';
+
+
+
+
+
+
+
+
+
   static const calendar = doctorCalendar;
 
 

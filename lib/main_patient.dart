@@ -5,7 +5,7 @@ import 'core/config/app_config.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig(
-    baseUrl: "https://yourapi.com/api", // Same base URL
+    baseUrl: "https://yourapi.com/api",
     appName: "TimesMed Health Care",
     flavor: AppFlavor.patient,
   );

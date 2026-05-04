@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/common/curved_header.dart';
+
 
 class AppColors {
   static const primary     = Color(0xFF1A6BF5);
@@ -150,37 +152,37 @@ final List<SessionColumn> _sessionColumns = [
 //  REUSABLE — CURVED HEADER
 // ════════════════════════════════════════════════════════
 
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          bottomLeft:  Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top:    MediaQuery.of(context).padding.top + 18,
-        bottom: 24,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 24,
-        ),
-      ),
-    );
-  }
-}
+// class CurvedHeader extends StatelessWidget {
+//   final String title;
+//   const CurvedHeader({Key? key, required this.title}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       decoration: const BoxDecoration(
+//         color: AppColors.primary,
+//         borderRadius: BorderRadius.only(
+//           bottomLeft:  Radius.circular(32),
+//           bottomRight: Radius.circular(32),
+//         ),
+//       ),
+//       padding: EdgeInsets.only(
+//         top:    MediaQuery.of(context).padding.top + 18,
+//         bottom: 24,
+//       ),
+//       child: Text(
+//         title,
+//         textAlign: TextAlign.center,
+//         style: const TextStyle(
+//           color: Colors.white,
+//           fontWeight: FontWeight.w800,
+//           fontSize: 24,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // ════════════════════════════════════════════════════════
 //  REUSABLE — HELPDESK BUTTON

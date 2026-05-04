@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/common/curved_header.dart';
+import '../../../routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
 import 'dummy_data_2.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -392,10 +394,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     const CalendarRange(20, 21),
   ];
 
-  // Range selection state: null = no selection started
   int? _rangeStartDay;
-
-  // ── Helpers ────────────────────────────────────────────
 
   List<Appointment> get _visibleAppointments {
     return allAppointments.where((a) {
@@ -449,86 +448,273 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  void _showNotificationPopup(BuildContext context) {
+    late OverlayEntry overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (ctx) => _NotificationPopup(
+        onTap: () {
+          overlayEntry.remove();
+          context.push(AppRoutes.doctorNotifications);
+        },
+        onDismiss: () {
+          overlayEntry.remove();
+        },
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
+    // Auto-dismiss after 4 seconds
+    Future.delayed(const Duration(seconds: 4), () {
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      body: Column(
-        children: [
-          const CurvedHeader(title: 'Calender'),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.scaffoldBg,
+        body: Column(
+          children: [
+            CurvedHeader(
+              title: 'Calender',
+              showNotification: true,
+              onNotificationTap: () => _showNotificationPopup(context),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
 
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: MonthCalendar(
-                      displayMonth:    _displayMonth,
-                      ranges:          _ranges,
-                      appointmentDates: _appointmentDates,
-                      today:           _today,
-                      onPrevMonth:     _goToPrevMonth,
-                      onNextMonth:     _goToNextMonth,
-                      onDayTap:        _onDayTap,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  if (_rangeStartDay != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Text(
-                        'Tap another day to complete the range…',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.primary.withOpacity(0.7),
-                          fontStyle: FontStyle.italic,
-                        ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: MonthCalendar(
+                        displayMonth:    _displayMonth,
+                        ranges:          _ranges,
+                        appointmentDates: _appointmentDates,
+                        today:           _today,
+                        onPrevMonth:     _goToPrevMonth,
+                        onNextMonth:     _goToNextMonth,
+                        onDayTap:        _onDayTap,
                       ),
                     ),
-
-                  if (_visibleAppointments.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 24),
-                      child: Center(
+      
+                    const SizedBox(height: 24),
+      
+                    if (_rangeStartDay != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
                         child: Text(
-                          'No appointments in selected range',
+                          'Tap another day to complete the range…',
                           style: TextStyle(
-                            color: AppColors.textSecond.withOpacity(0.7),
-                            fontSize: 14,
+                            fontSize: 12,
+                            color: AppColors.primary.withOpacity(0.7),
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ),
-                    )
-                  else
-                    ..._visibleAppointments.map(
-                          (appt) => AppointmentCard(appointment: appt),
-                    ),
+      
+                    if (_visibleAppointments.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 24),
+                        child: Center(
+                          child: Text(
+                            'No appointments in selected range',
+                            style: TextStyle(
+                              color: AppColors.textSecond.withOpacity(0.7),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      ..._visibleAppointments.map(
+                            (appt) => AppointmentCard(appointment: appt),
+                      ),
+      
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                  const SizedBox(height: 20),
-                ],
+// ════════════════════════════════════════════════════════
+//  IN-APP NOTIFICATION POPUP OVERLAY
+// ════════════════════════════════════════════════════════
+
+class _NotificationPopup extends StatefulWidget {
+  final VoidCallback onTap;
+  final VoidCallback onDismiss;
+
+  const _NotificationPopup({
+    required this.onTap,
+    required this.onDismiss,
+  });
+
+  @override
+  State<_NotificationPopup> createState() => _NotificationPopupState();
+}
+
+class _NotificationPopupState extends State<_NotificationPopup>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<Offset> _slideAnim;
+  late final Animation<double> _fadeAnim;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _slideAnim = Tween<Offset>(
+      begin: const Offset(0, -1.2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack));
+    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeOut),
+    );
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).padding.top + 10,
+      left: 16,
+      right: 16,
+      child: SlideTransition(
+        position: _slideAnim,
+        child: FadeTransition(
+          opacity: _fadeAnim,
+          child: Material(
+            color: Colors.transparent,
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.2),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        // gradient: const LinearGradient(
+                        //   colors: [Color(0xFF0DAE96), Color(0xFF2BC48A)],
+                        // ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.call_rounded,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'INSTANT CALL REQUEST',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            'Patient Vignesh (313311) requested an instant call',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                              height: 1.3,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Tap to view  →',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: widget.onDismiss,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 18,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

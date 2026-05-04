@@ -2,27 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/common/curved_header.dart';
 import '../../../routes/app_routes.dart';
 import '../widgets/doctor_stamp.dart';
-
-// ════════════════════════════════════════════════════════
-//  CONSTANTS
-// ════════════════════════════════════════════════════════
-
-// class AppColors {
-//   static const primary       = Color(0xFF1A6BF5);
-//   static const scaffoldBg    = Color(0xFFF5F0E8);
-//   static const cardBg        = Colors.white;
-//   static const textDark      = Color(0xFF1A1A2E);
-//   static const textSecond    = Color(0xFF6B7280);
-//   static const green         = Color(0xFF4CAF50);
-//   static const divider       = Color(0xFFE0E0E0);
-//   static const paidGreen     = Color(0xFF2E7D32);
-// }
-
-// ════════════════════════════════════════════════════════
-//  DATA MODELS
-// ════════════════════════════════════════════════════════
 
 enum PaymentStatus { paid, unpaid }
 
@@ -86,38 +68,6 @@ final List<MissedCallPatient> _missedCallPatients = [
 // ════════════════════════════════════════════════════════
 
 /// Curved blue header
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          bottomLeft:  Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 14,
-        bottom: 18,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 20,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
-}
 
 /// Green pill doctor badge
 

@@ -17,6 +17,8 @@ class _DoctorBadgeState extends State<DoctorBadge> {
   // Menu action values
   static const String _basicDetails = 'basic';
   static const String _hospitalList = 'hospital';
+  static const String _profile = 'profile';
+
   static const String _logout = 'logout';
 
   void _handleMenuSelection(String value) {
@@ -26,6 +28,9 @@ class _DoctorBadgeState extends State<DoctorBadge> {
         break;
       case _hospitalList:
         context.push(AppRoutes.hospitalList);
+        break;
+      case _profile:
+        context.push(AppRoutes.doctorProfile);
         break;
       case _logout:
         _confirmLogout();
@@ -90,6 +95,16 @@ class _DoctorBadgeState extends State<DoctorBadge> {
               Icon(Icons.local_hospital_outlined, size: 20),
               SizedBox(width: 10),
               Text('Hospital List'),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: _profile,
+          child: Row(
+            children: [
+              Icon(Icons.perm_identity_rounded, size: 20),
+              SizedBox(width: 10),
+              Text('Profile'),
             ],
           ),
         ),

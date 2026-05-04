@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/common/curved_header.dart';
 import '../missed_call_page/missed_call.dart' hide AppColors;
 import '../widgets/doctor_stamp.dart';
 import 'dummy_data_3.dart' hide NavItem;
-
 
 
 

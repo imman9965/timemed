@@ -1,13 +1,27 @@
-import 'package:flutter/material.dart';
-import 'app/app.dart';
-import 'core/config/app_config.dart';
+// import 'package:flutter/material.dart';
+//
+// import 'core/constants/app_colors.dart';
+//
+// void main() {
+//   runApp(const MyApp());
+// }
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  AppConfig(
-    baseUrl: "https://yourapi.com/api", // Same base URL
-    appName: "TimesMed Health Care",
-    flavor: AppFlavor.superApp,
-  );
-  runApp(const MyApp());
-}
+
+// /// ROOT APP
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: const DoctorNotificationsScreen(),
+//     );
+//   }
+// }
+
+
+
+/// CURVED HEADER (APP BAR)
+
+/// SCREEN

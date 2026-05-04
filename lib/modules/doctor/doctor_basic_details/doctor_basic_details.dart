@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'dummy_data_5.dart';
-
-
-
-
-
 
 class SectionLabel extends StatelessWidget {
   final String text;
