@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class VideoSchedulePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff5f6f8),
-      appBar: AppBar(title: const Text("Schedule Appointment")),
+      appBar: CommonAppBar(title: "Schedule Appointment"),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
@@ -135,6 +136,14 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
                           ),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ), // Adjust radius as needed
+                            ),
+                          ),
                           onPressed: () {
                             context.push(AppRoutes.videoPayment);
                           },

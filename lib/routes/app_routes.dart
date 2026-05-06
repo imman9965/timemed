@@ -58,18 +58,39 @@ abstract class AppRoutes {
   static const videoSchedule = '/video-schedule';
 
   // Common
+  static const specialityDoctorList = '/speciality-doctors';
   static const videoPayment = '/video-payment';
   static const videoConfirmation = '/video-confirmation';
   static const videoQueue = '/video-queue';
-
+  static const videoCall = '/video-call';
+  static const rating = "/rating";
   // .................................... //
+
   static const patientSelection = '/patientSelection';
   static const addPatient = '/addPatient';
+  // ─────────────────────────────────────────────────────────────────────────────
+  // ADD THESE ROUTE CONSTANTS to your existing AppRoutes class
+  // ─────────────────────────────────────────────────────────────────────────────
+  static const String patientMedicalRecords = '/medical-records';
+  static const String patientMedicalRecordDetail = '/medical-records-detail';
+
+  static const String patientMedicineCart = '/medicine-cart';
+
+  /// 🔹 NEW (required)
+  static const String patientAddressSelection = '/address-selection';
+  static const String patientPrescriptionPayment = '/payment';
+
+  /// 🔹 Success + Tracking
+  static const String patientPrescriptionOrderSuccess = '/order-success';
+  static const String patientPrescriptionOrderTracking = '/order-tracking';
+
+  /// 🔹 Optional (future)
+  static const String patientPrescriptionOrderStatus = '/order-status';
+  static const String patientPrescriptionOrderDetails = '/order-details';
 
   /// ================================
   /// 🔹 DOCTOR
   /// ================================
-
 
   static const doctorLogin = '/doctorLogin';
 
@@ -96,21 +117,7 @@ abstract class AppRoutes {
   // Legacy alias — points to the first shell tab
   static const calendar = doctorCalendar;
 
-
-
-
-
-
-
-
-
-
-
-
-
   // static const logout = '/basicDetails';
-
-
 
   /// ================================
   /// 🔹 PHARMACY

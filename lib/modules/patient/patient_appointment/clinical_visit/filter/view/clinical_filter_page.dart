@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
+import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
+import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/filter/controller/clinical_filter_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
@@ -22,12 +24,12 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Clinical Visit")),
+      appBar: CommonAppBar(title: "Clinical Visit"),
       body: Column(
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,10 +42,10 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const Space(height: 18),
 
                     /// 🔹 CITY
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "city",
                       title: "City",
                       value: controller.selectedCity,
@@ -51,9 +53,10 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                       onSelect: controller.selectCity,
                       icon: Icons.location_city,
                     ),
+                    const Space(height: 12),
 
                     /// 🔹 LOCATION
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "location",
                       title: "Location",
                       value: controller.selectedLocation,
@@ -61,9 +64,10 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                       onSelect: controller.selectLocation,
                       icon: Icons.place,
                     ),
+                    const Space(height: 12),
 
                     /// 🔹 HOSPITAL
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "hospital",
                       title: "Hospital",
                       value: controller.selectedHospital,
@@ -71,9 +75,10 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                       onSelect: controller.selectHospital,
                       icon: Icons.local_hospital,
                     ),
+                    const Space(height: 12),
 
                     /// 🔹 SPECIALITY
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "speciality",
                       title: "Speciality",
                       value: controller.selectedSpeciality,
@@ -88,16 +93,14 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
           ),
 
           /// 🔥 BOTTOM BUTTON
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-              ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: CommonButton(
+              color: AppColors.primary,
               onPressed: () {
                 context.push(AppRoutes.clinicalDoctorList);
               },
-              child: const Text("Select Doctor for Clinical Appointment"),
+              title: "Find Doctors",
             ),
           ),
         ],
@@ -106,7 +109,7 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
   }
 
   /// 🔹 REUSABLE TILE (Same Pattern)
-  Widget _buildExpandableTile({
+  Widget _buildModernDropdown({
     required String keyName,
     required String title,
     required RxString value,
@@ -115,43 +118,52 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
     required IconData icon,
   }) {
     return Obx(() {
-      bool isExpanded = expandedSection == keyName;
+      final isOpen = expandedSection == keyName;
 
-      List<String> filteredList = list
+      final filteredList = list
           .where(
-            (item) => item.toLowerCase().contains(
-              searchController.text.toLowerCase(),
-            ),
+            (e) =>
+                e.toLowerCase().contains(searchController.text.toLowerCase()),
           )
           .toList();
 
-      return Column(
-        children: [
-          /// 🔹 HEADER
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                if (isExpanded) {
-                  expandedSection = null;
-                  searchController.clear();
-                } else {
-                  expandedSection = keyName;
-                  searchController.clear();
-                }
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.grey.shade300),
-                color: Colors.white,
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isOpen ? const Color(0xff0673de) : AppColors.black,
+            width: 1.2,
+          ),
+          color: Colors.white,
+          boxShadow: [
+            if (isOpen)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
+          ],
+        ),
+
+        child: Column(
+          children: [
+            /// 🔹 HEADER
+            InkWell(
+              onTap: () {
+                setState(() {
+                  expandedSection = isOpen ? null : keyName;
+                  searchController.clear();
+                });
+              },
               child: Row(
                 children: [
-                  Icon(icon, color: const Color(0xff0673de)),
-                  const SizedBox(width: 12),
+                  Icon(icon, color: const Color(0xff0673de), size: 20),
+                  const SizedBox(width: 10),
+
+                  /// TEXT
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,52 +171,60 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                         Text(
                           title,
                           style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
+                            fontSize: 14,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           value.value.isEmpty ? "Select $title" : value.value,
-                          style: const TextStyle(
-                            fontSize: 15,
+                          style: TextStyle(
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
+                            color: value.value.isEmpty
+                                ? Colors.grey
+                                : Colors.black,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(
-                    isExpanded
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
+
+                  AnimatedRotation(
+                    turns: isOpen ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],
               ),
             ),
-          ),
 
-          /// 🔥 EXPAND LIST
-          if (isExpanded)
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: Colors.grey.shade50,
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
+            /// 🔥 DROPDOWN CONTENT
+            AnimatedCrossFade(
+              duration: const Duration(milliseconds: 250),
+              crossFadeState: isOpen
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: const SizedBox(),
+              secondChild: Column(
                 children: [
+                  const SizedBox(height: 10),
+
                   /// 🔍 SEARCH
-                  TextField(
-                    controller: searchController,
-                    onChanged: (_) => setState(() {}),
-                    decoration: InputDecoration(
-                      hintText: "Search $title",
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade100,
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (_) => setState(() {}),
+                      decoration: const InputDecoration(
+                        hintText: "Search...",
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.search, size: 18),
                       ),
                     ),
                   ),
@@ -212,21 +232,16 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                   const SizedBox(height: 10),
 
                   /// 📋 LIST
-                  SizedBox(
-                    height: 150,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 180),
                     child: ListView.builder(
+                      shrinkWrap: true,
                       itemCount: filteredList.length,
                       itemBuilder: (context, index) {
                         final item = filteredList[index];
+                        final selected = value.value == item;
 
-                        return ListTile(
-                          title: Text(item),
-                          trailing: value.value == item
-                              ? const Icon(
-                                  Icons.check,
-                                  color: Color(0xff0673de),
-                                )
-                              : null,
+                        return InkWell(
                           onTap: () {
                             onSelect(item);
                             setState(() {
@@ -234,6 +249,30 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                               searchController.clear();
                             });
                           },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 8,
+                            ),
+                            margin: const EdgeInsets.only(bottom: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: selected
+                                  ? const Color(0xff0673de).withOpacity(0.1)
+                                  : Colors.transparent,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(child: Text(item)),
+                                if (selected)
+                                  const Icon(
+                                    Icons.check,
+                                    color: Color(0xff0673de),
+                                    size: 18,
+                                  ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -241,6 +280,45 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                 ],
               ),
             ),
+          ],
+        ),
+      );
+    });
+  }
+
+  /// 🔹 REUSABLE TILE (Same Pattern)
+  Widget _buildChips({
+    required String title,
+    required RxString selectedValue,
+    required List<String> list,
+    required Function(String) onSelect,
+  }) {
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: list.map((item) {
+              final isSelected = selectedValue.value == item;
+
+              return ChoiceChip(
+                label: Text(item),
+                selected: isSelected,
+                onSelected: (_) => onSelect(item),
+                selectedColor: Color(0xff0673de),
+                labelStyle: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black,
+                ),
+              );
+            }).toList(),
+          ),
+
+          SizedBox(height: 20),
         ],
       );
     });

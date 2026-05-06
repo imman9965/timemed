@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class VideoQueuePage extends StatefulWidget {
   const VideoQueuePage({super.key});
@@ -29,6 +32,7 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
     });
   }
 
+  List<PlatformFile> selectedFiles = [];
   @override
   void dispose() {
     timer?.cancel();
@@ -44,21 +48,18 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
   void pickFile() async {
     try {
       final result = await FilePicker.pickFiles(
-        allowMultiple: false,
-        withData: true,
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'jpg', 'png'],
       );
 
       if (result != null) {
-        final file = result.files.first;
-
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Selected: ${file.name}")));
-      } else {
-        print("User canceled");
+        setState(() {
+          selectedFiles.addAll(result.files);
+        });
       }
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
   }
 
@@ -66,28 +67,13 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: const Text("Call Request")),
+      appBar: CommonAppBar(title: "Call Request"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Call Request",
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-
-              Space(height: 20),
-
-              CommonButton(
-                title: "No Record",
-                borderRadius: 25,
-                onPressed: () {},
-              ),
-              Space(height: 20),
-
               /// 🔵 Queue Card
               Container(
                 width: double.infinity,
@@ -245,58 +231,8 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
 
                     const SizedBox(height: 20),
 
-                    // /// 📎 Upload Button
-                    // ElevatedButton.icon(
-                    //   style: ElevatedButton.styleFrom(
-                    //     backgroundColor: Colors.blue,
-                    //     padding: const EdgeInsets.symmetric(
-                    //       horizontal: 20,
-                    //       vertical: 12,
-                    //     ),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //     ),
-                    //   ),
-                    //   onPressed: pickFile,
-                    //   icon: const Icon(Icons.upload_file),
-                    //   label: const Text("File Upload"),
-                    // ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(Icons.folder, color: Colors.yellow),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "No file selected",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "Upload any medical records (image or PDF)",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.camera_alt, color: Colors.yellow),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(height: 20),
+                    _buildFileUploadSection(),
                   ],
                 ),
               ),
@@ -304,6 +240,146 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push(AppRoutes.videoCall);
+        },
+        child: const Icon(Icons.video_camera_back),
+      ),
+    );
+  }
+
+  Widget _buildFileUploadSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Medical Records",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+
+        const SizedBox(height: 10),
+
+        /// Upload Card
+        GestureDetector(
+          onTap: pickFile,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.grey.shade300),
+              color: Colors.white,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.upload_file,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Upload Medical Records",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "PDF, Image, Reports",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_ios, size: 14),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        /// File List
+        if (selectedFiles.isNotEmpty)
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: selectedFiles.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final file = selectedFiles[index];
+
+              return Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.primary),
+                  color: AppColors.primary.withOpacity(0.05),
+                ),
+                child: Row(
+                  children: [
+                    /// File Icon
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.insert_drive_file,
+                        color: AppColors.primary,
+                      ),
+                    ),
+
+                    const SizedBox(width: 12),
+
+                    /// File Info
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            file.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "${(file.size / 1024).toStringAsFixed(1)} KB",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    /// Remove Button
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        setState(() {
+                          selectedFiles.removeAt(index);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+      ],
     );
   }
 }

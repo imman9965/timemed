@@ -3,12 +3,29 @@ import 'package:go_router/go_router.dart';
 
 import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/address/binding/address_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/address/view/address_selection_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/cart/binding/cart_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/cart/model/cart_model.dart';
+import 'package:timesmed_project/modules/patient/medical_module/cart/view/cart_view.dart';
+import 'package:timesmed_project/modules/patient/medical_module/order_details/view/patient_prescription_order_details_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/order_status/view/patient_prescription_order_status_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/order_success/view/patient_prescription_order_success_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/payment/view/patient_prescription_payment_page.dart';
+
+import 'package:timesmed_project/modules/patient/medical_module/records/binding/medical_records_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records/view/medical_records_view.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records_details/binding/medical_records_details_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records_details/view/medical_recorde_details_page.dart';
+import 'package:timesmed_project/modules/patient/medical_module/track_order/view/patient_prescription_track_order_page.dart';
 import 'package:timesmed_project/modules/patient/paient_home/binding/patient_home_page_binding.dart';
 import 'package:timesmed_project/modules/patient/paient_home/view/patient_home_page.dart';
 import 'package:timesmed_project/modules/patient/patient_add/view/patient_add_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/confirmation/view/clinical_visit_confirmation_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/doctor_details/view/clinical_doctor_details_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/doctor_list/view/clinical_doctor_list_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/filter/view/clinical_filter_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/payment/view/clinical_visit_payment_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/schedule/view/clinical_schedule_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/doctor_list/binding/video_doctor_list_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/doctor_list/view/video_doctor_list_page.dart';
@@ -16,7 +33,9 @@ import 'package:timesmed_project/modules/patient/patient_appointment/video_consu
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/filter/view/video_consultation_filter_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/payment/view/video_payment_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/queue/view/video_queue_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/rating/view/rating_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/schedule/view/video_schedule_page.dart';
+import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/video_call/view/video_call_page.dart';
 
 import 'package:timesmed_project/modules/patient/patient_login/Binding/patient_login_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_login/view/patient_forgot_password_page.dart';
@@ -30,6 +49,8 @@ import 'package:timesmed_project/modules/patient/patient_profile/view/patient_pr
 import 'package:timesmed_project/modules/patient/patient_select/view/patient_selection_page.dart';
 import 'package:timesmed_project/modules/patient/patient_signup/binding/patient_signup_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_signup/view/patient_signup_page.dart';
+import 'package:timesmed_project/modules/patient/speciality_doctors/binding/speciality_doctor_binding.dart';
+import 'package:timesmed_project/modules/patient/speciality_doctors/view/speciality_doctors_list_page.dart';
 
 // Views
 import 'package:timesmed_project/modules/splash/view/splash_view.dart';
@@ -155,14 +176,6 @@ class AppRouter {
           ),
 
           GoRoute(
-            path: AppRoutes.patientProfile,
-            builder: (context, state) {
-              PatientHomePageBinding().dependencies();
-              return PatientProfilePage();
-            },
-          ),
-
-          GoRoute(
             path: AppRoutes.patientPreviousAppointments,
             builder: (context, state) {
               // PatientOrderBinding().dependencies();
@@ -175,6 +188,13 @@ class AppRouter {
             builder: (context, state) {
               PatientOrderBinding().dependencies();
               return PatientOrderPage();
+            },
+          ),
+          GoRoute(
+            path: AppRoutes.patientProfile,
+            builder: (context, state) {
+              PatientHomePageBinding().dependencies();
+              return PatientProfilePage();
             },
           ),
         ],
@@ -198,6 +218,15 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.clinicalSchedule,
         builder: (context, state) => ClinicalSchedulePage(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.clinicalPayment,
+        builder: (context, state) => ClinicalVisitPaymentPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.clinicalConfirmation,
+        builder: (context, state) => ClinicalVisitConfirmationPage(),
       ),
       /*
 
@@ -233,6 +262,13 @@ class AppRouter {
       ),
       // 🔹 Common
       GoRoute(
+        path: AppRoutes.specialityDoctorList,
+        builder: (context, state) {
+          SpecialityDoctorBinding().dependencies();
+          return SpecialityDoctorsListPage();
+        },
+      ),
+      GoRoute(
         path: AppRoutes.videoPayment,
         builder: (context, state) => VideoPaymentPage(),
       ),
@@ -242,10 +278,20 @@ class AppRouter {
         builder: (context, state) => VideoQueuePage(),
       ),
 
+      GoRoute(
+        path: AppRoutes.rating,
+        builder: (context, state) => RatingPage(),
+      ),
+
       // 🔹 Schedule Flow
       GoRoute(
         path: AppRoutes.videoSchedule,
         builder: (context, state) => VideoSchedulePage(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.videoCall,
+        builder: (context, state) => VideoCallPage(),
       ),
 
       /*
@@ -276,6 +322,72 @@ class AppRouter {
         path: AppRoutes.videoConfirmation,
         builder: (context, state) => VideoConfirmationPage(),
       ),*/
+      GoRoute(
+        path: AppRoutes.patientMedicalRecords,
+        builder: (context, state) {
+          MedicalRecordsBinding().dependencies();
+          return const MedicalRecordsPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientMedicalRecordDetail,
+        builder: (context, state) {
+          MedicalRecordsDetailsBinding().dependencies();
+          return MedicalRecordDetailsPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.patientMedicineCart,
+        builder: (context, state) {
+          CartBinding().dependencies();
+          return MedicineCartPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientAddressSelection,
+        builder: (context, state) {
+          AddressBinding().dependencies();
+          return const AddressSelectionPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientPrescriptionPayment,
+        builder: (context, state) {
+          return const PatientPrescriptionPaymentPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientPrescriptionOrderSuccess,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>?;
+
+          return PatientPrescriptionOrderSuccessPage(
+            orderId: data?['orderId'] ?? '',
+            amount: data?['amount'] ?? 0.0,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.patientPrescriptionOrderTracking,
+        builder: (context, state) {
+          return const PatientPrescriptionTrackOrderPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientPrescriptionOrderStatus,
+        builder: (context, state) {
+          return const PatientPrescriptionOrderStatusPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientPrescriptionOrderDetails,
+        builder: (context, state) {
+          final order = state.extra as Map;
+          return PatientPrescriptionOrderDetailsPage(order: order);
+        },
+      ),
 
       /// ================================
       /// 🔹 DOCTOR

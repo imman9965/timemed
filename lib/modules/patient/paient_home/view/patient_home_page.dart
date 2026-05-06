@@ -26,54 +26,49 @@ class _PatientHomePageState extends State<PatientHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
-      child: Column(
-        children: [
-          _buildPremiumHeader(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ListView(
-                children: [
-                  _buildAppointmentActions(),
-                  const SizedBox(height: 20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: ListView(
+          children: [
+            _buildPremiumHeader(),
+            const SizedBox(height: 20),
+            _buildAppointmentActions(),
+            const SizedBox(height: 20),
 
-                  _buildSpecialities(),
-                  const SizedBox(height: 14), // 🔥 reduce gap
+            _buildSpecialities(),
+            const SizedBox(height: 14), // 🔥 reduce gap
 
-                  _buildUpcomingCard(),
-                  const SizedBox(height: 20),
+            _buildUpcomingCard(),
+            const SizedBox(height: 20),
 
-                  _buildPreviousList(),
+            _buildPreviousList(),
 
-                  // _buildPatientSection(),
-                ],
-              ),
-            ),
-          ),
-        ],
+            // _buildPatientSection(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildPremiumHeader() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 20, 16, 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
         gradient: LinearGradient(
           colors: [
-            AppColors.primary.withOpacity(0.08),
-            AppColors.primary.withOpacity(0.15),
+            AppColors.primary.withOpacity(0.8),
+            AppColors.primary.withOpacity(0.4),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
+        border: Border.all(color: Colors.white.withOpacity(0.4)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -89,17 +84,18 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 flex: 2,
                 child: Container(
                   padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xff0673de).withOpacity(0.4),
-                      width: 2,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
                     ),
-                  ),
-                  child: const CircleAvatar(
-                    radius: 28,
-                    backgroundImage: NetworkImage(
-                      "https://i.pravatar.cc/150?img=5",
+                    child: const CircleAvatar(
+                      radius: 32,
+                      backgroundImage: NetworkImage(
+                        "https://i.pravatar.cc/150?img=5",
+                      ),
                     ),
                   ),
                 ),
@@ -122,12 +118,13 @@ class _PatientHomePageState extends State<PatientHomePage> {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 16,
+                              color: AppColors.white,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         const SizedBox(width: 6),
-                        _statusBadge("Active"),
+                        // _statusBadge("Active"),
                       ],
                     ),
 
@@ -149,10 +146,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       "Patient ID: TM-10234",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade600,
-                      ),
+                      style: TextStyle(fontSize: 11, color: AppColors.white),
                     ),
                   ],
                 ),
@@ -167,7 +161,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     _actionIcon(Icons.notifications_none, () {}),
                     const SizedBox(height: 8),
                     _actionIcon(Icons.sync_alt, () {
-                      _showPatientSwitchSheet(context);
+                      _showPatientDialog(context);
                     }),
                   ],
                 ),
@@ -178,9 +172,22 @@ class _PatientHomePageState extends State<PatientHomePage> {
           const SizedBox(height: 16),
 
           /// 🔹 SECTION TITLE (instead of divider)
-          Text(
-            "Personal Info",
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          Row(
+            children: [
+              Container(
+                width: 4,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 6),
+              const Text(
+                "Personal Info",
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
 
           const SizedBox(height: 10),
@@ -220,16 +227,25 @@ class _PatientHomePageState extends State<PatientHomePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.white.withOpacity(0.6),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 10,
-          color: Colors.green,
-          fontWeight: FontWeight.w600,
-        ),
+      child: Row(
+        children: [
+          Container(
+            width: 6,
+            height: 6,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          ),
+        ],
       ),
     );
   }
@@ -238,9 +254,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8),
+        ],
       ),
       child: Text(
         text,
@@ -263,7 +281,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, size: 14, color: AppColors.primary),
@@ -397,26 +415,26 @@ class _PatientHomePageState extends State<PatientHomePage> {
   }
 
   final List<Map<String, dynamic>> specialities = [
-    {"name": "General Physician", "image": "General Physician.png"},
-    {"name": "Gynecology", "image": "Gynecology.png"},
-    {"name": "Obstetrics", "image": "Obstetrics.png"},
-    {"name": "Pediatrics", "image": "Pediatrics.png"},
-    {"name": "Cardiology", "image": "Cardiology.png"},
-    {"name": "Diabetology", "image": "Diabetology.png"},
-    {"name": "Endocrinology", "image": "Endocrinology.png"},
-    {"name": "Neurology", "image": "Neurology.png"},
-    {"name": "Psychiatry", "image": "Psychiatry.png"},
-    {"name": "Pulmonology", "image": "Pulmonology.png"},
-    {"name": "Gastroenterology", "image": "Gastroenterology.png"},
-    {"name": "Orthopedics", "image": "Orthopedics.png"},
-    {"name": "Dermatology", "image": "Dermatology.png"},
-    {"name": "Ophthalmology", "image": "Ophthalmology.png"},
-    {"name": "ENT (Ear, Nose, Throat)", "image": "ENT.png"},
-    {"name": "Urology", "image": "Urology.png"},
-    {"name": "Oncology", "image": "Oncology.png"},
-    {"name": "Physiotherapy", "image": "Physiotherapy.png"},
-    {"name": "Nephrology (Kidney-related care)", "image": "Nephrology.png"},
-    {"name": "General Surgery", "image": "General Surgery.png"},
+    {"id": 1, "name": "General Physician", "image": "General Physician.png"},
+    {"id": 2, "name": "Gynecology", "image": "Gynecology.png"},
+    {"id": 3, "name": "Obstetrics", "image": "Obstetrics.png"},
+    {"id": 4, "name": "Pediatrics", "image": "Pediatrics.png"},
+    {"id": 5, "name": "Cardiology", "image": "Cardiology.png"},
+    {"id": 6, "name": "Diabetology", "image": "Diabetology.png"},
+    {"id": 7, "name": "Endocrinology", "image": "Endocrinology.png"},
+    {"id": 8, "name": "Neurology", "image": "Neurology.png"},
+    {"id": 9, "name": "Psychiatry", "image": "Psychiatry.png"},
+    {"id": 10, "name": "Pulmonology", "image": "Pulmonology.png"},
+    {"id": 11, "name": "Gastroenterology", "image": "Gastroenterology.png"},
+    {"id": 12, "name": "Orthopedics", "image": "Orthopedics.png"},
+    {"id": 13, "name": "Dermatology", "image": "Dermatology.png"},
+    {"id": 14, "name": "Ophthalmology", "image": "Ophthalmology.png"},
+    {"id": 15, "name": "ENT (Ear, Nose, Throat)", "image": "ENT.png"},
+    {"id": 16, "name": "Urology", "image": "Urology.png"},
+    {"id": 17, "name": "Oncology", "image": "Oncology.png"},
+    {"id": 18, "name": "Physiotherapy", "image": "Physiotherapy.png"},
+    {"id": 19, "name": "Nephrology", "image": "Nephrology.png"},
+    {"id": 20, "name": "General Surgery", "image": "General Surgery.png"},
   ];
 
   Widget _buildSpecialities() {
@@ -463,6 +481,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   setState(() {
                     showAllSpecialities = !showAllSpecialities;
                   });
+                } else {
+                  context.push(
+                    AppRoutes.specialityDoctorList,
+                    extra: item, // 🔥 pass full speciality
+                  );
                 }
               },
               child: Column(
@@ -509,141 +532,158 @@ class _PatientHomePageState extends State<PatientHomePage> {
 
   /// 🔹 UpcomingCard Appointments List
   Widget _buildUpcomingCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /// 🔹 TOP ROW (Doctor + Status)
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                backgroundImage: NetworkImage(
-                  "https://i.pravatar.cc/150?img=12",
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Book Appointment",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
               ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// 🔹 TOP ROW (Doctor + Status)
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 24,
+                    backgroundImage: NetworkImage(
+                      "https://i.pravatar.cc/150?img=12",
+                    ),
+                  ),
 
-              const SizedBox(width: 12),
+                  const SizedBox(width: 12),
 
-              /// Doctor Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Dr. John Mathew",
+                  /// Doctor Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Dr. John Mathew",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          "Cardiologist • Apollo Clinic",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// Status Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      "Confirmed",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 11,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      "Cardiologist • Apollo Clinic",
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              /// 🔹 APPOINTMENT DETAILS
+              Row(
+                children: [
+                  _detailBlock(Icons.calendar_today, "15 Sep"),
+                  const SizedBox(width: 14),
+                  _detailBlock(Icons.access_time, "10:30 AM"),
+                  const SizedBox(width: 14),
+                  _detailBlock(Icons.video_call, "Video"),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              /// 🔹 LOCATION / NOTE
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    size: 14,
+                    color: Colors.grey.shade500,
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      "Chennai - Apollo Hospital, T Nagar",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade600,
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              /// Status Badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  "Confirmed",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
 
-          const SizedBox(height: 14),
+              const SizedBox(height: 16),
 
-          /// 🔹 APPOINTMENT DETAILS
-          Row(
-            children: [
-              _detailBlock(Icons.calendar_today, "15 Sep"),
-              const SizedBox(width: 14),
-              _detailBlock(Icons.access_time, "10:30 AM"),
-              const SizedBox(width: 14),
-              _detailBlock(Icons.video_call, "Video"),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-
-          /// 🔹 LOCATION / NOTE
-          Row(
-            children: [
-              Icon(Icons.location_on, size: 14, color: Colors.grey.shade500),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  "Chennai - Apollo Hospital, T Nagar",
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          /// 🔹 CTA
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              /// 🔹 CTA
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text("Reschedule"),
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Text("Reschedule"),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text("Join Now"),
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Text("Join Now"),
-                ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -769,140 +809,218 @@ class _PatientHomePageState extends State<PatientHomePage> {
     );
   }
 
-  void _showPatientSwitchSheet(BuildContext context) {
-    showModalBottomSheet(
+  void _showPatientDialog(BuildContext context) {
+    showDialog(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withOpacity(0.5),
       builder: (_) {
-        return Container(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              /// Drag Handle
-              Container(
-                height: 4,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(10),
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 30,
+                  offset: const Offset(0, 10),
                 ),
-              ),
+              ],
+            ),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// 🔹 HEADER
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.people, color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 10),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Switch Patient",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "Select active profile",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => context.pop(),
+                      child: const Icon(Icons.close, size: 20),
+                    ),
+                  ],
+                ),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 16),
 
-              /// Title
-              const Text(
-                "Switch Patient",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-              ),
+                /// 🔹 PATIENT LIST
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 280),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (_, index) {
+                      return _premiumPatientItem(isSelected: index == 0);
+                    },
+                  ),
+                ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              /// Patient List
-              ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _patientSwitchCard(),
-                  _patientSwitchCard(),
-                  _patientSwitchCard(),
-                ],
-              ),
-            ],
+                /// 🔹 ADD PATIENT BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      context.push(AppRoutes.addPatient);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      backgroundColor: AppColors.primary,
+                    ),
+                    icon: const Icon(Icons.add, size: 18),
+                    label: const Text(
+                      "Add New Patient",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _patientSwitchCard() {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context); // switch logic later
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.grey.shade200),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
-          ],
-        ),
-        child: Row(
-          children: [
-            /// Avatar
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primary.withOpacity(0.4)),
-              ),
-              child: const CircleAvatar(
-                radius: 24,
-                backgroundImage: NetworkImage(
-                  "https://i.pravatar.cc/150?img=5",
-                ),
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            /// Info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Andrew Vijay",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                  ),
-
-                  const SizedBox(height: 4),
-
-                  Row(
-                    children: [
-                      _miniChip("30 yrs"),
-                      const SizedBox(width: 6),
-                      _miniChip("Male"),
-                      const SizedBox(width: 6),
-                      _miniChip("O+"),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            /// Select indicator
-            Icon(Icons.chevron_right, color: Colors.grey.shade400),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _miniChip(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+  Widget _premiumPatientItem({bool isSelected = false}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 10,
-          color: AppColors.primary,
-          fontWeight: FontWeight.w500,
+        borderRadius: BorderRadius.circular(16),
+        gradient: isSelected
+            ? LinearGradient(
+                colors: [
+                  AppColors.primary.withOpacity(0.12),
+                  AppColors.primary.withOpacity(0.05),
+                ],
+              )
+            : null,
+        border: Border.all(
+          color: isSelected ? AppColors.primary : Colors.grey.shade200,
         ),
+      ),
+      child: Row(
+        children: [
+          /// 👤 AVATAR WITH STATUS RING
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isSelected ? AppColors.primary : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: const CircleAvatar(
+              radius: 22,
+              backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=5"),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          /// 🧾 DETAILS
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "John Doe",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+
+                const SizedBox(height: 4),
+
+                Row(
+                  children: [
+                    Icon(Icons.male, size: 14, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    const Text("Male", style: TextStyle(fontSize: 11)),
+                    const SizedBox(width: 10),
+
+                    /// Blood Group Badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        "B+",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    const Text(
+                      "30 yrs",
+                      style: TextStyle(fontSize: 11, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          /// ✅ SELECT INDICATOR
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isSelected ? AppColors.primary : Colors.grey.shade200,
+            ),
+            child: Icon(
+              isSelected ? Icons.check : Icons.circle,
+              size: 14,
+              color: isSelected ? Colors.white : Colors.transparent,
+            ),
+          ),
+        ],
       ),
     );
   }

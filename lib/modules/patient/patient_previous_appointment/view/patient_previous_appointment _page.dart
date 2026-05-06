@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientPreviousAppointmentPage extends StatefulWidget {
   const PatientPreviousAppointmentPage({super.key});
@@ -13,44 +16,32 @@ class _PatientPreviousAppointmentPageState
     extends State<PatientPreviousAppointmentPage> {
   final List<Map<String, dynamic>> appointments = [
     {
-      "name": "Dr. Andrew",
-      "speciality": "Dentist",
-      "id": "35648",
-      "type": "Instant",
-      "date": "12 Apr 2026",
+      "patient": "Mr. Vignesh",
+      "doctor": "Dr. Mariappan",
+      "date": "5 May 2026",
+      "time": "5:49 PM",
       "status": "Completed",
     },
     {
-      "name": "Dr. Priya",
-      "speciality": "Cardiologist",
-      "id": "35649",
-      "type": "Schedule",
-      "date": "10 Apr 2026",
-      "status": "Cancelled",
-    },
-    {
-      "name": "Dr. Rahul",
-      "speciality": "Dermatologist",
-      "id": "35650",
-      "type": "Instant",
-      "date": "08 Apr 2026",
+      "patient": "Mr. Immanuel",
+      "doctor": "Dr. Mariappan",
+      "date": "4 May 2026",
+      "time": "2:43 PM",
       "status": "Completed",
     },
     {
-      "name": "Dr. Meena",
-      "speciality": "Gynecologist",
-      "id": "35651",
-      "type": "Schedule",
-      "date": "05 Apr 2026",
-      "status": "Completed",
+      "patient": "Mr. Vignesh",
+      "doctor": "Dr. Mariappan",
+      "date": "5 May 2026",
+      "time": "5:49 PM",
+      "status": "Pending",
     },
     {
-      "name": "Dr. Arjun",
-      "speciality": "Orthopedic",
-      "id": "35652",
-      "type": "Instant",
-      "date": "02 Apr 2026",
-      "status": "Cancelled",
+      "patient": "Mr. Immanuel",
+      "doctor": "Dr. Mariappan",
+      "date": "4 May 2026",
+      "time": "2:43 PM",
+      "status": "Completed",
     },
   ];
 
@@ -58,140 +49,160 @@ class _PatientPreviousAppointmentPageState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text("Previous Appointments"),
-        backgroundColor: AppColors.primary,
-        elevation: 0,
-      ),
-      body: ListView.builder(
+      appBar: CommonAppBar(title: "Previous Appointments", showBack: false),
+      body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-        itemCount: appointments.length,
-        itemBuilder: (context, index) {
-          return _timelineItem(appointments[index], index);
-        },
+        children: [
+          ...appointments
+              .map((appt) => _previousAppointmentCard(appt))
+              .toList(),
+        ],
       ),
     );
   }
 
-  /// 🔥 Improved Timeline Item
-  Widget _timelineItem(Map<String, dynamic> appt, int index) {
+  Widget _previousAppointmentCard(Map<String, dynamic> appt) {
     final isCompleted = appt["status"] == "Completed";
-    final isInstant = appt["type"] == "Instant";
 
-    return IntrinsicHeight(
-      child: Row(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// 🟢 Timeline
-          Column(
+          Row(
             children: [
-              /// Top line
-              Container(
-                width: 2,
-                height: index == 0 ? 0 : 20,
-                color: Colors.grey.shade300,
-              ),
-
-              /// Dot
-              Container(
-                width: 14,
-                height: 14,
-                decoration: BoxDecoration(
-                  color: isCompleted ? Colors.green : Colors.red,
-                  shape: BoxShape.circle,
+              // ✅ Fixed: explicit height on SizedBox + Stack
+              SizedBox(
+                width: 60,
+                height: 40,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      left: 0,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        child: const Icon(Icons.person, size: 18),
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColors.primary.withOpacity(0.15),
+                        child: Icon(
+                          Icons.medical_services,
+                          size: 18,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-              /// Bottom line
-              Expanded(child: Container(width: 2, color: Colors.grey.shade300)),
+              const SizedBox(width: 12),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      appt["doctor"],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      appt["patient"],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: isCompleted
+                      ? Colors.green.withOpacity(0.1)
+                      : Colors.orange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  appt["status"],
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: isCompleted ? Colors.green : Colors.orange,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
 
-          const SizedBox(width: 14),
+          const SizedBox(height: 14),
 
-          /// 📦 Card
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 18),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
+          Row(
+            children: [
+              _detailBlock(Icons.calendar_today, appt["date"]),
+              const SizedBox(width: 14),
+              _detailBlock(Icons.access_time, appt["time"]),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              Icon(Icons.location_on, size: 14, color: Colors.grey.shade500),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  "Chennai - Clinic Visit",
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// 🔹 Top Row
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: AppColors.primary.withOpacity(0.1),
-                        child: Icon(Icons.person, color: AppColors.primary),
-                      ),
-                      const SizedBox(width: 10),
+            ],
+          ),
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              appt["name"],
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              appt["speciality"],
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+          const SizedBox(height: 16),
 
-                      /// Status Chip
-                      _statusChip(isCompleted),
-                    ],
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// 🔹 Chips Row (Type + Date)
-                  Row(
-                    children: [
-                      _chip(
-                        label: appt["type"],
-                        color: isInstant ? Colors.green : Colors.orange,
-                      ),
-                      const SizedBox(width: 8),
-                      _chip(label: appt["date"], color: Colors.blueGrey),
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  /// 🔹 ID
-                  Text(
-                    "Appointment ID: ${appt["id"]}",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
+              onPressed: () {
+                context.push(AppRoutes.patientMedicalRecords);
+              },
+              child: const Text("View Medical Record"),
             ),
           ),
         ],
@@ -199,42 +210,22 @@ class _PatientPreviousAppointmentPageState
     );
   }
 
-  /// 🔹 Status Chip
-  Widget _statusChip(bool isCompleted) {
+  Widget _detailBlock(IconData icon, String text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: isCompleted
-            ? Colors.green.withOpacity(0.1)
-            : Colors.red.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
-        isCompleted ? "Completed" : "Cancelled",
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: isCompleted ? Colors.green : Colors.red,
-        ),
-      ),
-    );
-  }
-
-  /// 🔹 Common Chip
-  Widget _chip({required String label, required Color color}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          color: color,
-        ),
+      child: Row(
+        children: [
+          Icon(icon, size: 14, color: AppColors.primary),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }

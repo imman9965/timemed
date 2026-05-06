@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
+import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
 import 'package:timesmed_project/modules/patient/paient_home/controller/patient_home_controller.dart';
@@ -67,246 +69,262 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 70,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          color: AppColors.primary,
-          child: Center(
-            child: Text(
-              "Account",
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+    return Scaffold(
+      appBar: CommonAppBar(title: "Account", showBack: false),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            const SizedBox(height: 18),
+
+            /// PREMIUM PROFILE CARD
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+
+                border: Border.all(color: AppColors.primary.withOpacity(0.08)),
+
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
+
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// 🔥 TOP SECTION
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundLight.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black12, blurRadius: 8),
-                      ],
-                    ),
-                    child: Row(
+                  /// PROFILE IMAGE
+                  _buildImagePicker(),
+
+                  const SizedBox(width: 16),
+
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildImagePicker(),
+                        /// NAME
+                        Text(
+                          nameController.text,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
 
-                        const SizedBox(width: 16),
+                        const SizedBox(height: 8),
 
-                        /// RIGHT SIDE DETAILS
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              /// NAME
-                              Text(
-                                nameController.text,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.textPrimary,
-                                ),
+                        /// PATIENT BADGE
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
                               ),
-
-                              const SizedBox(height: 6),
-
-                              /// GENDER + AGE
-                              const Text(
-                                "Male | Age: 30",
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.08),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: const Text(
+                                "Male",
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primary,
                                 ),
                               ),
+                            ),
 
-                              const SizedBox(height: 10),
+                            const SizedBox(width: 8),
 
-                              /// LOGOUT BUTTON
-                              SizedBox(
-                                height: 35,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    authController
-                                        .logout(); // 👈 your logout logic
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.08),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: const Text(
+                                "Age 30",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        /// LOGOUT
+                        GestureDetector(
+                          onTap: authController.logout,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.06),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.logout_rounded,
+                                  size: 16,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 6),
+                                Text(
+                                  "Logout",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  child: const Text("Logout"),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-
-                  const SizedBox(height: 25),
-
-                  /// 🔥 FORM FIELDS
-
-                  /// NAME FIELD
-                  TitleTextFormField(
-                    title: "First Name",
-                    hintText: 'Enter your name',
-                    controller: nameController,
-                    borderRadius: 16,
-                    prefixIcon: const Icon(
-                      Icons.person,
-                      color: Color(0xff0673de),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  /// PHONE
-                  TitleTextFormField(
-                    title: "Phone",
-                    hintText: 'Enter phone',
-                    controller: phoneController,
-                    prefixIcon: const Icon(
-                      Icons.phone,
-                      color: Color(0xff0673de),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  /// EMAIL
-                  TitleTextFormField(
-                    title: "Email",
-                    hintText: 'Enter email',
-                    controller: emailController,
-                    prefixIcon: const Icon(
-                      Icons.email,
-                      color: Color(0xff0673de),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  /// PASSWORD
-                  TitleTextFormField(
-                    title: "Password",
-                    hintText: 'Enter password',
-                    controller: passwordController,
-                    prefixIcon: const Icon(
-                      Icons.lock,
-                      color: Color(0xff0673de),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-
-                  const SizedBox(height: 25),
-
-                  /// SAVE BUTTON
-                  Row(
-                    children: [
-                      /// ✏️ Edit Profile
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            // Enable editing / navigate
-                            context.push(AppRoutes.addPatient); // Example route
-                          },
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: AppColors.primary),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.edit, color: AppColors.primary),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Edit Profile",
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 12),
-
-                      /// 🔐 Change Password
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            // Navigate to change password page
-                            context.push(
-                              AppRoutes.patientForgotPassword,
-                            ); // Example route
-                          },
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppColors.primary,
-                                  AppColors.primary.withOpacity(0.7),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.lock, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Change Password",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
             ),
-          ),
+
+            const SizedBox(height: 20),
+
+            /// DETAILS CARD
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+
+                border: Border.all(color: Colors.grey.withOpacity(0.08)),
+
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+
+              child: Column(
+                children: [
+                  TitleTextFormField(
+                    title: "Full Name",
+                    hintText: "Enter your name",
+                    controller: nameController,
+                    prefixIcon: const Icon(
+                      Icons.person_outline,
+                      color: AppColors.primary,
+                    ),
+                    fillColor: const Color(0xffF8FAFC),
+                    filled: true,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TitleTextFormField(
+                    title: "Phone",
+                    hintText: "Enter phone",
+                    controller: phoneController,
+                    prefixIcon: const Icon(
+                      Icons.phone_outlined,
+                      color: AppColors.primary,
+                    ),
+                    fillColor: const Color(0xffF8FAFC),
+                    filled: true,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TitleTextFormField(
+                    title: "Email",
+                    hintText: "Enter email",
+                    controller: emailController,
+                    prefixIcon: const Icon(
+                      Icons.email_outlined,
+                      color: AppColors.primary,
+                    ),
+                    fillColor: const Color(0xffF8FAFC),
+                    filled: true,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TitleTextFormField(
+                    title: "Password",
+                    hintText: "Enter password",
+                    controller: passwordController,
+                    prefixIcon: const Icon(
+                      Icons.lock_outline,
+                      color: AppColors.primary,
+                    ),
+                    fillColor: const Color(0xffF8FAFC),
+                    filled: true,
+                  ),
+                ],
+              ),
+            ),
+
+            /// KEEP YOUR BUTTONS SAME
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        context.push(AppRoutes.addPatient);
+                      },
+                      child: const Text("Edit Profile"),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        context.push(AppRoutes.patientForgotPassword);
+                      },
+                      child: const Text("Change Password"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/floating_bottom_navigation_bar.dart';
@@ -19,7 +20,40 @@ class PatientMainPage extends StatelessWidget {
       top: false,
       child: Scaffold(
         extendBody: true, // 🔥 allows body behind bottom nav
-        body: child, // 👈 VERY IMPORTANT
+        body: Stack(
+          children: [
+            child, // 👈 your current page
+            /// 🔥 AI FLOATING BUTTON (GLOBAL)
+            Positioned(
+              bottom: 110, // above bottom nav
+              right: 16,
+              child: GestureDetector(
+                onTap: () {
+                  context.push(AppRoutes.aiChat, extra: 'patient');
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.3),
+                        blurRadius: 12,
+                      ),
+                    ],
+                    border: Border.all(color: AppColors.primaryBackground),
+                  ),
+                  child: SvgPicture.asset(
+                    "assets/icons/ai_robot.svg",
+                    color: Colors.white,
+                    height: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ), // 👈 VERY IMPORTANT
         bottomNavigationBar: SizedBox(
           height: 100,
           child: FloatingBottomNavigationBar(

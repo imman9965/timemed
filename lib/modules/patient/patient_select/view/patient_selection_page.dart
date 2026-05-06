@@ -88,7 +88,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
   }
 
   /// Patient List - Show list of patients to select from
-  Widget _buildPatientList() {
+  /* Widget _buildPatientList() {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: patients.length + 1,
@@ -163,6 +163,22 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
         );
       },
     );
+  }*/
+  Widget _buildPatientList() {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: patients.length + 1,
+      itemBuilder: (context, index) {
+        if (index == patients.length) {
+          return _buildAddPatientCard();
+        }
+
+        final patient = patients[index];
+        final isSelected = selectedPatient?.id == patient.id;
+
+        return _patientCard(patient);
+      },
+    );
   }
 
   /// Add Patient Card - Show option to add new patient
@@ -220,6 +236,127 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
             ),
           ),
           child: const Text("Continue"),
+        ),
+      ),
+    );
+  }
+
+  Widget _patientCard(PatientSelectionModel patient) {
+    final isSelected = selectedPatient?.id == patient.id;
+
+    String genderIcon;
+    Color genderColor;
+
+    switch (patient.gender.toLowerCase()) {
+      case "male":
+        genderIcon = "assets/icons/gender/male_gender.png";
+        genderColor = Colors.blue;
+        break;
+      case "female":
+        genderIcon = "assets/icons/gender/female_gender.png";
+        genderColor = Colors.pink;
+        break;
+      default:
+        genderIcon = "assets/icons/gender/other_gender.png";
+        genderColor = Colors.purple;
+    }
+
+    return GestureDetector(
+      onTap: () => setState(() => selectedPatient = patient),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        margin: const EdgeInsets.only(bottom: 14),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.grey.shade200,
+            width: isSelected ? 1.5 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected
+                  ? AppColors.primary.withOpacity(0.15)
+                  : Colors.black.withOpacity(0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+
+        child: Row(
+          children: [
+            /// 🔹 AVATAR (PRIMARY)
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 26,
+                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                  child: Text(
+                    patient.name[0],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+
+                /// 🔹 GENDER BADGE (SECONDARY)
+                Positioned(
+                  right: -2,
+                  bottom: -2,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: genderColor.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(genderIcon, width: 14, height: 14),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(width: 14),
+
+            /// 🔹 DETAILS
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    patient.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "${patient.relation} • ${patient.age} yrs",
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+            ),
+
+            /// 🔹 SELECTION INDICATOR
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? AppColors.primary : Colors.grey.shade200,
+              ),
+              child: Icon(
+                Icons.check,
+                size: 16,
+                color: isSelected ? Colors.white : Colors.transparent,
+              ),
+            ),
+          ],
         ),
       ),
     );
