@@ -94,7 +94,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     child: const CircleAvatar(
                       radius: 32,
                       backgroundImage: NetworkImage(
-                        "https://i.pravatar.cc/150?img=5",
+                        "https://thumbs.dreamstime.com/b/profile-picture-young-indian-woman-renter-headshot-portrait-confident-tenant-pose-modern-own-new-apartment-house-226719004.jpg",
                       ),
                     ),
                   ),
@@ -113,7 +113,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       children: [
                         Expanded(
                           child: Text(
-                            "John Doe",
+                            "Sara",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -135,7 +135,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       runSpacing: 6,
                       children: [
                         _infoChip("30 yrs"),
-                        _infoChip("Male"),
+                        _infoChip("Female"),
                         _infoChip("Self"),
                       ],
                     ),
@@ -536,7 +536,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Book Appointment",
+          "UpComing Appointment",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 10),
@@ -562,7 +562,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   const CircleAvatar(
                     radius: 24,
                     backgroundImage: NetworkImage(
-                      "https://i.pravatar.cc/150?img=12",
+                      "https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?semt=ais_hybrid&w=740&q=80",
                     ),
                   ),
 
@@ -574,7 +574,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Dr. John Mathew",
+                          "Dr. Hanna",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -713,7 +713,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 const CircleAvatar(
                   radius: 22,
                   backgroundImage: NetworkImage(
-                    "https://i.pravatar.cc/150?img=8",
+                    "https://images.pexels.com/photos/32254655/pexels-photo-32254655.jpeg?cs=srgb&dl=pexels-konrads-photo-32254655.jpg&fm=jpg",
                   ),
                 ),
 
