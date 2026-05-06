@@ -40,6 +40,7 @@ import 'package:timesmed_project/modules/super/view/super_home_view.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 import 'package:timesmed_project/modules/doctor/patient_register/patient_registeration.dart';
 
+import '../modules/doctor/call_page/disconnect_screen.dart';
 import '../modules/doctor/medical_history/medical_history.dart';
 import '../modules/doctor/medical_history/medical_history_records.dart';
 import '../modules/doctor/calendar/dashboard.dart';
@@ -309,6 +310,10 @@ class AppRouter {
         builder: (context, state) => LoginPage(),
       ),
 
+
+
+      // ConsultationSummaryScreen
+
       /// ================================
       /// 🔹 DOCTOR — Shell Route (bottom nav)
       /// ================================
@@ -440,13 +445,16 @@ class AppRouter {
         name: AppRoutes.basicDetails,
         builder: (context, state) => DoctorBasicDetailsScreen(),
       ),
-
+      GoRoute(
+        path: AppRoutes.hospitalList,
+        name: AppRoutes.hospitalList,
+        builder: (context, state) => HospitalListScreen(),
+      ),
       GoRoute(
         path: AppRoutes.rescheduleAppointment,
         name: AppRoutes.rescheduleAppointment,
         builder: (context, state) => ScheduleAppointmentScreen(),
       ),
-
       GoRoute(
         path: AppRoutes.scheduleAppointment,
         name: AppRoutes.scheduleAppointment,
@@ -544,7 +552,24 @@ class AppRouter {
         name: AppRoutes.templateList,
         builder: (context, state) => TemplateListScreen(),
       ),
+      // appointmentList
+      GoRoute(
+        path: AppRoutes.appointmentList,
+        name: AppRoutes.appointmentList,
+        builder: (context, state) => ScheduledAppointmentListScreen(),
+      ),
 
+      GoRoute(
+        path: AppRoutes.consultationSummaryScreen,
+        name: AppRoutes.consultationSummaryScreen,
+        builder: (context, state) => ConsultationSummaryScreen(),
+      ),
+      // GoRoute(
+      //   path: AppRoutes.hospitalList,
+      //   name: AppRoutes.hospitalList,
+      //   builder: (context, state) => HospitalListScreen(),
+      // ),
+      //
       // GoRoute(
       //   path: AppRoutes.medicalRecordHistoryDetails,
       //   name: AppRoutes.medicalRecordHistoryDetails,
@@ -556,7 +581,6 @@ class AppRouter {
       //   name: AppRoutes.patientListScreen,
       //   builder: (context, state) => PatientScreenBlue(),
       // ),
-
   ],
   );
 }

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/common/curved_header.dart';
+import '../theme/doctor_colors.dart';
 
 
 class AppColors {
-  static const primary     = Color(0xFF1A6BF5);
-  static const scaffoldBg  = Color(0xFFFAF5EC);
-  static const cardBg      = Colors.white;
-  static const textDark    = Color(0xFF1A1A2E);
-  static const textSecond  = Color(0xFF6B7280);
-  static const green       = Color(0xFF4CAF50);
-  static const orange      = Color(0xFFFFB347);
-  static const sunYellow   = Color(0xFFFFC107);
-  static const disabledTxt = Color(0xFFB0B0B0);
-  static const divider     = Color(0xFFE5E5E5);
-  static const redHint     = Color(0xFFE53935);
+  static const primary     = DoctorColors.primaryVivid;
+  static const scaffoldBg  = DoctorColors.backgroundCream;
+  static const cardBg      = DoctorColors.cardWhite;
+  static const textDark    = DoctorColors.textDark;
+  static const textSecond  = DoctorColors.textSecondary;
+  static const green       = DoctorColors.success;
+  static const orange      = DoctorColors.warningOrange;
+  static const sunYellow   = DoctorColors.warningAmber;
+  static const disabledTxt = DoctorColors.textDisabled;
+  static const divider     = DoctorColors.divider;
+  static const redHint     = DoctorColors.error;
 }
 
 

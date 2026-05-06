@@ -92,7 +92,7 @@ class ListTabBar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 13),
             decoration: BoxDecoration(
               color: AppColors.primary,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               label,
@@ -105,17 +105,17 @@ class ListTabBar extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
 
         // Filter button
         GestureDetector(
           onTap: onFilter,
           child: Container(
             padding: const EdgeInsets.symmetric(
-                horizontal: 18, vertical: 13),
+                horizontal: 20, vertical: 13),
             decoration: BoxDecoration(
               color: AppColors.primary,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,

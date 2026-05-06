@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/doctor_colors.dart';
+
 /// A modal dialog that lists tests with multi-select circles.
 /// Returns the selected list via Navigator.pop, or null if cancelled.
 class TestSelectionDialog extends StatefulWidget {
@@ -17,14 +19,14 @@ class TestSelectionDialog extends StatefulWidget {
 }
 
 class _TestSelectionDialogState extends State<TestSelectionDialog> {
-  // ---------- Theme ----------
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _cardWhite = Colors.white;
-  static const Color _divider = Color(0xFFE5EAF2);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _circleBorder = Color(0xFFB0BFD4);
+  // ---------- Theme (forwarded to DoctorColors) ----------
+  static const Color _primaryDark   = DoctorColors.primaryDark;
+  static const Color _primary       = DoctorColors.primary;
+  static const Color _primaryLight  = DoctorColors.primaryLight;
+  static const Color _cardWhite     = DoctorColors.cardWhite;
+  static const Color _divider       = DoctorColors.dividerCool;
+  static const Color _textPrimary   = DoctorColors.textPrimary;
+  static const Color _circleBorder  = DoctorColors.circleBorder;
 
   late final Set<String> _selected;
   late final TextEditingController _searchController;

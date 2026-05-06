@@ -24,6 +24,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/core/widgets/common/curved_header.dart';
+import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class MedicalRecord {
@@ -52,10 +54,10 @@ class MedicalRecordsScreenHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEEF4FF),
+      backgroundColor: AppColors.scaffoldBg,
       body: Column(
         children: [
-          _buildHeader(context),
+          CurvedHeader(title: "MEDICAL HISTORY"),
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
@@ -70,49 +72,6 @@ class MedicalRecordsScreenHistory extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 16, 24),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios,
-                      color: Colors.white, size: 22),
-                  onPressed: () => Navigator.maybePop(context),
-                ),
-              ),
-              const Text(
-                'MEDICAL HISTORY',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _MedicalRecordCard extends StatelessWidget {
@@ -126,7 +85,7 @@ class _MedicalRecordCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFBBDEFB), width: 0.8),
+        border: Border.all(color: Colors.grey, width: 0.8),
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
@@ -201,11 +160,7 @@ class _MedicalRecordCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
+                color: Colors.green
               ),
               padding: const EdgeInsets.symmetric(vertical: 12),
               alignment: Alignment.center,

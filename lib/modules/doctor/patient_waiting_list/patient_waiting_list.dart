@@ -47,7 +47,7 @@ class SectionHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 6),
-        const Divider(color: AppColors.divider, height: 1),
+         Divider(color:Colors.grey.shade300, height: 1),
       ],
     );
   }
@@ -306,6 +306,18 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
     final isPaid = patient.paymentStatus == PaymentStatus.paid;
 
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 12,
+            spreadRadius: 2,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
       margin: const EdgeInsets.only(bottom: 12),
       child: Stack(
         clipBehavior: Clip.none,
@@ -404,12 +416,26 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                             children: [
                               Align(
                                 alignment: Alignment.topRight,
-                                child: Text(
-                                  'Appointment ID: ${patient.appointmentId}',
-                                  style: const TextStyle(
-                                      fontSize: 11.5,
-                                      color: AppColors.textDark,
-                                      fontWeight: FontWeight.w500),
+                                child: Container(
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.08),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    'Appointment ID: ${patient.appointmentId}',
+                                    style: const TextStyle(
+                                        fontSize: 11.5,
+                                        color: AppColors.textDark,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ),
                               Align(
@@ -420,10 +446,13 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                                       fontSize: 11.5,
                                       color: AppColors.textSecond),
                                 ),
-                              ),
+                              )
+
+
                             ],
                           ),
                         ),
+
                       ],
                     ),
 
@@ -479,7 +508,14 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 7),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
+                        color: Colors.grey.shade200,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius:5,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -642,6 +678,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                               ),
                             ),
                           ),
+
                         ),
                       ],
                     );
@@ -649,6 +686,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                 ),
               ),
             ),
+
         ],
       ),
     );
@@ -679,7 +717,7 @@ class AddPatientButton extends StatelessWidget {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.add_circle_outline, color: Colors.white, size: 18),
+            Icon(Icons.add_circle_outlined, color: Colors.yellow, size: 23),
             SizedBox(width: 6),
             Text(
               'Add Patient',
@@ -696,85 +734,6 @@ class AddPatientButton extends StatelessWidget {
   }
 }
 
-/// Bottom navigation bar
-// class AppBottomNav extends StatelessWidget {
-//   final int activeIndex;
-//   final void Function(int) onTap;
-//
-//   const AppBottomNav({
-//     Key? key,
-//     required this.activeIndex,
-//     required this.onTap,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-//       decoration: BoxDecoration(
-//         color: AppColors.primary,
-//         borderRadius: BorderRadius.circular(50),
-//         boxShadow: [
-//           BoxShadow(
-//             color: AppColors.primary.withOpacity(0.4),
-//             blurRadius: 16,
-//             offset: const Offset(0, 6),
-//           ),
-//         ],
-//       ),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceAround,
-//         children: _navItems.asMap().entries.map((entry) {
-//           final index  = entry.key;
-//           final item   = entry.value;
-//           final active = index == activeIndex;
-//
-//           return GestureDetector(
-//             onTap: () => onTap(index),
-//             child: AnimatedContainer(
-//               duration: const Duration(milliseconds: 200),
-//               width: 44,
-//               height: 44,
-//               decoration: BoxDecoration(
-//                 color: active
-//                     ? Colors.white.withOpacity(0.25)
-//                     : Colors.transparent,
-//                 shape: BoxShape.circle,
-//               ),
-//               child: item.hasAvatar
-//                   ? Stack(
-//                 alignment: Alignment.center,
-//                 children: [
-//                   Icon(item.icon, color: Colors.white, size: 22),
-//                   Positioned(
-//                     bottom: 6,
-//                     right: 6,
-//                     child: Container(
-//                       width: 10,
-//                       height: 10,
-//                       decoration: BoxDecoration(
-//                         color: AppColors.green,
-//                         shape: BoxShape.circle,
-//                         border: Border.all(
-//                             color: AppColors.primary, width: 1.5),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               )
-//                   : Icon(item.icon, color: Colors.white, size: 24),
-//             ),
-//           );
-//         }).toList(),
-//       ),
-//     );
-//   }
-// }
-
-// ════════════════════════════════════════════════════════
-//  MAIN SCREEN
-// ════════════════════════════════════════════════════════
 
 class PatientWaitingListScreen extends StatefulWidget {
   const PatientWaitingListScreen({Key? key}) : super(key: key);
@@ -790,12 +749,7 @@ class _PatientWaitingListScreenState
   int _activeNavIndex = 1; // patients tab active by default
 
   void _onAddPatient() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Add Patient tapped'),
-        duration: Duration(seconds: 1),
-      ),
-    );
+    context.push(AppRoutes.addPatientScreen);
   }
 
   @override
@@ -838,7 +792,7 @@ class _PatientWaitingListScreenState
                         //       (p) => PatientWaitingCard(patient: p),
                         // ),
 
-                        const SizedBox(height: 8),
+                        // const SizedBox(height: 8),
 
                         // ── In-person patients section ─────────
                         // const SectionHeader(
@@ -846,7 +800,7 @@ class _PatientWaitingListScreenState
                         //   statusText:  'Online',
                         //   statusColor: Colors.orange,
                         // ),
-                        const SizedBox(height: 12),
+                        // const SizedBox(height: 12),
 
                         // Iterated from _inPersonPatients.
                         // The very first card plays a one-time swipe demo
@@ -857,14 +811,20 @@ class _PatientWaitingListScreenState
                                 showDemo: e.key == 0,
                               ),
                         ),
+                        const SectionHeader(
+                          label:       'Patients in',
+                          statusText:  'Online',
+                          statusColor: Colors.red,
+                        ),
 
-                        const SizedBox(height: 16),
+                         SizedBox(height:MediaQuery.of(context).size.height/5),
 
                         // ── Add Patient button (right-aligned) ──
-                        // Align(
-                        //   alignment: Alignment.centerRight,
-                        //   child: AddPatientButton(onTap: _onAddPatient),
-                        // ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: AddPatientButton(onTap: _onAddPatient),
+                        ),
+
                         // Align(
                         //   alignment: Alignment.bottomCenter,
                         //   child: AddPatientButton(onTap: _onAddPatient),
@@ -890,14 +850,13 @@ class _PatientWaitingListScreenState
           // ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () {
-          context.push(AppRoutes.videoPage);
-        },
-        child:const Icon(Icons.video_call, color: Colors.blue),
-      ),
-
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white,
+      //   onPressed: () {
+      //     context.push(AppRoutes.videoPage);
+      //   },
+      //   child:const Icon(Icons.video_call, color: Colors.blue),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,    );
   }
 }

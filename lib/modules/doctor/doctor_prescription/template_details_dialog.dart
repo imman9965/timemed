@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_colors.dart';
+
 /// Shows the list of drugs inside a template.
 /// Open via:
 ///   showDialog(
@@ -26,16 +29,16 @@ class TemplateDetailDialog extends StatefulWidget {
 }
 
 class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
-  // ---------- Theme ----------
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _cardWhite = Colors.white;
-  static const Color _fieldBorder = Color(0xFFD9E2F0);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _textSecondary = Color(0xFF6B7280);
-  static const Color _deleteRed = Color(0xFFEF4444);
-  static const Color _deleteRedSoft = Color(0xFFFEE2E2);
+  // ---------- Theme (forwarded to DoctorColors) ----------
+  static const Color _primaryDark    = DoctorColors.primaryDark;
+  static const Color _primary        = DoctorColors.primary;
+  static const Color _primaryLight   = DoctorColors.primaryLight;
+  static const Color _cardWhite      = DoctorColors.cardWhite;
+  static const Color _fieldBorder    = DoctorColors.fieldBorder;
+  static const Color _textPrimary    = DoctorColors.textPrimary;
+  static const Color _textSecondary  = DoctorColors.textSecondary;
+  static const Color _deleteRed      = DoctorColors.errorRed;
+  static const Color _deleteRedSoft  = DoctorColors.errorSoftBg;
 
   late final List<TemplateDrug> _drugs;
 
@@ -113,12 +116,13 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
   // ---------- Header ----------
   Widget _buildHeader() {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [_primaryDark, _primaryLight],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+      decoration:  BoxDecoration(
+        color:AppColors.primary,
+        // gradient: LinearGradient(
+        //   colors: [_primaryDark, _primaryLight],
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        // ),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),

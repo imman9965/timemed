@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../theme/doctor_colors.dart';
+
 // ════════════════════════════════════════════════════════
-//  APP COLORS
+//  APP COLORS — forwarded to DoctorColors (single source of truth)
 // ════════════════════════════════════════════════════════
 
 class AppColors {
-  static const primaryBlue  = Color(0xFF1A6BF5);
-  static const scaffoldBg   = Color(0xFFFAF5EC);
-  static const cardBg       = Colors.white;
-  static const textDark     = Color(0xFF1A1A2E);
-  static const textMuted    = Color(0xFF9E9E9E);
-  static const textSecond   = Color(0xFF6B7280);
-  static const inputBg      = Color(0xFFF2F2F2);
-  static const dividerColor = Color(0xFFE5E5E5);
-  static const redClose     = Color(0xFFE53935);
-  static const vitalRowBg   = Color(0xFFF4F4F4);
+  static const primaryBlue  = DoctorColors.primaryVivid;
+  static const scaffoldBg   = DoctorColors.backgroundCream;
+  static const cardBg       = DoctorColors.cardWhite;
+  static const textDark     = DoctorColors.textDark;
+  static const textMuted    = DoctorColors.textMuted;
+  static const textSecond   = DoctorColors.textSecondary;
+  static const inputBg      = DoctorColors.inputBg;
+  static const dividerColor = DoctorColors.divider;
+  static const redClose     = DoctorColors.error;
+  static const vitalRowBg   = DoctorColors.rowBg;
 }
 
 // ════════════════════════════════════════════════════════

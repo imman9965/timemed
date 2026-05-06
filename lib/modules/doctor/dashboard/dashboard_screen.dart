@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/routes/app_routes.dart';
 
 class AppointmentDashboard extends StatelessWidget {
   const AppointmentDashboard({super.key});
@@ -189,29 +191,34 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            count,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: color,
+    return InkWell(
+      onTap: (){
+        context.push(AppRoutes.scheduleAppointment);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              count,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
-          ),
-          const Spacer(),
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          )
-        ],
+            const Spacer(),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
       ),
     );
   }

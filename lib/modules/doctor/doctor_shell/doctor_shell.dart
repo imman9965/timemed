@@ -35,12 +35,10 @@ class _DoctorShellScreenState extends State<DoctorShellScreen> {
   /// Returns true if we handled the back press (went to previous tab)
   bool _onBackPressed() {
     if (_tabHistory.length > 1) {
-      // Remove current tab from history
       _tabHistory.removeLast();
-      // Navigate to the previous tab
       final previousIndex = _tabHistory.last;
       widget.navigationShell.goBranch(previousIndex);
-      return true; // consumed the back press
+      return true;
     }
     return false; // let system handle it (exit app)
   }

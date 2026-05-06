@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:timesmed_project/modules/doctor/widgets/curved_appbar.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/common/curved_header.dart';
 import '../add_online_consultant_list/add_online_consultant_schedule_list.dart';
 import '../medical_records/dummy_data_7.dart';
 import '../widgets/add_online_schedule_list.dart';
@@ -152,7 +154,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
       backgroundColor: AppColors.scaffoldBg4,
       body: Column(
         children: [
-          _buildHeader(),
+          CurvedHeader(title: "HOSPITAL LIST - BASED ON DOCTOR"),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -167,7 +169,6 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
                   const SizedBox(height: 14),
                   _buildSectionPill('Online Consultation Schedule List'),
                   const SizedBox(height: 14),
-                  // ✅ Only show card if schedule exists; otherwise show "Add" prompt
                   if (_onlineSchedule != null)
                     _buildOnlineScheduleCard()
                   else
@@ -183,33 +184,33 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
   }
 
   // ── Header ────────────────────────────────────────────
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primaryBlue4,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 16,
-        bottom: 22,
-      ),
-      child: const Text(
-        'HOSPITAL LIST -\nBASED ON DOCTOR',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 22,
-          height: 1.3,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
+  // Widget _buildHeader() {
+  //   return Container(
+  //     width: double.infinity,
+  //     decoration: const BoxDecoration(
+  //       color: AppColors.primaryBlue4,
+  //       borderRadius: BorderRadius.only(
+  //         bottomLeft: Radius.circular(28),
+  //         bottomRight: Radius.circular(28),
+  //       ),
+  //     ),
+  //     padding: EdgeInsets.only(
+  //       top: MediaQuery.of(context).padding.top + 16,
+  //       bottom: 22,
+  //     ),
+  //     child: const Text(
+  //       'HOSPITAL LIST -\nBASED ON DOCTOR',
+  //       textAlign: TextAlign.center,
+  //       style: TextStyle(
+  //         color: Colors.white,
+  //         fontWeight: FontWeight.w800,
+  //         fontSize: 22,
+  //         height: 1.3,
+  //         letterSpacing: 0.3,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // ── Hospital List Card ────────────────────────────────
   Widget _buildHospitalListCard() {
@@ -766,57 +767,144 @@ class _HospitalDialogState extends State<_HospitalDialog> {
   Widget build(BuildContext context) {
     final isEdit = widget.existing != null;
     return AlertDialog(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)),
-      title: Text(isEdit ? 'Edit Hospital' : 'Add New Hospital'),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      contentPadding: EdgeInsets.zero, // important for header design
+
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
-            controller: _nameCtrl,
-            decoration: const InputDecoration(
-                labelText: 'Hospital name',
-                border: OutlineInputBorder()),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _phoneCtrl,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(10),
-            ],
-            decoration: const InputDecoration(
-                labelText: 'Phone', border: OutlineInputBorder()),
-          ),
-          const SizedBox(height: 12),
-          Row(children: [
-            const Text('Type: '),
-            const SizedBox(width: 8),
-            ChoiceChip(
-              label: const Text('Own'),
-              selected: _type == 'Own',
-              onSelected: (_) => setState(() => _type = 'Own'),
+
+          /// 🔵 HEADER
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Color(0xFF1976D2), // blue header
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
             ),
-            const SizedBox(width: 8),
-            ChoiceChip(
-              label: const Text('Partner'),
-              selected: _type == 'Partner',
-              onSelected: (_) => setState(() => _type = 'Partner'),
+            child: Text(
+              isEdit ? 'Edit Hospital' : 'Add New Hospital',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ]),
+          ),
+
+          /// ⚪ BODY
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _nameCtrl,
+                  decoration: InputDecoration(
+                    labelText: 'Hospital name',
+                    labelStyle: const TextStyle(color: Colors.black),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black26),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                TextField(
+                  controller: _phoneCtrl,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  decoration: InputDecoration(
+                    labelText: 'Phone',
+                    labelStyle: const TextStyle(color: Colors.black),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black26),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                Row(
+                  children: [
+                    const Text(
+                      'Type:',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const SizedBox(width: 10),
+
+                    ChoiceChip(
+                      label: const Text('Own'),
+                      selected: _type == 'Own',
+                      selectedColor: Colors.blue,
+                      backgroundColor: Colors.grey.shade200,
+                      labelStyle: TextStyle(
+                        color: _type == 'Own' ? Colors.white : Colors.black,
+                      ),
+                      onSelected: (_) => setState(() => _type = 'Own'),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    ChoiceChip(
+                      label: const Text('Partner'),
+                      selected: _type == 'Partner',
+                      selectedColor: Colors.blue,
+                      backgroundColor: Colors.grey.shade200,
+                      labelStyle: TextStyle(
+                        color: _type == 'Partner' ? Colors.white : Colors.black,
+                      ),
+                      onSelected: (_) => setState(() => _type = 'Partner'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
+
+      /// ACTIONS
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Colors.blue),
+          ),
+        ),
+
         ElevatedButton(
           onPressed: _save,
           style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBlue4),
-          child: Text(isEdit ? 'Update' : 'Add',
-              style: const TextStyle(color: Colors.white)),
+            backgroundColor: const Color(0xFF1976D2), // blue button
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Text(
+            isEdit ? 'Update' : 'Add',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );

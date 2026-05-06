@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/widgets/common/curved_header.dart';
+import '../theme/doctor_colors.dart';
 
 class PatientRegistrationScreen extends StatefulWidget {
   const PatientRegistrationScreen({super.key});
@@ -29,15 +30,15 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
   String? _selectedGender; // 'Male' or 'Female'
   bool _obscurePassword = true;
 
-  // Theme color used in the header gradient
-  static const Color _primaryGreen = Color(0xFF2BB673);
-  static const Color _primaryTeal = Color(0xFF1FA38C);
-  static const Color _bgLavender = Color(0xFFF7F2FA);
-  static const Color _fieldBorder = Color(0xFFD9D9D9);
-  static const Color _hintGrey = Color(0xFF6B6B6B);
-  static const Color _genderIcon = Color(0xFFF5B400);
-  static const Color _closeRed = Color(0xFFE94B4B);
-  static const Color _saveYellow = Color(0xFFFFC107);
+  // Theme color used in the header gradient (forwarded to DoctorColors)
+  static const Color _primaryGreen = DoctorColors.successFresh;
+  static const Color _primaryTeal  = DoctorColors.successJade;
+  static const Color _bgLavender   = DoctorColors.backgroundLavender;
+  static const Color _fieldBorder  = DoctorColors.borderGreyLight;
+  static const Color _hintGrey     = DoctorColors.textHintGrey;
+  static const Color _genderIcon   = DoctorColors.warningGold;
+  static const Color _closeRed     = DoctorColors.errorCoral;
+  static const Color _saveYellow   = DoctorColors.warningAmber;
 
   @override
   void dispose() {

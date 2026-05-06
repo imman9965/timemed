@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timesmed_project/modules/doctor/widgets/theme.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'clinical_notes_details_screen.dart';
 import 'clinical_notes_form_screen.dart';
@@ -120,7 +121,7 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors100.background,
+      backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
@@ -157,7 +158,7 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors100.primary,
+                backgroundColor:Colors.green,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
@@ -198,7 +199,7 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors100.cardWhite,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors100.fieldBorder),
           boxShadow: [
@@ -223,9 +224,9 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
                       Text(
                         _formatDate(note.dateTime),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: AppColors100.primary,
+                          color:Colors.black,
                         ),
                       ),
                     ],
@@ -239,9 +240,9 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
                       Text(
                         _formatTime(note.dateTime),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: AppColors100.primary,
+                          color:Colors.black,
                         ),
                       ),
                     ],
@@ -264,10 +265,10 @@ class _ClinicalNotesListScreenState extends State<ClinicalNotesListScreen> {
             ),
             const SizedBox(width: 8),
             _circleAction(
-              bg: AppColors100.editTealBg,
+              bg: Colors.green.shade400,
               borderColor: AppColors100.editTeal,
               icon: Icons.edit_outlined,
-              iconColor: AppColors100.editTeal,
+              iconColor: Colors.white,
               onTap: () => _openForm(existing: note),
             ),
             const SizedBox(width: 8),

@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
+import '../../../core/widgets/common/curved_header.dart';
+import '../theme/doctor_colors.dart';
 import '../widgets/vitals.dart';
 
 // ════════════════════════════════════════════════════════
-//  CONSTANTS
+//  CONSTANTS — forwarded to DoctorColors
 // ════════════════════════════════════════════════════════
 
 class AppColors {
-  static const primary     = Color(0xFF1A6BF5);
-  static const scaffoldBg  = Color(0xFFFAF5EC);
-  static const cardBg      = Colors.white;
-  static const textDark    = Color(0xFF1A1A2E);
-  static const textSecond  = Color(0xFF6B7280);
-  static const green       = Color(0xFF4CAF50);
-  static const paidGreen   = Color(0xFF2E7D32);
-  static const unpaidRed   = Color(0xFFE53935);
-  static const divider     = Color(0xFFE0E0E0);
-  static const unknownGrey = Color(0xFFCFD8DC);
+  static const primary     = DoctorColors.primaryVivid;
+  static const scaffoldBg  = DoctorColors.backgroundCream;
+  static const cardBg      = DoctorColors.cardWhite;
+  static const textDark    = DoctorColors.textDark;
+  static const textSecond  = DoctorColors.textSecondary;
+  static const green       = DoctorColors.success;
+  static const paidGreen   = DoctorColors.successDeep;
+  static const unpaidRed   = DoctorColors.error;
+  static const divider     = DoctorColors.dividerNeutral;
+  static const unknownGrey = DoctorColors.dividerDark;
 }
 
 
@@ -91,40 +93,6 @@ final List<AppointmentListItem> _appointmentList = [
 //  REUSABLE — CURVED HEADER
 // ════════════════════════════════════════════════════════
 
-class CurvedHeader extends StatelessWidget {
-  final String title;
-  const CurvedHeader({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          bottomLeft:  Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 18,
-        bottom: 24,
-        left: 20,
-        right: 20,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 24,
-          height: 1.2,
-        ),
-      ),
-    );
-  }
-}
 
 // ════════════════════════════════════════════════════════
 //  REUSABLE — BARCODE (accurate rendering)
@@ -212,7 +180,7 @@ class _QrPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.black;
+    final paint = Paint()..color = Colors.grey.shade300;
     final cell = size.width / 11;
 
     for (int r = 0; r < 11; r++) {
@@ -341,8 +309,8 @@ class AppointmentCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(item.time!,
                           style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                               color: AppColors.textDark)),
                     ]),
                   ],
@@ -510,7 +478,7 @@ class AppointmentCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.unknownGrey.withOpacity(0.4),
+                      color: AppColors.primary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -538,6 +506,7 @@ class AppointmentCard extends StatelessWidget {
 
           // ── Patient ID + Barcode + PAID + QR ─────────
           Row(
+
             children: [
               const Text('Patient ID:',
                   style: TextStyle(
@@ -579,7 +548,10 @@ class AppointmentCard extends StatelessWidget {
               ),
               const Spacer(),
               // QR
-              const QrCodeWidget(size: 46),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: const QrCodeWidget(size: 46),
+              ),
             ],
           ),
           const SizedBox(height: 14),
@@ -616,7 +588,7 @@ class ScheduledAppointmentListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           const CurvedHeader(title: 'Scheduled Appointment\nList'),

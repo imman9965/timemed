@@ -16,27 +16,18 @@ class DoctorProfileScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.only(
-                  top: 50, left: 16, right: 16, bottom: 20),
+                  top: 30, left: 16, right: 16, bottom: 24),
               decoration: const BoxDecoration(
                 color: AppColors.primary,
-                // gradient: LinearGradient(
-                //   colors: [
-                //     Color(0xFF1976D2), // Blue
-                //     Color(0xFF42A5F5), // Light Blue
-                //   ],
-                //   begin: Alignment.topLeft,
-                //   end: Alignment.bottomRight,
-                // ),
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      // const Icon(Icons.arrow_back, color: Colors.white),
                       const Expanded(
                         child: Center(
                           child: Text(
@@ -49,42 +40,41 @@ class DoctorProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 24),
                     ],
                   ),
 
-                  const SizedBox(height: 60),
+                  // const SizedBox(height: 14),
 
                   /// Doctor Info Row
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 28,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.person, size: 30),
-                      ),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Text(
-                          "Dr Mariappan",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.logout, color: Colors.white),
-                        ),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const CircleAvatar(
+                  //       radius: 28,
+                  //       backgroundColor: Colors.white,
+                  //       child: Icon(Icons.person, size: 30),
+                  //     ),
+                  //     const SizedBox(width: 12),
+                  //     const Expanded(
+                  //       child: Text(
+                  //         "Dr Mariappan",
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 16,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     // Container(
+                  //     //   decoration: BoxDecoration(
+                  //     //     border: Border.all(color: Colors.white),
+                  //     //     shape: BoxShape.circle,
+                  //     //   ),
+                  //     //   child: IconButton(
+                  //     //     onPressed: () {},
+                  //     //     icon: const Icon(Icons.logout, color: Colors.white),
+                  //     //   ),
+                  //     // )
+                  //   ],
+                  // ),
                 ],
               ),
             ),

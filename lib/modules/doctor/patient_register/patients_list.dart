@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import '../../../routes/app_routes.dart';
 
@@ -9,7 +10,7 @@ class PatientScreenBlue extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFF5F9FF),
+        backgroundColor: AppColors.scaffoldBg,
         body: Column(
           children: [
             const CurvedHeader(title: "Patient Register"),
@@ -88,18 +89,24 @@ class PatientScreenBlue extends StatelessWidget {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Colors.blue)
+              Icon(Icons.arrow_forward_ios, color: Colors.blue,size: 20,)
             ],
           ),
           SizedBox(height: 10),
           Text("Age: $age, Male",
-              style: TextStyle(color: Colors.grey)),
+              style: TextStyle(color: Colors.grey,fontSize: 12)),
           SizedBox(height: 10),
           Row(
             children: [
               Icon(Icons.email, color: Colors.blue),
               SizedBox(width: 8),
-              Text(email),
+              Text(email,
+                style: TextStyle(
+                fontSize: 12,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
             ],
           ),
           SizedBox(height: 6),
@@ -108,7 +115,11 @@ class PatientScreenBlue extends StatelessWidget {
             children: [
               Icon(Icons.phone, color: Colors.blue),
               SizedBox(width: 8),
-              Text(phone),
+              Text(phone,style: TextStyle(
+                fontSize: 12,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),),
             ],
           ),
           Divider(height: 20),
@@ -116,7 +127,8 @@ class PatientScreenBlue extends StatelessWidget {
           Text(
             "Target INR: $inr",
             style: TextStyle(
-              color: Colors.red,
+              fontSize: 12,
+              color: Colors.green,
               fontWeight: FontWeight.bold,
             ),
           )
@@ -130,7 +142,7 @@ class PatientScreenBlue extends StatelessWidget {
       // padding: EdgeInsets.all(8),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.amber.shade200,
+          backgroundColor: Colors.green,
           minimumSize: Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -141,7 +153,7 @@ class PatientScreenBlue extends StatelessWidget {
         },
         child: Text(
           "Add Patient Registration",
-          style: TextStyle(fontSize: 16,color: Colors.black),
+          style: TextStyle(fontSize: 16,color: Colors.white),
         ),
       ),
     );

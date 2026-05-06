@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/widgets/doctor_call_card.dart';
+import '../../../routes/app_routes.dart';
+import '../theme/doctor_colors.dart';
 import 'dummy_data_4.dart';
 
 
@@ -14,8 +16,8 @@ class VideoCallScreen extends StatefulWidget {
 class _VideoCallScreenState extends State<VideoCallScreen> {
   bool _menuExpanded = true;
 
-  static const _blue = Color(0xFF1A6BF5);
-  static const _darkBg = Color(0xFF1C1C1E);
+  static const _blue   = DoctorColors.primaryVivid;
+  static const _darkBg = DoctorColors.callDarkBg;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +76,6 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                     ),
                   ),
                 ),
-
-                // Side menu panel
                 AnimatedSize(
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
@@ -86,8 +86,6 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ],
             ),
           ),
-
-          // ── Bottom call controls bar ───────────────────────────────────
           Positioned(
             bottom: 24,
             left: 16,
@@ -131,12 +129,18 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               InkWell(
                 onTap: () {
                   if (item.route.isNotEmpty) {
-                    context.push(item.route); // ✅ push so back button works
+                    context.push(item.route);
                   }
                 },
                 borderRadius: BorderRadius.only(
-                  topLeft: index == 0 ? const Radius.circular(18) : Radius.zero,
-                  bottomLeft: isLast ? const Radius.circular(18) : Radius.zero,
+                  topLeft:
+                  index == 0 ? const Radius.circular(18) : Radius.zero,
+                  topRight:
+                  index == 0 ? const Radius.circular(18) : Radius.zero,
+                  bottomLeft:
+                  isLast ? const Radius.circular(18) : Radius.zero,
+                  bottomRight:
+                  isLast ? const Radius.circular(18) : Radius.zero,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -145,12 +149,16 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        item.icon,
+                      Image.asset(
+                        item.icon.toString(),
+                        width: 22,
+                        height: 22,
                         color: Colors.white,
-                        size: 22,
                       ),
+
+
                       const SizedBox(width: 12),
+
                       Expanded(
                         child: Text(
                           item.label,
@@ -160,6 +168,12 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                             fontSize: 14.5,
                           ),
                         ),
+                      ),
+
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white70,
+                        size: 16,
                       ),
                     ],
                   ),
@@ -176,6 +190,61 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
             ],
           );
         }).toList(),
+        // children: menuItems.asMap().entries.map((entry) {
+        //   final index = entry.key;
+        //   final item = entry.value;
+        //   final isLast = index == menuItems.length - 1;
+        //
+        //   return Column(
+        //     children: [
+        //       InkWell(
+        //         onTap: () {
+        //           if (item.route.isNotEmpty) {
+        //             context.push(item.route); // ✅ push so back button works
+        //           }
+        //         },
+        //         borderRadius: BorderRadius.only(
+        //           topLeft: index == 0 ? const Radius.circular(18) : Radius.zero,
+        //           bottomLeft: isLast ? const Radius.circular(18) : Radius.zero,
+        //         ),
+        //         child: Padding(
+        //           padding: const EdgeInsets.symmetric(
+        //             horizontal: 18,
+        //             vertical: 14,
+        //           ),
+        //           child: Row(
+        //             children: [
+        //               Icon(
+        //                 item.icon,
+        //                 color: Colors.white,
+        //                 size: 22,
+        //               ),
+        //               const SizedBox(width: 12),
+        //               Expanded(
+        //                 child: Text(
+        //                   item.label,
+        //                   style: const TextStyle(
+        //                     color: Colors.white,
+        //                     fontWeight: FontWeight.w600,
+        //                     fontSize: 14.5,
+        //                   ),
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //
+        //       if (!isLast)
+        //         const Divider(
+        //           color: Colors.white30,
+        //           height: 1,
+        //           indent: 16,
+        //           endIndent: 16,
+        //         ),
+        //     ],
+        //   );
+        // }).toList(),
       ),
     );
   }
@@ -198,22 +267,47 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // children: callControls.map((ctrl) {
+        //   return GestureDetector(
+        //     onTap: () {},
+        //     child: Container(
+        //       width: 48,
+        //       height: 48,
+        //       decoration: BoxDecoration(
+        //         color: ctrl.isRed
+        //             ? const Color(0xFFE53935)
+        //             : const Color(0xFF2C2C2E),
+        //         shape: BoxShape.circle,
+        //       ),
+        //       child: Icon(
+        //         ctrl.icon,
+        //         color: Colors.white,
+        //         size: ctrl.isRed ? 22 : 20,
+        //       ),
+        //     ),
+        //   );
+        // }).toList(),
         children: callControls.map((ctrl) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+             context.push(AppRoutes.consultationSummaryScreen);
+            },
             child: Container(
-              width: 48,
-              height: 48,
+              width: ctrl.isRed ? 60:48,
+              height: ctrl.isRed ? 60:48,
               decoration: BoxDecoration(
                 color: ctrl.isRed
                     ? const Color(0xFFE53935)
                     : const Color(0xFF2C2C2E),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                ctrl.icon,
-                color: Colors.white,
-                size: ctrl.isRed ? 22 : 20,
+              child: Center(
+                child: Image.asset(
+                  ctrl.icon,
+                  width: ctrl.isRed ? 25 : 20,
+                  height: ctrl.isRed ? 25 : 20,
+                  color: Colors.white, // optional
+                ),
               ),
             ),
           );

@@ -35,8 +35,9 @@ class CurvedHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-      clipper: _HeaderClipper(),
+      clipper: HeaderClipper(),
       child: Container(
+
         height: height ?? 80,
         width: double.infinity,
         color: AppColors.primaryBlue,
@@ -99,21 +100,46 @@ class CurvedHeader extends StatelessWidget {
   }
 }
 /// Carves a generous rounded bottom on the header, matching the mockups.
-class _HeaderClipper extends CustomClipper<Path> {
+class HeaderClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    const radius = 32.0;
-    final path = Path()
-      ..lineTo(0, size.height - radius)
-      ..quadraticBezierTo(0, size.height, radius, size.height)
-      ..lineTo(size.width - radius, size.height)
-      ..quadraticBezierTo(
-          size.width, size.height, size.width, size.height - radius)
-      ..lineTo(size.width, 0)
-      ..close();
+    const radius = 50.0;
+
+    Path path = Path();
+
+    // Start from bottom left
+    path.lineTo(0, radius);
+
+    // Top left curve
+    path.quadraticBezierTo(
+      0,
+      0,
+      radius,
+      0,
+    );
+
+    // Top line
+    path.lineTo(size.width - radius, 0);
+
+    // Top right curve
+    path.quadraticBezierTo(
+      size.width,
+      0,
+      size.width,
+      radius,
+    );
+
+    // Right side down
+    path.lineTo(size.width, size.height);
+
+    // Bottom line
+    path.lineTo(0, size.height);
+
+    path.close();
+
     return path;
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timesmed_project/modules/doctor/widgets/theme.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'dummy.dart';
 
@@ -79,7 +80,7 @@ class _ClinicalNoteFormScreenState extends State<ClinicalNoteFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors100.background,
+      backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
@@ -196,7 +197,7 @@ class _ClinicalNoteFormScreenState extends State<ClinicalNoteFormScreen> {
                   child: ElevatedButton(
                     onPressed: _onSubmit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors100.submitBlue,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

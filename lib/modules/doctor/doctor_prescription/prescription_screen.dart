@@ -3,7 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_details_dialog.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_screen_list.dart';
+import 'package:timesmed_project/modules/doctor/widgets/curverd_display.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
+
+import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/common/curved_header.dart';
 
 class DoctorPrescriptionScreen extends StatefulWidget {
   const DoctorPrescriptionScreen({super.key});
@@ -320,11 +324,11 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _background,
+      backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
+            CurvedHeader(title: "DOCTOR PRESCRIPTION"),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
@@ -386,45 +390,45 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
   }
 
   // ---------- Header ----------
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [_primaryDark, _primaryLight],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: Colors.white, size: 20),
-            onPressed: () => Navigator.of(context).maybePop(),
-          ),
-          const Expanded(
-            child: Text(
-              'DOCTOR PRESCRIPTION',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
-          ),
-          const SizedBox(width: 40),
-        ],
-      ),
-    );
-  }
+  // Widget _buildHeader() {
+  //   return Container(
+  //     width: double.infinity,
+  //     decoration: const BoxDecoration(
+  //       gradient: LinearGradient(
+  //         colors: [_primaryDark, _primaryLight],
+  //         begin: Alignment.topLeft,
+  //         end: Alignment.bottomRight,
+  //       ),
+  //       borderRadius: BorderRadius.only(
+  //         bottomLeft: Radius.circular(28),
+  //         bottomRight: Radius.circular(28),
+  //       ),
+  //     ),
+  //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+  //     child: Row(
+  //       children: [
+  //         IconButton(
+  //           icon: const Icon(Icons.arrow_back_ios_new,
+  //               color: Colors.white, size: 20),
+  //           onPressed: () => Navigator.of(context).maybePop(),
+  //         ),
+  //         const Expanded(
+  //           child: Text(
+  //             'DOCTOR PRESCRIPTION',
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w700,
+  //               letterSpacing: 0.6,
+  //             ),
+  //           ),
+  //         ),
+  //         const SizedBox(width: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   // ---------- Drug name with search ----------
   Widget _buildDrugNameField() {
@@ -666,7 +670,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       child: ElevatedButton(
         onPressed: _addDrug,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _primary,
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -852,7 +856,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       child: ElevatedButton(
         onPressed: _sendPrescription,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _primary,
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

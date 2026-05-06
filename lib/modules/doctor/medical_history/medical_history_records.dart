@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_colors.dart';
 
 class medicalRecordHistoryDetails extends StatelessWidget {
   const medicalRecordHistoryDetails({super.key});
 
-  static const Color primaryTeal = Color(0xFF0FA37F);
-  static const Color amberText = Color(0xFFB07A00);
-  static const Color amberBg = Color(0xFFFFF8E1);
-  static const Color notesOrange = Color(0xFFC05A00);
-  static const Color notesBg = Color(0xFFFFF0E6);
+  static const Color primaryTeal = DoctorColors.successTeal;
+  static const Color amberText   = DoctorColors.warningBronze;
+  static const Color amberBg     = DoctorColors.warningSoftBg;
+  static const Color notesOrange = DoctorColors.warningPeach;
+  static const Color notesBg     = DoctorColors.warningPeachBg;
 
   @override
   Widget build(BuildContext context) {

@@ -106,6 +106,8 @@ abstract class AppRoutes {
 
   static const requestScreen = '/requestScreen';
   static const appointmentDashboard = '/appointment';
+  static const appointmentList = '/appointmentList';
+
   static const doctorProfile = '/doctorProfile';
   static const medicalRecordHistory = '/medicalRecordHistory';
   static const medicalRecordHistoryDetails = '/medicalRecordHistoryDetails';
@@ -113,7 +115,11 @@ abstract class AppRoutes {
   static const patientListScreen = '/patientListScreen';
   static const  addPatientScreen = '/addPatientScreen';
   static const  patientOtpScreen = '/OtpPage';
+  // static const hospitalList = '/TemplateListScreen';
+
   static const templateList = '/TemplateListScreen';
+  static const consultationSummaryScreen = '/ConsultationSummaryScreen';
+
 
 
 

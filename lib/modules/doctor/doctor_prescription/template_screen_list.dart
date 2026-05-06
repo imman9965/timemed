@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_details_dialog.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_colors.dart';
+
+import '../../../core/constants/app_colors.dart';
 
 
 final List<PrescriptionTemplate> templates = [
@@ -80,18 +84,18 @@ class TemplateListScreen extends StatefulWidget {
 }
 
 class _TemplateListScreenState extends State<TemplateListScreen> {
-  // ---------- Theme ----------
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _background = Color(0xFFF4F8FE);
-  static const Color _cardWhite = Colors.white;
-  static const Color _fieldBorder = Color(0xFFD9E2F0);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _textSecondary = Color(0xFF6B7280);
-  static const Color _accentSoft = Color(0xFFE5EFFC);
-  static const Color _deleteRed = Color(0xFFEF4444);
-  static const Color _selectBlue = Color(0xFF2F7BE0);
+  // ---------- Theme (forwarded to DoctorColors) ----------
+  static const Color _primaryDark   = DoctorColors.primaryDark;
+  static const Color _primary       = DoctorColors.primary;
+  static const Color _primaryLight  = DoctorColors.primaryLight;
+  static const Color _background    = DoctorColors.background;
+  static const Color _cardWhite     = DoctorColors.cardWhite;
+  static const Color _fieldBorder   = DoctorColors.fieldBorder;
+  static const Color _textPrimary   = DoctorColors.textPrimary;
+  static const Color _textSecondary = DoctorColors.textSecondary;
+  static const Color _accentSoft    = DoctorColors.primarySoft;
+  static const Color _deleteRed     = DoctorColors.errorRed;
+  static const Color _selectBlue    = DoctorColors.primary;
 
   // ---------- Dummy data ----------
 
@@ -189,11 +193,11 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _background,
+      backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
+            CurvedHeader(title: "TEMPLATE"),
             Expanded(
               child: templates.isEmpty
                   ? _buildEmpty()
@@ -243,7 +247,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                   child: ElevatedButton(
                     onPressed: _onSelect,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectBlue,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -270,45 +274,6 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
   }
 
   // ---------- Header ----------
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [_primaryDark, _primaryLight],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: Colors.white, size: 20),
-            onPressed: () => Navigator.of(context).maybePop(),
-          ),
-          const Expanded(
-            child: Text(
-              'TEMPLATE',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
-          ),
-          const SizedBox(width: 40),
-        ],
-      ),
-    );
-  }
 
   // ---------- Empty ----------
   Widget _buildEmpty() {
@@ -447,12 +412,12 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: _accentSoft,
+                        color: Colors.green.shade100,
                         shape: BoxShape.circle,
                         border: Border.all(color: _primary.withOpacity(0.3)),
                       ),
                       child: const Icon(Icons.visibility_outlined,
-                          color: _primary, size: 20),
+                          color: Colors.green, size: 20),
                     ),
                   ),
                 ),
@@ -515,11 +480,11 @@ class _TemplatePreviewDialog extends StatelessWidget {
   final PrescriptionTemplate template;
   const _TemplatePreviewDialog({required this.template});
 
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _textSecondary = Color(0xFF6B7280);
+  static const Color _primaryDark   = DoctorColors.primaryDark;
+  static const Color _primaryLight  = DoctorColors.primaryLight;
+  static const Color _primary       = DoctorColors.primary;
+  static const Color _textPrimary   = DoctorColors.textPrimary;
+  static const Color _textSecondary = DoctorColors.textSecondary;
 
   @override
   Widget build(BuildContext context) {

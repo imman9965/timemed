@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
 
-/// Blue-white theme constants for the Clinical Notes module.
+import '../theme/doctor_colors.dart';
+import '../theme/doctor_gradients.dart';
+
+/// ⚠️ Legacy shim — kept for backward compatibility.
+///
+/// All real tokens now live in `lib/modules/doctor/theme/`.
+/// New code should import from there:
+///
+///   import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
+///
+/// This file simply forwards the old `AppColors100` / `AppGradients`
+/// names to the new central palette, so existing screens keep
+/// rendering exactly as before.
 class AppColors100 {
   // Header gradient (deep blue → soft sky)
-  static const Color primaryDark = Color(0xFF1E5FBF);
-  static const Color primary = Color(0xFF2F7BE0);
-  static const Color primaryLight = Color(0xFF5EA1F0);
+  static const Color primaryDark  = DoctorColors.primaryDark;
+  static const Color primary      = DoctorColors.primary;
+  static const Color primaryLight = DoctorColors.primaryLight;
 
   // Surfaces
-  static const Color background = Color(0xFFF4F8FE);
-  static const Color cardWhite = Colors.white;
-  static const Color fieldBorder = Color(0xFFD9E2F0);
+  static const Color background   = DoctorColors.background;
+  static const Color cardWhite    = DoctorColors.cardWhite;
+  static const Color fieldBorder  = DoctorColors.fieldBorder;
 
   // Accents
-  static const Color iconBlue = Color(0xFF2F7BE0);
-  static const Color iconBlueSoft = Color(0xFFE5EFFC);
-  static const Color editTeal = Color(0xFF2F7BE0);
-  static const Color editTealBg = Color(0xFFE5EFFC);
-  static const Color deleteRed = Color(0xFFEF4444);
-  static const Color deleteRedBg = Color(0xFFFEE2E2);
+  static const Color iconBlue     = DoctorColors.primary;
+  static const Color iconBlueSoft = DoctorColors.primarySoft;
+  static const Color editTeal     = DoctorColors.primary;
+  static const Color editTealBg   = DoctorColors.primarySoft;
+  static const Color deleteRed    = DoctorColors.errorRed;
+  static const Color deleteRedBg  = DoctorColors.errorSoftBg;
 
   // Text
-  static const Color textPrimary = Color(0xFF1A2236);
-  static const Color textSecondary = Color(0xFF6B7280);
-  static const Color textHint = Color(0xFF94A3B8);
+  static const Color textPrimary   = DoctorColors.textPrimary;
+  static const Color textSecondary = DoctorColors.textSecondary;
+  static const Color textHint      = DoctorColors.textHint;
 
   // Buttons
-  static const Color cancelRed = Color(0xFFEF4444);
-  static const Color submitBlue = Color(0xFF2F7BE0);
+  static const Color cancelRed  = DoctorColors.errorRed;
+  static const Color submitBlue = DoctorColors.primary;
 }
 
 class AppGradients {
-  static const LinearGradient header = LinearGradient(
-    colors: [AppColors100.primaryDark, AppColors100.primaryLight],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+  static const LinearGradient header = DoctorGradients.header;
 }

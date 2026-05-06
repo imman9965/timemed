@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimens.dart';
@@ -76,7 +77,7 @@ const _prescriptions = [
     name: 'PARACIP 500MG TABLET',
     instruction: 'Instruction: After Meal',
     dosage: '1-1-0-1,',
-    dosageSub: '1tablet',
+    dosageSub: '1 tablet',
     days: 'Days: 02',
   ),
   PrescriptionItem(
@@ -173,8 +174,8 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                   const SizedBox(height: AppDimens.m),
 
                   // ── Health records iterated ─────────────────────────────
-                  ..._healthRecords.map((record) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppDimens.m),
+                  ..._healthRecords.map((record) => Container(
+                    // padding: const EdgeInsets.only(bottom: AppDimens.m),
                     child: _buildHealthRecord(record),
                   )),
                 ],
@@ -190,7 +191,10 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
 
   Widget _buildPatientCard(PatientInfo patient) {
     return PrimaryCard(
-      padding: const EdgeInsets.all(AppDimens.l),
+      radius: 18,
+      padding: EdgeInsets.only(top: 14,bottom: 14,right: 14,left: 14),
+
+      // padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -202,34 +206,46 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                 child: Icon(Icons.person, size: 18, color: Colors.white),
               ),
               const SizedBox(width: 10),
-              Text(patient.name, style: AppTextStyles.bodyBold),
+              Text(patient.name, style: AppTextStyles.titleBody),
             ],
           ),
           const Divider(height: 24, color: AppColors.dividerColor),
           Row(
+            spacing: 24,
             children: [
-              const Icon(Icons.calendar_month,
-                  size: 18, color: AppColors.primaryBlue),
-              const SizedBox(width: 6),
-              Text(patient.date, style: AppTextStyles.body),
-              const SizedBox(width: 24),
-              const Icon(Icons.access_time,
-                  size: 18, color: AppColors.primaryBlue),
-              const SizedBox(width: 6),
-              Text(patient.time, style: AppTextStyles.body),
-              const Spacer(),
-              Text(
-                patient.doctor,
-                style: const TextStyle(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.calendar_month,
+                      size: 18, color: AppColors.primaryBlue),
+                  const SizedBox(width: 6),
+                  Text(patient.date, style: AppTextStyles.titleBody),
+                ],
               ),
+              Row(
+                children: [
+                  const Icon(Icons.access_time,
+                      size: 18, color: AppColors.primaryBlue),
+                  Text(patient.time, style: AppTextStyles.titleBody),
+
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                      patient.doctor,
+                      style: AppTextStyles.titleBodyblue
+                  ),
+                ],
+              )
+
+
+
+              // const SizedBox(width: 6),
+
             ],
           ),
           const SizedBox(height: 10),
-          Text('Visit ID : ${patient.visitId}', style: AppTextStyles.body),
+          Text('Visit ID : ${patient.visitId}', style: AppTextStyles.titleBody),
         ],
       ),
     );
@@ -251,16 +267,18 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
 
   Widget _buildPrescriptionCard(PrescriptionItem rx) {
     return PrimaryCard(
+      radius: 8,
+      padding: EdgeInsets.only(top: 14,bottom: 14,right: 8,left: 8),
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(rx.name, style: AppTextStyles.bodyBold),
+                Text(rx.name, style: AppTextStyles.titleBody),
                 const SizedBox(height: 4),
-                Text(rx.instruction, style: AppTextStyles.bodySmall),
+                Text(rx.instruction, style: AppTextStyles.titleBody),
               ],
             ),
           ),
@@ -269,15 +287,14 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(rx.dosage, style: AppTextStyles.bodyBold),
+                Text(rx.dosage, style: AppTextStyles.titleBody),
                 const SizedBox(height: 4),
                 Text(rx.dosageSub,
-                    style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary)),
+                    style: AppTextStyles.titleBody),
               ],
             ),
           ),
-          Text(rx.days, style: AppTextStyles.bodyBold),
+          Text(rx.days, style: AppTextStyles.titleBody),
         ],
       ),
     );
@@ -286,10 +303,10 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
   Widget _buildDoctorNotes(String note) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppDimens.l),
+      padding: EdgeInsets.only(top: 10,bottom: 10,right: 10,left: 10),
       decoration: BoxDecoration(
         color: AppColors.primaryBlue,
-        borderRadius: BorderRadius.circular(AppDimens.radiusLg),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,7 +316,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
           const Padding(
@@ -308,7 +325,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           ),
           Text(
             note,
-            style: const TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ],
       ),
@@ -317,19 +334,19 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
 
   Widget _buildLabTest(LabTestItem test) {
     return PrimaryCard(
+      radius: 8,
+      padding: EdgeInsets.only(top: 14,bottom: 14,right: 8,left: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             test.category,
-            style: AppTextStyles.bodyBold.copyWith(
-              color: AppColors.accentGreen,
-            ),
+            style: AppTextStyles.titleBody
           ),
           const Divider(height: 16, color: AppColors.dividerColor),
           RichText(
             text: TextSpan(
-              style: AppTextStyles.body,
+              style: AppTextStyles.titleBody,
               children: [
                 const TextSpan(
                   text: 'Test Name: ',
@@ -342,7 +359,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           const SizedBox(height: 4),
           RichText(
             text: TextSpan(
-              style: AppTextStyles.body,
+              style: AppTextStyles.titleBody,
               children: [
                 const TextSpan(
                   text: 'Instructions: ',
@@ -362,6 +379,8 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
 
   Widget _buildHealthRecord(HealthRecordItem record) {
     return PrimaryCard(
+      radius: 8,
+      padding: EdgeInsets.only(top: 14,bottom: 14,right: 8,left: 8),
       child: Row(
         children: [
           Container(
@@ -378,10 +397,10 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           Expanded(
             child: Text(
               '${record.title}\n${record.fileName}',
-              style: AppTextStyles.bodyBold,
+              style: AppTextStyles.titleBody,
             ),
           ),
-          _circleIconButton(Icons.remove_red_eye, AppColors.primaryBlue),
+          _circleIconButton(Icons.remove_red_eye, AppColors.primaryBlue,),
           const SizedBox(width: 8),
           _circleIconButton(
               Icons.arrow_downward_rounded, AppColors.accentGreen),
@@ -393,11 +412,317 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
   }
 
   Widget _circleIconButton(IconData icon, Color color) {
-    return Container(
-      width: 34,
-      height: 34,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      child: Icon(icon, color: Colors.white, size: 18),
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          barrierColor: Colors.black54,
+          builder: (context) {
+            return Dialog(
+              insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    color: const Color(0xFF0C447C),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 34,
+                              height: 34,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child:  Icon(Icons.medical_services_sharp, color: Colors.white, size: 18),
+                            ),
+                            const SizedBox(width: 10),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "PATIENT FILE",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    letterSpacing: 1.2,
+                                    color: Colors.white60,
+                                  ),
+                                ),
+                                Text(
+                                  "Health Record",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.12),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.close, color: Colors.white, size: 15),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor: const Color(0xFF378ADD),
+                              child: const Text(
+                                "JD",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFFE6F1FB),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "John Doe",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  "29 yrs · O+ Blood Group",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white60,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Body
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "VITALS",
+                          style: TextStyle(
+                            fontSize: 10,
+                            letterSpacing: 1.2,
+                            color: Colors.black45,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(child: _vitalCard(Icons.monitor_heart, "Heart rate", "78", "bpm", Colors.red)),
+                            const SizedBox(width: 10),
+                            Expanded(child: _vitalCard(Icons.show_chart, "Blood pressure", "120", "/80", Colors.blue)),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          "DIAGNOSIS",
+                          style: TextStyle(
+                            fontSize: 10,
+                            letterSpacing: 1.2,
+                            color: Colors.black45,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFCEBEB),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.coronavirus_outlined, color: Color(0xFFA32D2D), size: 22),
+                              SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Mild Fever",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF791F1F),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Under observation · Low severity",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFFA32D2D),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () => Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0C447C),
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 0,
+                            ),
+                            icon: const Icon(Icons.check, color: Colors.white, size: 18),
+                            label: const Text(
+                              "Done",
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 34,
+        height: 34,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        child: Icon(icon, color: Colors.white, size: 18),
+      ),
     );
   }
+
+  Widget _vitalCard(IconData icon, String label, String value, String unit, Color iconColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 15, color: iconColor),
+              const SizedBox(width: 5),
+              Text(label, style: const TextStyle(fontSize: 11, color: Colors.black45)),
+            ],
+          ),
+          const SizedBox(height: 4),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: value,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black87),
+                ),
+                TextSpan(
+                  text: unit,
+                  style: const TextStyle(fontSize: 12, color: Colors.black45),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// Widget _circleIconButton(
+//     BuildContext context,
+//     IconData icon,
+//     Color color,
+//     ) {
+//   return GestureDetector(
+//     onTap: () {
+//
+//     },
+//     child: Container(
+//       width: 34,
+//       height: 34,
+//       decoration: BoxDecoration(
+//         color: color,
+//         shape: BoxShape.circle,
+//       ),
+//       child: Icon(
+//         icon,
+//         color: Colors.white,
+//         size: 18,
+//       ),
+//     ),
+//   );
+// }
+
+Widget _recordTile(String title, String value) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

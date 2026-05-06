@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_colors.dart';
 import 'dropdown&.dart';
 
 class LabTestRequestScreen extends StatefulWidget {
@@ -10,15 +13,15 @@ class LabTestRequestScreen extends StatefulWidget {
 }
 
 class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
-  // ---------- Theme ----------
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _background = Color(0xFFF4F8FE);
-  static const Color _cardWhite = Colors.white;
-  static const Color _fieldBorder = Color(0xFFD9E2F0);
-  static const Color _hintGrey = Color(0xFF6B7280);
-  static const Color _textPrimary = Color(0xFF1A2236);
+  // ---------- Theme (forwarded to DoctorColors) ----------
+  static const Color _primaryDark  = DoctorColors.primaryDark;
+  static const Color _primary      = DoctorColors.primary;
+  static const Color _primaryLight = DoctorColors.primaryLight;
+  static const Color _background   = DoctorColors.background;
+  static const Color _cardWhite    = Colors.white;
+  static const Color _fieldBorder  = DoctorColors.fieldBorder;
+  static const Color _hintGrey     = DoctorColors.textSecondary;
+  static const Color _textPrimary  = DoctorColors.textPrimary;
 
   // ---------- Mock data ----------
   final List<String> _departments = const [
@@ -137,11 +140,13 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _background,
+        backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
+            CurvedHeader(
+              title: "LAB TEST REQUEST",
+            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
@@ -179,45 +184,46 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   }
 
   // ---------- Header ----------
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [_primaryDark, _primaryLight],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: Colors.white, size: 20),
-            onPressed: () => Navigator.of(context).maybePop(),
-          ),
-          const Expanded(
-            child: Text(
-              'LAB TEST REQUEST',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
-          ),
-          const SizedBox(width: 40),
-        ],
-      ),
-    );
-  }
+  // Widget _buildHeader() {
+  //   return Container(
+  //     width: double.infinity,
+  //     decoration:  BoxDecoration(
+  //       color: AppColors.primary,
+  //       // gradient: LinearGradient(
+  //       //   colors: [_primaryDark, _primaryLight],
+  //       //   begin: Alignment.topLeft,
+  //       //   end: Alignment.bottomRight,
+  //       // ),
+  //       borderRadius: BorderRadius.only(
+  //         bottomLeft: Radius.circular(28),
+  //         bottomRight: Radius.circular(28),
+  //       ),
+  //     ),
+  //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+  //     child: Row(
+  //       children: [
+  //         IconButton(
+  //           icon: const Icon(Icons.arrow_back_ios_new,
+  //               color: Colors.white, size: 20),
+  //           onPressed: () => Navigator.of(context).maybePop(),
+  //         ),
+  //         const Expanded(
+  //           child: Text(
+  //             'LAB TEST REQUEST',
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w700,
+  //               letterSpacing: 0.6,
+  //             ),
+  //           ),
+  //         ),
+  //         const SizedBox(width: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   // ---------- Department dropdown ----------
   Widget _buildDepartmentDropdown() {
@@ -349,7 +355,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
             child: ElevatedButton(
               onPressed: _openTestSelector,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _primary,
+                backgroundColor: Colors.green,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -408,7 +414,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
       child: ElevatedButton(
         onPressed: _sendRequest,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _primary,
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

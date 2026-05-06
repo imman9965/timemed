@@ -50,7 +50,9 @@ class _DoctorBadgeState extends State<DoctorBadge> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
+            onPressed: () {
+              context.go(AppRoutes.doctorLogin);
+            },
             child: const Text(
               'Logout',
               style: TextStyle(color: Colors.red),

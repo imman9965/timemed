@@ -107,9 +107,8 @@ class _AddOnlineConsultationScheduleDialogState
     final textFee  = int.tryParse(_textFeeCtrl.text)  ?? 0;
     final videoFee = int.tryParse(_videoFeeCtrl.text) ?? 0;
     final interval = int.tryParse(_intervalCtrl.text) ?? 0;
-    Navigator.pop(context);
-    if (interval <= 0) {
 
+    if (interval <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Call interval must be greater than 0'),
@@ -134,13 +133,8 @@ class _AddOnlineConsultationScheduleDialogState
       );
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Schedule updated successfully'),
-        backgroundColor: AppColors.greenBtn2,
-        duration: Duration(seconds: 1),
-      ),
-    );
+    // Return the saved data to caller so parent can persist it
+    Navigator.pop(context, _savedData);
   }
 
 
