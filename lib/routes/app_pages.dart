@@ -3,6 +3,11 @@ import 'package:go_router/go_router.dart';
 
 import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_details/view/patient_lab_test_details_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_slot_selection/view/patient_lap_slot_selection_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_test_booking_success/view/patient_lab_test_booking_success_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_test_checkout/view/patient_lab_test_checkout_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/nearby_labs/view/nearby_labs_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/address/binding/address_binding.dart';
 import 'package:timesmed_project/modules/patient/medical_module/address/view/address_selection_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/cart/binding/cart_binding.dart';
@@ -14,6 +19,7 @@ import 'package:timesmed_project/modules/patient/medical_module/order_success/vi
 import 'package:timesmed_project/modules/patient/medical_module/payment/view/patient_prescription_payment_page.dart';
 
 import 'package:timesmed_project/modules/patient/medical_module/records/binding/medical_records_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records/view/medical_records_view.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/binding/medical_records_details_binding.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/view/medical_recorde_details_page.dart';
@@ -83,7 +89,7 @@ final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.patientHome,
 
     /// 🔥 GLOBAL REDIRECT (optional auth check later)
     redirect: (context, state) {
@@ -294,34 +300,7 @@ class AppRouter {
         builder: (context, state) => VideoCallPage(),
       ),
 
-      /*
-      // 🔹 Instant Flow
-      GoRoute(
-        path: AppRoutes.videoInstant,
-        builder: (context, state) => VideoInstantPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoWaiting,
-        builder: (context, state) => VideoWaitingPage(),
-      ),
-
-      // 🔹 Schedule Flow
-      GoRoute(
-        path: AppRoutes.videoSchedule,
-        builder: (context, state) => VideoSchedulePage(),
-      ),
-
-      // 🔹 Common
-      GoRoute(
-        path: AppRoutes.videoPayment,
-        builder: (context, state) => VideoPaymentPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.videoConfirmation,
-        builder: (context, state) => VideoConfirmationPage(),
-      ),*/
+      // 🔹 Medical Record
       GoRoute(
         path: AppRoutes.patientMedicalRecords,
         builder: (context, state) {
@@ -386,6 +365,57 @@ class AppRouter {
         builder: (context, state) {
           final order = state.extra as Map;
           return PatientPrescriptionOrderDetailsPage(order: order);
+        },
+      ),
+
+      // 🔹 Lab Test
+      /// 🔹 LAB TEST FLOW
+      GoRoute(
+        path: AppRoutes.patientLabTestDetails,
+        builder: (context, state) {
+          final labTest = state.extra as LabTest;
+          return PatientLabTestDetailsPage(labTest: labTest);
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.patientNearbyLabsPage,
+        builder: (context, state) {
+          final labTest = state.extra as LabTest;
+          return PatientNearbyLabsPage(labTest :labTest);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientLabSlotSelection,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return PatientLabSlotSelectionPage(
+            selectedLab: data["selectedLab"],
+            labTest: data["labTest"],
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientLabTestCheckout,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return PatientLabTestCheckoutPage(
+            labTest: data["labTest"],
+            selectedLab: data["selectedLab"],
+            selectedTime: data["selectedTime"],
+            selectedDate: data["selectedDate"],
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientLabTestBookingSuccess,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return PatientLabTestBookingSuccessPage(
+            bookingData: data,
+          );
         },
       ),
 

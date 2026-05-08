@@ -88,6 +88,19 @@ abstract class AppRoutes {
   static const String patientPrescriptionOrderStatus = '/order-status';
   static const String patientPrescriptionOrderDetails = '/order-details';
 
+  // 🔹 Lab Test
+  static const String patientLabTestDetails = '/patient-lab-test-details';
+
+  /// Visit Lab
+  static const String patientNearbyLabsPage = '/patient-lab-nearby-lab';
+  static const String patientLabSlotSelection =
+      '/patient-lab-slot-selection';
+  static const String patientLabTestCheckout =
+      '/patient-lab-test-checkout';
+  static const String patientLabTestBookingSuccess =
+      '/patient-lab-test-booking-success';
+
+
   /// ================================
   /// 🔹 DOCTOR
   /// ================================
