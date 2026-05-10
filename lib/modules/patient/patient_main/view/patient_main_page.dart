@@ -58,12 +58,13 @@ class PatientMainPage extends StatelessWidget {
           height: 100,
           child: FloatingBottomNavigationBar(
             currentIndex: currentIndex,
-            label: const ['Home', 'Appointments', 'My Orders', 'Profile'],
+            label: const ['Home', 'Appointments', 'My Orders','Lab Tracking','Profile'],
             icons: const [
               Icons.home,
               Icons.date_range,
-              Icons.backpack_sharp,
-              Icons.person,
+              Icons.backup_outlined,
+              Icons.location_on_outlined,
+              Icons.person_2_outlined,
             ],
             onTap: (index) {
               switch (index) {
@@ -77,6 +78,9 @@ class PatientMainPage extends StatelessWidget {
                   context.go(AppRoutes.patientOrder);
                   break;
                 case 3:
+                  context.go(AppRoutes.patientLabTracking);
+                  break;
+                case 4:
                   context.go(AppRoutes.patientProfile);
                   break;
               }
@@ -90,7 +94,8 @@ class PatientMainPage extends StatelessWidget {
   int _getIndexFromLocation(String location) {
     if (location.contains(AppRoutes.patientPreviousAppointments)) return 1;
     if (location.contains(AppRoutes.patientOrder)) return 2;
-    if (location.contains(AppRoutes.patientProfile)) return 3;
+    if (location.contains(AppRoutes.patientLabTracking)) return 3;
+    if (location.contains(AppRoutes.patientProfile)) return 4;
     return 0;
   }
 }

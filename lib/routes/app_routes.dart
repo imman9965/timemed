@@ -100,6 +100,22 @@ abstract class AppRoutes {
   static const String patientLabTestBookingSuccess =
       '/patient-lab-test-booking-success';
 
+  /// 🔹 Home Collection Flow
+  static const String patientHomeCollectionSlot =
+      '/patient-home-collection-slot';
+
+  static const String patientHomeCollectionAddress =
+      '/patient-home-collection-address';
+
+  static const String patientHomeCollectionCheckout =
+      '/patient-home-collection-checkout';
+
+  static const String patientHomeCollectionSuccess =
+      '/patient-home-collection-success';
+
+  static const String patientLabTracking =
+      '/patient-lab-tracking';
+
 
   /// ================================
   /// 🔹 DOCTOR

@@ -54,12 +54,10 @@ class _PatientLabTestDetailsPageState
                   ? null
                   : () {
                 if (selectedType == "home") {
-                  // context.push(
-                  //   AppRoutes.patientLabSlotSelection,
-                  //   extra: {
-                  //     "isHomeCollection": true,
-                  //   },
-                  // );
+                  context.push(
+                    AppRoutes.patientHomeCollectionSlot,
+                    extra: lab,
+                  );
                 } else {
                   context.push(
                 AppRoutes.patientNearbyLabsPage,

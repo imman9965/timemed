@@ -4,6 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_details/view/patient_lab_test_details_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_track/view/patient_lab_test_tracking_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/home_collection/home_collection_address/view/patient_home_collection_address_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/home_collection/home_collection_checkout/view/patient_home_collection_checkout_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/home_collection/home_collection_slot/view/patient_home_collection_slot_page.dart';
+import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/home_collection/home_collection_success/view/patient_home_collection_success_page.dart';
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_slot_selection/view/patient_lap_slot_selection_page.dart';
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_test_booking_success/view/patient_lab_test_booking_success_page.dart';
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_test_checkout/view/patient_lab_test_checkout_page.dart';
@@ -186,6 +191,13 @@ class AppRouter {
             builder: (context, state) {
               // PatientOrderBinding().dependencies();
               return PatientPreviousAppointmentPage();
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.patientLabTracking,
+            builder: (context, state) {
+              return PatientLabTrackingPage();
             },
           ),
 
@@ -414,6 +426,56 @@ class AppRouter {
           final data = state.extra as Map<String, dynamic>;
 
           return PatientLabTestBookingSuccessPage(
+            bookingData: data,
+          );
+        },
+      ),
+
+      /// 🔹 HOME COLLECTION SLOT
+      GoRoute(
+        path: AppRoutes.patientHomeCollectionSlot,
+        builder: (context, state) {
+          final labTest = state.extra as LabTest;
+
+          return PatientHomeCollectionSlotPage(
+            labTest: labTest,
+          );
+        },
+      ),
+
+      /// 🔹 HOME COLLECTION ADDRESS
+      GoRoute(
+        path: AppRoutes.patientHomeCollectionAddress,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return PatientHomeCollectionAddressPage(
+            labTest: data["labTest"],
+            selectedDate: data["selectedDate"],
+            selectedTime: data["selectedTime"],
+          );
+        },
+      ),
+
+      /// 🔹 HOME COLLECTION CHECKOUT
+      GoRoute(
+        path: AppRoutes.patientHomeCollectionCheckout,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return PatientHomeCollectionCheckoutPage(
+            bookingData: data,
+          );
+        },
+      ),
+
+      /// 🔹 HOME COLLECTION SUCCESS
+      GoRoute(
+        path: AppRoutes.patientHomeCollectionSuccess,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return PatientHomeCollectionSuccessPage(
             bookingData: data,
           );
         },
