@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
-import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
-import 'package:timesmed_project/core/widgets/premium_app_bar.dart';
-import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
-import 'package:timesmed_project/modules/patient/paient_home/controller/patient_home_controller.dart';
+import 'package:timesmed_project/modules/patient/patient_home/controller/patient_home_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientHomePage extends StatefulWidget {

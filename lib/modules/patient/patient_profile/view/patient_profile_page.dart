@@ -8,7 +8,7 @@ import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
-import 'package:timesmed_project/modules/patient/paient_home/controller/patient_home_controller.dart';
+import 'package:timesmed_project/modules/patient/patient_home/controller/patient_home_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 // import your TitleTextFormField
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_details/view/patient_lab_test_details_page.dart';
@@ -16,21 +15,17 @@ import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_l
 import 'package:timesmed_project/modules/patient/medical_module/address/binding/address_binding.dart';
 import 'package:timesmed_project/modules/patient/medical_module/address/view/address_selection_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/cart/binding/cart_binding.dart';
-import 'package:timesmed_project/modules/patient/medical_module/cart/model/cart_model.dart';
 import 'package:timesmed_project/modules/patient/medical_module/cart/view/cart_view.dart';
 import 'package:timesmed_project/modules/patient/medical_module/order_details/view/patient_prescription_order_details_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/order_status/view/patient_prescription_order_status_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/order_success/view/patient_prescription_order_success_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/payment/view/patient_prescription_payment_page.dart';
-
 import 'package:timesmed_project/modules/patient/medical_module/records/binding/medical_records_binding.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records/view/medical_records_view.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/binding/medical_records_details_binding.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/view/medical_recorde_details_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/track_order/view/patient_prescription_track_order_page.dart';
-import 'package:timesmed_project/modules/patient/paient_home/binding/patient_home_page_binding.dart';
-import 'package:timesmed_project/modules/patient/paient_home/view/patient_home_page.dart';
 import 'package:timesmed_project/modules/patient/patient_add/view/patient_add_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/confirmation/view/clinical_visit_confirmation_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/clinical_visit/doctor_details/view/clinical_doctor_details_page.dart';
@@ -47,7 +42,8 @@ import 'package:timesmed_project/modules/patient/patient_appointment/video_consu
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/rating/view/rating_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/schedule/view/video_schedule_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/video_call/view/video_call_page.dart';
-
+import 'package:timesmed_project/modules/patient/patient_home/binding/patient_home_page_binding.dart';
+import 'package:timesmed_project/modules/patient/patient_home/view/patient_home_page.dart';
 import 'package:timesmed_project/modules/patient/patient_login/Binding/patient_login_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_login/view/patient_forgot_password_page.dart';
 import 'package:timesmed_project/modules/patient/patient_login/view/patient_login_page.dart';
@@ -69,7 +65,6 @@ import 'package:timesmed_project/modules/super/view/super_home_view.dart';
 
 // Bindings
 import 'package:timesmed_project/routes/app_routes.dart';
-
 import '../modules/doctor/calendar/dashboard.dart';
 import '../modules/doctor/call_logs/call_logs.dart';
 import '../modules/doctor/call_page/call_page.dart';
@@ -82,7 +77,6 @@ import '../modules/doctor/missed_call_page/missed_call.dart';
 import '../modules/doctor/patient_waiting_list/patient_waiting_list.dart';
 import '../modules/doctor/schedule_appointment/schedule_appointment.dart';
 import '../modules/doctor/schedule_appointment_list/schedule_appointmnet_list.dart';
-
 import '../modules/patient/patient_main/binding/patient_main_binding.dart';
 
 // Navigator keys for each shell branch
