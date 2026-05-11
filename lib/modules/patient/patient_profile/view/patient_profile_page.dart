@@ -70,6 +70,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: CommonAppBar(title: "Account", showBack: false),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

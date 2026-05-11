@@ -19,6 +19,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFFFCF5),
       appBar: CommonAppBar(title: "My Orders"),
       body: Obx(
         () => ListView.builder(

@@ -23,7 +23,7 @@ class AppColors {
   static const Color success = Color(0xff2e7d32);
 
   /// ⚪ Background Colors
-  static const Color background = Color(0xfff5f7fa);
+  static const Color background = Color(0xffFFFCF5);
   static const Color scaffold = Color(0xffffffff);
   static const Color card = Color(0xfffdfdfd);
   static const Color backgroundLight = Color(0xff9e9e9e);

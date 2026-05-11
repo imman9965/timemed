@@ -86,7 +86,7 @@ class _PatientLabTrackingPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FB),
+      backgroundColor: Color(0xffFFFCF5),
 
       appBar: CommonAppBar(
         title: "Lab Test Tracking",

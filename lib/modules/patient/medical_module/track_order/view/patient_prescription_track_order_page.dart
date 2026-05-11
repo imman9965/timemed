@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/modules/patient/medical_module/track_order/controller/patient_prescription_track_order_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
-import '../../../../doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
 
 class PatientPrescriptionTrackOrderPage extends StatelessWidget {
   const PatientPrescriptionTrackOrderPage({super.key});
@@ -15,6 +15,7 @@ class PatientPrescriptionTrackOrderPage extends StatelessWidget {
     final controller = Get.put(PatientPrescriptionTrackOrderController());
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: CommonAppBar(title: 'Track Order'),
       body: Stack(
         children: [

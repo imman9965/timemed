@@ -54,8 +54,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
         borderRadius: BorderRadius.circular(22),
         gradient: LinearGradient(
           colors: [
+            AppColors.primary.withOpacity(0.9),
             AppColors.primary.withOpacity(0.8),
-            AppColors.primary.withOpacity(0.4),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -314,7 +314,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(30),
-      child: Ink(
+      child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,

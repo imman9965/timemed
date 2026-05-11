@@ -5,7 +5,7 @@ import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/modules/patient/medical_module/cart/controller/cart_controller.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/controller/midical_record_details_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
-import '../../../../doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
 
 class MedicalRecordDetailsPage extends StatelessWidget {
   const MedicalRecordDetailsPage({super.key});
@@ -300,308 +300,254 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 18),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.white,
-                          Colors.red.shade50.withOpacity(.35),
-                          Colors.blue.shade50.withOpacity(.18),
-                        ],
-                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(28),
                       border: Border.all(
-                        color: Colors.white,
-                        width: 1.5,
+                        color: Colors.grey.shade100,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          blurRadius: 30,
+                          blurRadius: 24,
                           spreadRadius: 0,
-                          offset: const Offset(0, 14),
-                          color: Colors.black.withOpacity(.05),
+                          offset: const Offset(0, 10),
+                          color: Colors.black.withOpacity(.04),
                         ),
                       ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Column(
-                        children: [
-                          /// 🔥 TOP STRIP
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 18,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppColors.primary,
-                                  AppColors.primary.withOpacity(.85),
-                                ],
+                    child: Column(
+                      children: [
+                        /// 🔹 TOP SECTION
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /// ICON
+                              Container(
+                                height: 62,
+                                width: 62,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withOpacity(.08),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Icon(
+                                  Icons.science_rounded,
+                                  color: AppColors.primary,
+                                  size: 30,
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(.16),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: const Icon(
-                                    Icons.science_rounded,
-                                    color: Colors.white,
-                                    size: 22,
-                                  ),
-                                ),
 
-                                const SizedBox(width: 12),
+                              const SizedBox(width: 16),
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        lab.testName,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 4),
-
-                                      Text(
-                                        lab.category,
-                                        style: const TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(.16),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.verified,
-                                        size: 14,
-                                        color: Colors.white,
-                                      ),
-
-                                      SizedBox(width: 6),
-
-                                      Text(
-                                        "Certified",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          /// 🔥 CONTENT
-                          Padding(
-                            padding: const EdgeInsets.all(18),
-                            child: Column(
-                              children: [
-                                /// DESCRIPTION
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(.7),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 2),
-                                        child: Icon(
-                                          Icons.info_outline,
-                                          color: Colors.grey.shade700,
-                                          size: 18,
-                                        ),
-                                      ),
-
-                                      const SizedBox(width: 10),
-
-                                      Expanded(
-                                        child: Text(
-                                          lab.instructions,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            height: 1.6,
-                                            color: Colors.grey.shade800,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                const SizedBox(height: 18),
-
-                                /// FEATURES
-                                GridView.count(
-                                  shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3.6,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
+                              /// DETAILS
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _premiumFeature(
-                                      icon: Icons.home_outlined,
-                                      title: "Home Collection",
-                                      color: Colors.blue,
+                                    Text(
+                                      lab.testName,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: -.2,
+                                      ),
                                     ),
 
-                                    _premiumFeature(
-                                      icon: Icons.location_on_outlined,
-                                      title: "Visit Laboratory",
-                                      color: Colors.orange,
-                                    ),
+                                    const SizedBox(height: 8),
 
-                                    _premiumFeature(
-                                      icon: Icons.bolt_outlined,
-                                      title: "Fast Reports",
-                                      color: Colors.green,
-                                    ),
-
-                                    _premiumFeature(
-                                      icon: Icons.workspace_premium_outlined,
-                                      title: "NABL Certified",
-                                      color: Colors.purple,
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 22),
-
-                                /// ACTION AREA
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: 54,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                          BorderRadius.circular(18),
-                                          border: Border.all(
-                                            color: Colors.grey.shade200,
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 6,
                                           ),
-                                        ),
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
+                                          decoration: BoxDecoration(
+                                            color:
+                                            AppColors.primary.withOpacity(.08),
                                             borderRadius:
-                                            BorderRadius.circular(18),
-                                            onTap: () {},
-                                            child: const Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.article_outlined,
-                                                  color: AppColors.primary,
-                                                  size: 20,
-                                                ),
-
-                                                SizedBox(width: 8),
-
-                                                Text(
-                                                  "Test Info",
-                                                  style: TextStyle(
-                                                    color: AppColors.primary,
-                                                    fontWeight:
-                                                    FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
+                                            BorderRadius.circular(30),
+                                          ),
+                                          child: Text(
+                                            lab.category,
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.primary,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
 
-                                    const SizedBox(width: 14),
+                                        const SizedBox(width: 8),
 
-                                    Expanded(
-                                      flex: 2,
-                                      child: SizedBox(
-                                        height: 54,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            context.push(
-                                              AppRoutes.patientLabTestDetails,
-                                              extra: lab,
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0,
-                                            backgroundColor:
-                                            AppColors.primary,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(18),
-                                            ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green.withOpacity(.08),
+                                            borderRadius:
+                                            BorderRadius.circular(30),
                                           ),
                                           child: const Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                "Book Lab Test",
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                  FontWeight.w700,
-                                                  color: Colors.white,
-                                                ),
+                                              Icon(
+                                                Icons.verified,
+                                                size: 13,
+                                                color: Colors.green,
                                               ),
 
-                                              SizedBox(width: 10),
+                                              SizedBox(width: 4),
 
-                                              Icon(
-                                                Icons.arrow_forward_rounded,
-                                                color: Colors.white,
+                                              Text(
+                                                "Certified",
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.green,
+                                                ),
                                               ),
                                             ],
                                           ),
                                         ),
+                                      ],
+                                    ),
+
+                                    const SizedBox(height: 14),
+
+                                    Text(
+                                      lab.instructions,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        height: 1.6,
+                                        color: Colors.grey.shade700,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        /// DIVIDER
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(
+                            height: 1,
+                            color: Colors.grey.shade100,
+                          ),
+                        ),
+
+                        /// 🔹 FEATURES
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: [
+                              _premiumFeature(
+                                icon: Icons.home_outlined,
+                                title: "Home Collection",
+                              ),
+
+                              _premiumFeature(
+                                icon: Icons.location_on_outlined,
+                                title: "Visit Lab",
+                              ),
+
+                              _premiumFeature(
+                                icon: Icons.bolt_outlined,
+                                title: "Fast Reports",
+                              ),
+
+                              _premiumFeature(
+                                icon: Icons.workspace_premium_outlined,
+                                title: "NABL Certified",
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        /// 🔹 BOTTOM ACTIONS
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          child: Row(
+                            children: [
+                              /// INFO BUTTON
+                              Container(
+                                height: 54,
+                                width: 54,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                    color: Colors.grey.shade200,
+                                  ),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(18),
+                                    onTap: () {},
+                                    child: const Icon(
+                                      Icons.article_outlined,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(width: 14),
+
+                              /// BOOK BUTTON
+                              Expanded(
+                                child: SizedBox(
+                                  height: 54,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context.push(
+                                        AppRoutes.patientLabTestDetails,
+                                        extra: lab,
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: AppColors.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(18),
+                                      ),
+                                    ),
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Book Lab Test",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+
+                                        SizedBox(width: 10),
+
+                                        Icon(
+                                          Icons.arrow_forward_rounded,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 }),
@@ -618,86 +564,35 @@ class MedicalRecordDetailsPage extends StatelessWidget {
   Widget _premiumFeature({
     required IconData icon,
     required String title,
-    required Color color,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 10,
+        horizontal: 14,
+        vertical: 12,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(.08),
-        borderRadius: BorderRadius.circular(18),
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: color.withOpacity(.12),
+          color: Colors.grey.shade100,
         ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: color.withOpacity(.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              size: 18,
-              color: color,
-            ),
-          ),
-
-          const SizedBox(width: 10),
-
-          Expanded(
-            child: Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: color,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _featureChip({
-    required IconData icon,
-    required String text,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-        color: color.withOpacity(.08),
-        borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             icon,
-            size: 16,
-            color: color,
+            size: 18,
+            color: AppColors.primary,
           ),
 
-          const SizedBox(width: 6),
+          const SizedBox(width: 8),
 
           Text(
-            text,
-            style: TextStyle(
-              fontSize: 11,
+            title,
+            style: const TextStyle(
+              fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: color,
             ),
           ),
         ],
@@ -705,24 +600,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _infoChip(IconData icon, String text) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(.15),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white, size: 18),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(text, style: const TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   Widget _title(String text) {
     return Text(

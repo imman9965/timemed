@@ -19,6 +19,7 @@ class PatientMainPage extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Scaffold(
+        backgroundColor: AppColors.background,
         extendBody: true, // 🔥 allows body behind bottom nav
         body: Stack(
           children: [
@@ -47,7 +48,7 @@ class PatientMainPage extends StatelessWidget {
                   child: SvgPicture.asset(
                     "assets/icons/ai_robot.svg",
                     color: Colors.white,
-                    height: 20,
+                    height: 26,
                   ),
                 ),
               ),

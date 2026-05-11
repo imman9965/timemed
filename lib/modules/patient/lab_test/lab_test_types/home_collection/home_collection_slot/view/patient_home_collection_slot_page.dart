@@ -26,12 +26,6 @@ class _PatientHomeCollectionSlotPageState
 
   final days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  void changeDate(int diff) {
-    setState(() {
-      selectedDate = selectedDate.add(Duration(days: diff));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final test = widget.labTest;
@@ -49,9 +43,9 @@ class _PatientHomeCollectionSlotPageState
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              blurRadius: 20,
+              blurRadius: 18,
               color: Colors.black.withOpacity(.05),
-              offset: const Offset(0, -3),
+              offset: const Offset(0, -4),
             ),
           ],
         ),
@@ -74,9 +68,9 @@ class _PatientHomeCollectionSlotPageState
                 );
               },
               style: ElevatedButton.styleFrom(
-                elevation: 0,
                 backgroundColor: AppColors.primary,
                 disabledBackgroundColor: Colors.grey.shade300,
+                elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
@@ -86,8 +80,8 @@ class _PatientHomeCollectionSlotPageState
                     ? "Select Slot"
                     : "Continue • $selectedTime",
                 style: const TextStyle(
-                  fontWeight: FontWeight.w700,
                   fontSize: 15,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
@@ -100,129 +94,139 @@ class _PatientHomeCollectionSlotPageState
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            /// 🔹 TOP TEST CARD
+            /// 🔹 TOP CARD
             Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
                 gradient: LinearGradient(
                   colors: [
                     AppColors.primary,
                     AppColors.primary.withOpacity(.82),
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.circular(24),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  /// TOP
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.14),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: const Icon(
-                          Icons.home_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.14),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: const Icon(
+                      Icons.home_rounded,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
 
-                      const Spacer(),
+                  const SizedBox(width: 14),
 
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.14),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const Text(
-                          "HOME COLLECTION",
-                          style: TextStyle(
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          test.testName,
+                          style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 11,
                             fontWeight: FontWeight.w700,
+                            fontSize: 17,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
 
-                  const SizedBox(height: 24),
+                        const SizedBox(height: 6),
 
-                  Text(
-                    test.testName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+                        Text(
+                          test.category,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(.14),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.home_work_outlined,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+
+                                    SizedBox(width: 6),
+
+                                    Expanded(
+                                      child: Text(
+                                        "Home Sample Collection",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 10),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: const Text(
+                                "₹550",
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  Text(
-                    test.category,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
-                    ),
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      _featureChip(
-                        Icons.bolt,
-                        "Fast Reports",
-                      ),
-                      _featureChip(
-                        Icons.verified,
-                        "NABL Certified",
-                      ),
-                      _featureChip(
-                        Icons.schedule,
-                        "Same Day Slot",
-                      ),
-                    ],
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
-            /// 🔹 DATE CARD
+            /// 🔹 DATE SECTION
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                    color: Colors.black.withOpacity(.04),
-                  ),
-                ],
               ),
               child: Column(
                 children: [
-                  /// HEADER
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         "Select Date",
@@ -232,10 +236,12 @@ class _PatientHomeCollectionSlotPageState
                         ),
                       ),
 
+                      const Spacer(),
+
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
+                          horizontal: 14,
+                          vertical: 10,
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withOpacity(.08),
@@ -326,195 +332,164 @@ class _PatientHomeCollectionSlotPageState
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             /// 🔹 SLOT SECTION
-            _slotSection(
-              title: "Morning",
-              icon: Icons.wb_sunny_outlined,
-              slots: _morning(),
-            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _timeColumn(
+                  "Morning",
+                  Icons.wb_sunny_outlined,
+                  _morning(),
+                ),
 
-            _slotSection(
-              title: "Afternoon",
-              icon: Icons.sunny,
-              slots: _afternoon(),
-            ),
+                _timeColumn(
+                  "Afternoon",
+                  Icons.sunny,
+                  _afternoon(),
+                ),
 
-            _slotSection(
-              title: "Evening",
-              icon: Icons.wb_twilight_outlined,
-              slots: _evening(),
-            ),
+                _timeColumn(
+                  "Evening",
+                  Icons.wb_twilight_outlined,
+                  _evening(),
+                ),
 
-            _slotSection(
-              title: "Night",
-              icon: Icons.nightlight_round,
-              slots: _night(),
+                _timeColumn(
+                  "Night",
+                  Icons.nightlight_round,
+                  _night(),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
 
-  Widget _slotSection({
-    required String title,
-    required IconData icon,
-    required List<String> slots,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 18),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-            color: Colors.black.withOpacity(.04),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                color: AppColors.primary,
+  Widget _timeColumn(
+      String title,
+      IconData icon,
+      List<Map<String, dynamic>> slots,
+      ) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              color: AppColors.primary,
+              size: 22,
+            ),
+
+            const SizedBox(height: 6),
+
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
               ),
+            ),
 
-              const SizedBox(width: 10),
+            const SizedBox(height: 10),
 
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 18),
-
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: slots.map((time) {
-              final isSelected = selectedTime == time;
+            ...slots.map((slot) {
+              bool available = slot["available"];
+              bool isSelected =
+                  selectedTime == slot["time"];
 
               return GestureDetector(
-                onTap: () {
+                onTap: available
+                    ? () {
                   setState(() {
-                    selectedTime = time;
+                    selectedTime = slot["time"];
                   });
-                },
+                }
+                    : null,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
+                  margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected
+                    borderRadius: BorderRadius.circular(12),
+                    color: !available
+                        ? Colors.grey.shade100
+                        : isSelected
                         ? AppColors.primary
-                        : AppColors.primary.withOpacity(.06),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: isSelected
-                          ? AppColors.primary
-                          : Colors.transparent,
-                    ),
+                        : AppColors.primary.withOpacity(.08),
                   ),
-                  child: Text(
-                    time,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? Colors.white
-                          : AppColors.primary,
+                  child: Center(
+                    child: Text(
+                      slot["time"],
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: !available
+                            ? Colors.grey
+                            : isSelected
+                            ? Colors.white
+                            : AppColors.primary,
+                      ),
                     ),
                   ),
                 ),
               );
-            }).toList(),
-          ),
-        ],
+            }),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _featureChip(
-      IconData icon,
-      String text,
-      ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(.14),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 15,
-            color: Colors.white,
-          ),
-
-          const SizedBox(width: 6),
-
-          Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<String> _morning() => [
+  List<Map<String, dynamic>> _morning() => _gen([
     "07:00 AM",
     "07:30 AM",
     "08:00 AM",
     "08:30 AM",
-    "09:00 AM",
-  ];
+  ]);
 
-  List<String> _afternoon() => [
+  List<Map<String, dynamic>> _afternoon() => _gen([
     "12:00 PM",
     "12:30 PM",
     "01:00 PM",
-    "01:30 PM",
-  ];
+  ]);
 
-  List<String> _evening() => [
+  List<Map<String, dynamic>> _evening() => _gen([
     "04:00 PM",
     "04:30 PM",
     "05:00 PM",
-    "05:30 PM",
-  ];
+  ]);
 
-  List<String> _night() => [
+  List<Map<String, dynamic>> _night() => _gen([
     "07:00 PM",
     "07:30 PM",
     "08:00 PM",
-  ];
+  ]);
 
-  String _month(int m) {
+  List<Map<String, dynamic>> _gen(List<String> times) {
+    return times
+        .map(
+          (e) => {
+        "time": e,
+        "available":
+        DateTime.now().millisecond % 3 != 0,
+      },
+    )
+        .toList();
+  }
+
+  String _month(int month) {
     const months = [
       "",
       "Jan",
@@ -531,6 +506,6 @@ class _PatientHomeCollectionSlotPageState
       "Dec",
     ];
 
-    return months[m];
+    return months[month];
   }
 }
