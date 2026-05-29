@@ -20,7 +20,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFFFCF5),
-      appBar: CommonAppBar(title: "My Orders"),
+      // appBar: CommonAppBar(title: "My Orders"),
       body: Obx(
         () => ListView.builder(
           padding: const EdgeInsets.all(14),

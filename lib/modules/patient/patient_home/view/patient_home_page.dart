@@ -139,12 +139,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
 
                     const SizedBox(height: 4),
 
-                    Text(
-                      "Patient ID: TM-10234",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 11, color: AppColors.white),
-                    ),
                   ],
                 ),
               ),
@@ -155,6 +149,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
               Flexible(
                 child: Column(
                   children: [
+
                     _actionIcon(Icons.notifications_none, () {}),
                     const SizedBox(height: 8),
                     _actionIcon(Icons.sync_alt, () {

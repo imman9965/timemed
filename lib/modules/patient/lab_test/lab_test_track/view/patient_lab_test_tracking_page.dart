@@ -88,9 +88,7 @@ class _PatientLabTrackingPageState
     return Scaffold(
       backgroundColor: Color(0xffFFFCF5),
 
-      appBar: CommonAppBar(
-        title: "Lab Test Tracking",
-      ),
+      // appBar: CommonAppBar(title: "Lab Test Tracking",),
 
       body: ListView.builder(
         padding: const EdgeInsets.all(16),

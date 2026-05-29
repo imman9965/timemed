@@ -42,6 +42,7 @@ import 'package:timesmed_project/modules/patient/patient_appointment/video_consu
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/rating/view/rating_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/schedule/view/video_schedule_page.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/video_call/view/video_call_page.dart';
+import 'package:timesmed_project/modules/patient/patient_dashboard/view/patient_dashboard_page.dart';
 import 'package:timesmed_project/modules/patient/patient_home/binding/patient_home_page_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_home/view/patient_home_page.dart';
 import 'package:timesmed_project/modules/patient/patient_login/Binding/patient_login_binding.dart';
@@ -54,6 +55,7 @@ import 'package:timesmed_project/modules/patient/patient_order/view/patient_orde
 import 'package:timesmed_project/modules/patient/patient_previous_appointment/view/patient_previous_appointment%20_page.dart';
 import 'package:timesmed_project/modules/patient/patient_profile/view/patient_profile_page.dart';
 import 'package:timesmed_project/modules/patient/patient_select/view/patient_selection_page.dart';
+import 'package:timesmed_project/modules/patient/patient_services/view/patient_services_page.dart';
 import 'package:timesmed_project/modules/patient/patient_signup/binding/patient_signup_binding.dart';
 import 'package:timesmed_project/modules/patient/patient_signup/view/patient_signup_page.dart';
 import 'package:timesmed_project/modules/patient/speciality_doctors/binding/speciality_doctor_binding.dart';
@@ -88,7 +90,7 @@ final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.patientHome,
+    initialLocation: AppRoutes.splash,
 
     /// 🔥 GLOBAL REDIRECT (optional auth check later)
     redirect: (context, state) {
@@ -179,7 +181,13 @@ class AppRouter {
               return PatientHomePage();
             },
           ),
-
+          GoRoute(
+            path: AppRoutes.patientDashboard,
+            builder: (context, state) {
+              // PatientOrderBinding().dependencies();
+              return PatientDashboardPage();
+            },
+          ),
           GoRoute(
             path: AppRoutes.patientPreviousAppointments,
             builder: (context, state) {
@@ -188,18 +196,24 @@ class AppRouter {
             },
           ),
 
+          // GoRoute(
+          //   path: AppRoutes.patientLabTracking,
+          //   builder: (context, state) {
+          //     return PatientLabTrackingPage();
+          //   },
+          // ),
+          //
+          // GoRoute(
+          //   path: AppRoutes.patientOrder,
+          //   builder: (context, state) {
+          //     PatientOrderBinding().dependencies();
+          //     return PatientOrderPage();
+          //   },
+          // ),
           GoRoute(
-            path: AppRoutes.patientLabTracking,
+            path: AppRoutes.patientServices,
             builder: (context, state) {
-              return PatientLabTrackingPage();
-            },
-          ),
-
-          GoRoute(
-            path: AppRoutes.patientOrder,
-            builder: (context, state) {
-              PatientOrderBinding().dependencies();
-              return PatientOrderPage();
+              return PatientServicesPage();
             },
           ),
           GoRoute(
@@ -211,7 +225,28 @@ class AppRouter {
           ),
         ],
       ),
+      /// demo
+      GoRoute(
+        path: AppRoutes.patientLabTracking,
+        builder: (context, state) {
+          return PatientLabTrackingPage();
+        },
+      ),
 
+      GoRoute(
+        path: AppRoutes.patientOrder,
+        builder: (context, state) {
+          PatientOrderBinding().dependencies();
+          return PatientOrderPage();
+        },
+      ),
+      ///
+
+      // ...........Dashboard................ //
+      GoRoute(
+        path: AppRoutes.patientDashboard,
+        builder: (context, state) => PatientDashboardPage(),
+      ),
       // ...........Appointments ............ //
 
       // 🔹 Clinical Visit
