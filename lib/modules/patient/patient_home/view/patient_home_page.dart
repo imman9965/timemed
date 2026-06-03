@@ -434,13 +434,13 @@ class _PatientHomePageState extends State<PatientHomePage> {
 
     final displayList = isExpanded
         ? [
-            ...specialities,
-            {"name": "Show Less", "image": "more.png"},
-          ]
+      ...specialities,
+      {"name": "Show Less", "image": "more.png"},
+    ]
         : [
-            ...specialities.take(7),
-            {"name": "View More", "image": "more.png"},
-          ];
+      ...specialities.take(7),
+      {"name": "View More", "image": "more.png"},
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -917,11 +917,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
         borderRadius: BorderRadius.circular(16),
         gradient: isSelected
             ? LinearGradient(
-                colors: [
-                  AppColors.primary.withOpacity(0.12),
-                  AppColors.primary.withOpacity(0.05),
-                ],
-              )
+          colors: [
+            AppColors.primary.withOpacity(0.12),
+            AppColors.primary.withOpacity(0.05),
+          ],
+        )
             : null,
         border: Border.all(
           color: isSelected ? AppColors.primary : Colors.grey.shade200,

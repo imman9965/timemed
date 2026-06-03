@@ -178,7 +178,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                 CommonButton(
                                   title: isOtpLogin ? "Send OTP" : "LOGIN",
                                   width: 150,
-                                  borderRadius: 12,
+                                  borderRadius: 30,
                                   onPressed: () {
                                     if (isOtpLogin) {
                                       if (formKey.currentState!.validate()) {

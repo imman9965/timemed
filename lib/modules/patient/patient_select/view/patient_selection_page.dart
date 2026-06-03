@@ -18,7 +18,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
   final List<PatientSelectionModel> patients = [
     PatientSelectionModel(
       id: '1',
-      name: 'John Doe',
+      name: 'Sara',
       relation: 'Self',
       gender: "Male",
       age: 30,
@@ -226,7 +226,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
           onPressed: selectedPatient == null
               ? null
               : () {
-                  context.go(AppRoutes.patientHome);
+                  context.go(AppRoutes.patientDashboard);
                 },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,

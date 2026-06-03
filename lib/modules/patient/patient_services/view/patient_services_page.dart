@@ -24,7 +24,7 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: const Color(0xffF4F6FA),
+
 
         appBar: AppBar( flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -33,8 +33,9 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
               end: Alignment.bottomRight,
               colors: [
                 AppColors.primary, // #0673de
-                const Color(0xff055bb0),
-                const Color(0xff03458a),
+                AppColors.primary, // #0673de
+                // const Color(0xff055bb0),
+                // const Color(0xff03458a),
               ],
             ),
 
@@ -67,7 +68,64 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          bottom: PreferredSize(
+
+        ),
+
+        body: Column(
+          children: [
+
+            /// 🔘 TAB BAR
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 22,
+              vertical: 16
+              ),
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TabBar(
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                labelColor: AppColors.white,
+                unselectedLabelColor: Colors.grey.shade600,
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.tab,
+                padding: const EdgeInsets.all(4),
+                labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                tabs: const [
+                  Tab(text: "Orders"),
+                  Tab(text: "Lab Track"),
+                ],
+              ),
+            ),
+            Expanded(
+              child: const TabBarView(
+                children: [
+
+                  PatientOrderPage(),
+                  PatientLabTrackingPage(),
+
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+/* bottom: PreferredSize(
             preferredSize: const Size.fromHeight(70),
             child: Container(
               margin: const EdgeInsets.all(16),
@@ -101,22 +159,7 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
                 ],
               ),
             ),
-          ),
-        ),
-
-        body: const TabBarView(
-          children: [
-
-            PatientOrderPage(),
-            PatientLabTrackingPage(),
-
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+          ),*/
 
 /// ---------------- PREMIUM CARD ----------------
 

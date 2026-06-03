@@ -70,7 +70,7 @@ class FloatingBottomNavigationBar extends StatelessWidget {
                           color: isSelected
                               ? AppColors.primary
                               : AppColors.white,
-                          size: isSelected ? 26 : 22,
+                          size: isSelected ? 24 : 20,
                         ),
                       ),
 
@@ -90,7 +90,7 @@ class FloatingBottomNavigationBar extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 10,
                                       color: Colors.white,
                                     ),
                                   ),

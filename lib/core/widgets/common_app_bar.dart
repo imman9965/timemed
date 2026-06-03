@@ -32,19 +32,20 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.primary, // #0673de
-              const Color(0xff055bb0),
-              const Color(0xff03458a),
+               AppColors.primary, // #0673de
+               AppColors.primary, // #0673de
+              // const Color(0xff055bb0),
+              // const Color(0xff03458a),
             ],
           ),
 
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.20),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: AppColors.primary.withOpacity(0.20),
+          //     blurRadius: 20,
+          //     offset: const Offset(0, 8),
+          //   ),
+          // ],
         ),
 
         child: SafeArea(

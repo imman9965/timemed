@@ -20,10 +20,17 @@ class MedicalRecordsDetailsController extends GetxController {
 
   bool get hasSelection => selectedIds.isNotEmpty;
 
+  void setRecord(MedicalRecordModel record) {
+    selectedRecord.value = record;
+    isLoading.value = false;
+  }
+
   @override
   void onInit() {
     super.onInit();
-    loadDemoRecord(); // ✅ load static data here
+    if (selectedRecord.value == null) {
+      loadDemoRecord(); // ✅ load static data only if none provided
+    }
   }
 
   void loadDemoRecord() {
@@ -94,7 +101,7 @@ class MedicalRecordsDetailsController extends GetxController {
           testName: 'MP QBC',
           instructions: 'Fasting required',
         ),
-      ],
+      ], time: '', status: '',
     );
   }
 }

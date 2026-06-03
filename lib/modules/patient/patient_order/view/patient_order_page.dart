@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:timesmed_project/core/widgets/common_app_bar.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
-import '../../../doctor/schedule_appointment/schedule_appointment.dart';
 import '../controller/patient_order_controller.dart';
 
 class PatientOrderPage extends StatefulWidget {
@@ -19,11 +18,10 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFFFCF5),
-      // appBar: CommonAppBar(title: "My Orders"),
+      backgroundColor: const Color(0xffF8FAFD),
       body: Obx(
         () => ListView.builder(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           itemCount: controller.orders.length,
           itemBuilder: (context, index) {
             final order = controller.orders[index];
@@ -38,160 +36,247 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
   Widget _orderCard(Map order) {
     final status = order["status"];
     final bool isDelivered = status == "Delivered";
+    final bool isCancelled = status == "Cancelled";
 
     Color statusColor;
-    if (status == "Delivered") {
+    if (isDelivered) {
       statusColor = Colors.green;
-    } else if (status == "Cancelled") {
+    } else if (isCancelled) {
       statusColor = Colors.red;
     } else {
       statusColor = Colors.orange;
     }
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 18),
-      padding: const EdgeInsets.all(14),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// 🔹 TOP ROW
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                order["orderId"],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-
-              /// STATUS CHIP
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  status,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          /// DATE
-          Text(
-            order["date"],
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-          ),
-
-          const SizedBox(height: 12),
-
-          /// 🔹 MEDICINE LIST
-          ...List.generate(order["medicines"].length, (index) {
-            final med = order["medicines"][index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Row(
-                children: [
-                  const Icon(Icons.medication, size: 16),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      med["name"],
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  Text(
-                    "x${med["qty"]}",
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-            );
-          }),
-
-          const SizedBox(height: 14),
-
-          /// 🔹 BOTTOM ROW
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              /// TOTAL
-              Row(
-                children: [
-                  const Icon(Icons.currency_rupee, size: 16),
-                  Text(
-                    order["total"],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-
-              /// ACTION BUTTON
-              ElevatedButton(
-                onPressed: () {
-                  if (isDelivered) {
-                    context.push(
-                      AppRoutes.patientPrescriptionOrderDetails,
-                      extra: order,
-                    );
-                  } else {
-                    context.push(AppRoutes.patientPrescriptionOrderTracking);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isDelivered
-                      ? Colors.grey.shade200
-                      : AppColors.primary,
-                  foregroundColor: isDelivered ? Colors.black : Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(isDelivered ? "View Details" : "Track Order"),
-              ),
-            ],
-          ),
-
-          /// 🔥 OPTIONAL: REORDER BUTTON
-          if (isDelivered) ...[
-            const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                // TODO: Add items back to cart
-                context.push(AppRoutes.patientMedicineCart);
-              },
-              child: const Text("Reorder"),
+          /// 🔹 TOP HEADER SECTION
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: statusColor.withValues(alpha: 0.03),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
-          ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      order["orderId"],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        letterSpacing: -0.5,
+                        color: Color(0xff1A1C1E),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      order["date"],
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade500,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+
+                /// STATUS CHIP
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: statusColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: statusColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        status,
+                        style: TextStyle(
+                          color: statusColor,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 11,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// 🔹 MEDICINE LIST
+                const Text(
+                  "ORDERED ITEMS",
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.grey,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ...List.generate(order["medicines"].length, (index) {
+                  final med = order["medicines"][index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.05),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.medication_outlined, size: 16, color: AppColors.primary),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            med["name"],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff2C3E50),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "x${med["qty"]}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                            color: Color(0xff1A1C1E),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Divider(height: 1),
+                ),
+
+                /// 🔹 BOTTOM ACTION ROW
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    /// TOTAL
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "TOTAL AMOUNT",
+                          style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: Colors.grey),
+                        ),
+                        Text(
+                          order["total"],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// ACTION BUTTON
+                    Row(
+                      children: [
+                        if (isDelivered)
+                          _orderActionBtn(
+                            label: "View Details",
+                            onTap: () {
+                              context.push(
+                                AppRoutes.patientPrescriptionOrderDetails,
+                                extra: order,
+                              );
+                            },
+                            isPrimary: false,
+                          )
+                        else
+                          _orderActionBtn(
+                            label: "Track",
+                            onTap: () {
+                              context.push(AppRoutes.patientPrescriptionOrderTracking);
+                            },
+                            isPrimary: true,
+                          ),
+                        if (isDelivered) ...[
+                          const SizedBox(width: 10),
+                          _orderActionBtn(
+                            label: "Reorder",
+                            onTap: () {
+                              context.push(AppRoutes.patientMedicineCart);
+                            },
+                            isPrimary: true,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _orderActionBtn({required String label, required VoidCallback onTap, required bool isPrimary}) {
+    return SizedBox(
+      height: 44,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isPrimary ? AppColors.primary : Colors.white,
+          foregroundColor: isPrimary ? Colors.white : AppColors.primary,
+          elevation: isPrimary ? 4 : 0,
+          shadowColor: isPrimary ? AppColors.primary.withValues(alpha: 0.3) : Colors.transparent,
+          side: isPrimary ? BorderSide.none : const BorderSide(color: Color(0xffE9EEF5), width: 1.5),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+        ),
       ),
     );
   }

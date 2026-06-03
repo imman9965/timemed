@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/calendar/calendar_page.dart';
 import 'package:timesmed_project/modules/ai_chat/view/ai_chat_page.dart';
@@ -24,6 +25,7 @@ import 'package:timesmed_project/modules/patient/medical_module/records/binding/
 import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records/view/medical_records_view.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/binding/medical_records_details_binding.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records_details/controller/midical_record_details_controller.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records_details/view/medical_recorde_details_page.dart';
 import 'package:timesmed_project/modules/patient/medical_module/track_order/view/patient_prescription_track_order_page.dart';
 import 'package:timesmed_project/modules/patient/patient_add/view/patient_add_page.dart';
@@ -181,18 +183,19 @@ class AppRouter {
               return PatientHomePage();
             },
           ),
-          GoRoute(
-            path: AppRoutes.patientDashboard,
-            builder: (context, state) {
-              // PatientOrderBinding().dependencies();
-              return PatientDashboardPage();
-            },
-          ),
+
           GoRoute(
             path: AppRoutes.patientPreviousAppointments,
             builder: (context, state) {
               // PatientOrderBinding().dependencies();
               return PatientPreviousAppointmentPage();
+            },
+          ),
+          GoRoute(
+            path: AppRoutes.patientDashboard,
+            builder: (context, state) {
+              // PatientOrderBinding().dependencies();
+              return PatientDashboardPage();
             },
           ),
 
@@ -345,14 +348,20 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.patientMedicalRecords,
         builder: (context, state) {
+          final initialRecord = state.extra as MedicalRecordModel?;
           MedicalRecordsBinding().dependencies();
-          return const MedicalRecordsPage();
+          return MedicalRecordsPage(initialRecord: initialRecord);
         },
       ),
       GoRoute(
         path: AppRoutes.patientMedicalRecordDetail,
         builder: (context, state) {
+          final record = state.extra as MedicalRecordModel?;
           MedicalRecordsDetailsBinding().dependencies();
+          final controller = Get.find<MedicalRecordsDetailsController>();
+          if (record != null) {
+            controller.setRecord(record);
+          }
           return MedicalRecordDetailsPage();
         },
       ),

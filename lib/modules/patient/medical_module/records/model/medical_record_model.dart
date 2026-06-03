@@ -5,12 +5,14 @@ class MedicalRecordModel {
   final String doctorId;
   final String doctorName;
   final String speciality;
-  final String visitId; // ✅ NEW
+  final String visitId;
   final String date;
+  final String time; // ✅ NEW
+  final String status; // ✅ NEW
   final String diagnosis;
   final String notes;
   final List<PrescriptionItem> prescriptions;
-  final List<LabTest> labTests; // ✅ NEW
+  final List<LabTest> labTests;
 
   MedicalRecordModel({
     required this.id,
@@ -21,6 +23,8 @@ class MedicalRecordModel {
     required this.speciality,
     required this.visitId,
     required this.date,
+    required this.time,
+    required this.status,
     required this.diagnosis,
     required this.notes,
     required this.prescriptions,
@@ -37,6 +41,8 @@ class MedicalRecordModel {
       speciality: json['speciality'] ?? '',
       visitId: json['visit_id'] ?? '',
       date: json['date'] ?? '',
+      time: json['time'] ?? '10:00 AM',
+      status: json['status'] ?? 'Completed',
       diagnosis: json['diagnosis'] ?? '',
       notes: json['notes'] ?? '',
       prescriptions: (json['prescriptions'] as List<dynamic>? ?? [])
@@ -57,6 +63,8 @@ class MedicalRecordModel {
     'speciality': speciality,
     'visit_id': visitId,
     'date': date,
+    'time': time,
+    'status': status,
     'diagnosis': diagnosis,
     'notes': notes,
     'prescriptions': prescriptions.map((e) => e.toJson()).toList(),
