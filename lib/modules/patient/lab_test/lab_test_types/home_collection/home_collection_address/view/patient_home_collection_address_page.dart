@@ -6,7 +6,7 @@ import 'package:timesmed_project/modules/patient/medical_module/records/model/me
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientHomeCollectionAddressPage extends StatefulWidget {
-  final LabTest labTest;
+  final List<LabTest> labTest;
   final String selectedDate;
   final String selectedTime;
 
@@ -46,7 +46,7 @@ class _PatientHomeCollectionAddressPageState
 
   @override
   Widget build(BuildContext context) {
-    final test = widget.labTest;
+    final tests = widget.labTest;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -76,7 +76,7 @@ class _PatientHomeCollectionAddressPageState
                 context.push(
                   AppRoutes.patientHomeCollectionCheckout,
                   extra: {
-                    "labTest": test,
+                    "labTest": tests,
                     "selectedDate": widget.selectedDate,
                     "selectedTime": widget.selectedTime,
                     "name": nameController.text,
@@ -150,7 +150,9 @@ class _PatientHomeCollectionAddressPageState
                           CrossAxisAlignment.start,
                           children: [
                             Text(
-                              test.testName,
+                              tests.length == 1 
+                                  ? tests.first.testName 
+                                  : "${tests.length} Tests Selected",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -161,7 +163,11 @@ class _PatientHomeCollectionAddressPageState
                             const SizedBox(height: 6),
 
                             Text(
-                              test.category,
+                              tests.length == 1 
+                                  ? tests.first.category 
+                                  : tests.map((e) => e.testName).join(", "),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 12,

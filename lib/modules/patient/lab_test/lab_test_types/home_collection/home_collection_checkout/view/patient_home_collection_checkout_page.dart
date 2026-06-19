@@ -24,13 +24,13 @@ class _PatientHomeCollectionCheckoutPageState
     extends State<PatientHomeCollectionCheckoutPage> {
   final razorpayService = HomeCollectionCheckoutRazorpayService();
 
-  late LabTest test;
+  late List<LabTest> tests;
 
   @override
   void initState() {
     super.initState();
 
-    test = widget.bookingData["labTest"];
+    tests = widget.bookingData["labTest"];
 
     razorpayService.init(
       onSuccess: _handlePaymentSuccess,
@@ -78,7 +78,7 @@ class _PatientHomeCollectionCheckoutPageState
   Widget build(BuildContext context) {
     final data = widget.bookingData;
 
-    final double testPrice = 799;
+    final int testPrice = 799 * tests.length;
     final double collectionFee = 99;
     final double platformFee = 29;
     final double total =
@@ -144,7 +144,9 @@ class _PatientHomeCollectionCheckoutPageState
                   onPressed: () {
                     razorpayService.openCheckout(
                       amount: (total * 100).toInt(),
-                      name: test.testName,
+                      name: tests.length == 1 
+                          ? tests.first.testName 
+                          : "${tests.length} Lab Tests",
                       description:
                       "Home Collection Lab Test",
                       contact: data["mobile"],
@@ -218,7 +220,9 @@ class _PatientHomeCollectionCheckoutPageState
                           CrossAxisAlignment.start,
                           children: [
                             Text(
-                              test.testName,
+                              tests.length == 1 
+                                  ? tests.first.testName 
+                                  : "${tests.length} Tests Selected",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -230,7 +234,11 @@ class _PatientHomeCollectionCheckoutPageState
                             const SizedBox(height: 6),
 
                             Text(
-                              test.category,
+                              tests.length == 1 
+                                  ? tests.first.category 
+                                  : tests.map((e) => e.testName).join(", "),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white70,
                               ),
@@ -304,8 +312,8 @@ class _PatientHomeCollectionCheckoutPageState
               child: Column(
                 children: [
                   _priceRow(
-                    "Lab Test Fee",
-                    "₹799",
+                    "Lab Test Fee (${tests.length} tests)",
+                    "₹${(799 * tests.length).toStringAsFixed(0)}",
                   ),
 
                   const SizedBox(height: 14),

@@ -6,7 +6,7 @@ import 'package:timesmed_project/modules/patient/medical_module/records/model/me
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientHomeCollectionSlotPage extends StatefulWidget {
-  final LabTest labTest;
+  final List<LabTest> labTest;
 
   const PatientHomeCollectionSlotPage({
     super.key,
@@ -28,7 +28,7 @@ class _PatientHomeCollectionSlotPageState
 
   @override
   Widget build(BuildContext context) {
-    final test = widget.labTest;
+    final tests = widget.labTest;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -60,7 +60,7 @@ class _PatientHomeCollectionSlotPageState
                 context.push(
                   AppRoutes.patientHomeCollectionAddress,
                   extra: {
-                    "labTest": test,
+                    "labTest": tests,
                     "selectedTime": selectedTime,
                     "selectedDate":
                     "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
@@ -128,7 +128,9 @@ class _PatientHomeCollectionSlotPageState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          test.testName,
+                          tests.length == 1 
+                              ? tests.first.testName 
+                              : "${tests.length} Tests Selected",
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -139,7 +141,11 @@ class _PatientHomeCollectionSlotPageState
                         const SizedBox(height: 6),
 
                         Text(
-                          test.category,
+                          tests.length == 1 
+                              ? tests.first.category 
+                              : tests.map((e) => e.testName).join(", "),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -197,9 +203,9 @@ class _PatientHomeCollectionSlotPageState
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(14),
                               ),
-                              child: const Text(
-                                "₹550",
-                                style: TextStyle(
+                              child: Text(
+                                "₹${550 * tests.length}",
+                                style: const TextStyle(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15,

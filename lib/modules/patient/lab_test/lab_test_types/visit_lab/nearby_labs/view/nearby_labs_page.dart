@@ -8,7 +8,7 @@ import 'package:timesmed_project/routes/app_routes.dart';
 
 
 class PatientNearbyLabsPage extends StatefulWidget {
-  final LabTest labTest;
+  final List<LabTest> labTest;
 
   const PatientNearbyLabsPage({
     super.key,
@@ -68,7 +68,7 @@ class _PatientNearbyLabsPageState
 
   @override
   Widget build(BuildContext context) {
-    final labTest = widget.labTest;
+    final labTests = widget.labTest;
 
     final filteredLabs = labs.where((lab) {
       final search = searchController.text.toLowerCase();
@@ -86,7 +86,7 @@ class _PatientNearbyLabsPageState
 
       body: Column(
         children: [
-          /// 🔹 TEST HEADER
+          /// 🔹 TEST HEADER (Summary)
           Container(
             margin: const EdgeInsets.fromLTRB(16, 16, 16, 12),
             padding: const EdgeInsets.all(18),
@@ -122,7 +122,9 @@ class _PatientNearbyLabsPageState
                     CrossAxisAlignment.start,
                     children: [
                       Text(
-                        labTest.testName,
+                        labTests.length == 1 
+                            ? labTests.first.testName 
+                            : "${labTests.length} Tests Selected",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
@@ -133,24 +135,29 @@ class _PatientNearbyLabsPageState
                       const SizedBox(height: 6),
 
                       Text(
-                        labTest.category,
+                        labTests.length == 1 
+                            ? labTests.first.category 
+                            : labTests.map((e) => e.testName).join(", "),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
                         ),
                       ),
 
-                      const SizedBox(height: 8),
-
-                      Text(
-                        labTest.instructions,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
+                      if (labTests.length == 1) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          labTests.first.instructions,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),

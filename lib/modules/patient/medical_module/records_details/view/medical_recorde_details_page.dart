@@ -78,7 +78,13 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          context.push(AppRoutes.clinicalFilter);
+                          final labTests = controller.selectedRecord.value?.labTests;
+                          if (labTests != null && labTests.isNotEmpty) {
+                            context.push(
+                              AppRoutes.patientLabTestDetails,
+                              extra: labTests,
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
@@ -249,11 +255,11 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           if (record.prescriptions.isEmpty)
                             _emptyState("No prescriptions recorded", Icons.medication_outlined)
                           else
-                            ...record.prescriptions.map((p) => _medicineRow(p)),
+                            _prescriptionTable(record.prescriptions),
                         ],
                       ),
                     ),
@@ -280,11 +286,11 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           if (record.labTests.isEmpty)
                             _emptyState("No lab investigations", Icons.science_outlined)
                           else
-                            ...record.labTests.map((lab) => _labCard(lab)),
+                            _labTestTable(record.labTests),
                         ],
                       ),
                     ),
@@ -342,130 +348,162 @@ class MedicalRecordDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _medicineRow(PrescriptionItem p) {
+  Widget _prescriptionTable(List<PrescriptionItem> items) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.medication_outlined, size: 18, color: AppColors.primary),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  p.medicineName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff2C3E50),
-                  ),
-                ),
-              ),
-            ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(2.5),
+            1: FlexColumnWidth(1.5),
+            2: FlexColumnWidth(1),
+          },
+          border: TableBorder(
+            horizontalInside: BorderSide(color: Colors.grey.shade100, width: 1),
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              _medicalDataPoint("Frequency", p.frequency),
-              const SizedBox(width: 24),
-              _medicalDataPoint("Duration", "${p.days} Days"),
-            ],
-          ),
-          if (p.instructions.isNotEmpty) ...[
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Divider(height: 1),
+          children: [
+            TableRow(
+              decoration: BoxDecoration(color: Colors.grey.shade50),
+              children: [
+                _tableHeader("Medicine Name"),
+                _tableHeader("Frequency"),
+                _tableHeader("Days"),
+              ],
             ),
-            Text(
-              "Instruction: ${p.instructions}",
-              style: TextStyle(
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey.shade600,
-              ),
-            ),
+            ...items.map((p) => TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            p.medicineName,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff2C3E50),
+                            ),
+                          ),
+                          if (p.instructions.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                p.instructions,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey.shade500,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    _tableCell(p.frequency),
+                    _tableCell("${p.days}"),
+                  ],
+                )),
           ],
-        ],
+        ),
       ),
     );
   }
 
-  Widget _labCard(LabTest lab) {
+  Widget _labTestTable(List<LabTest> items) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.science_outlined, size: 18, color: Colors.teal),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  lab.testName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff2C3E50),
-                  ),
-                ),
-              ),
-              const Icon(Icons.verified_user, color: Colors.green, size: 16),
-            ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(2),
+            1: FlexColumnWidth(2),
+          },
+          border: TableBorder(
+            horizontalInside: BorderSide(color: Colors.grey.shade100, width: 1),
           ),
-          const SizedBox(height: 4),
-          Text(
-            "Category: ${lab.category}",
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
-          ),
-          if (lab.instructions.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(
-              "Preparation: ${lab.instructions}",
-              style: const TextStyle(fontSize: 13, color: Colors.blueGrey),
+          children: [
+            TableRow(
+              decoration: BoxDecoration(color: Colors.grey.shade50),
+              children: [
+                _tableHeader("Test Name"),
+                _tableHeader("Category"),
+              ],
             ),
+            ...items.map((lab) => TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            lab.testName,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff2C3E50),
+                            ),
+                          ),
+                          if (lab.instructions.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                "Prep: ${lab.instructions}",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.blueGrey.shade400,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    _tableCell(lab.category),
+                  ],
+                )),
           ],
-        ],
+        ),
       ),
     );
   }
 
-  Widget _medicalDataPoint(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label.toUpperCase(),
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            color: Colors.grey.shade400,
-            letterSpacing: 0.5,
-          ),
+  Widget _tableHeader(String label) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          color: Colors.grey.shade600,
+          letterSpacing: 0.5,
         ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff34495E),
-          ),
+      ),
+    );
+  }
+
+  Widget _tableCell(String value) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        value,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff34495E),
         ),
-      ],
+      ),
     );
   }
 

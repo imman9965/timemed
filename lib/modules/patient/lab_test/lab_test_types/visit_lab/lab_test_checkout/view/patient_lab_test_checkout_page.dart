@@ -5,10 +5,11 @@ import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 
 import 'package:timesmed_project/modules/patient/lab_test/lab_test_types/visit_lab/lab_test_checkout/service/payment_service.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientLabTestCheckoutPage extends StatefulWidget {
-  final dynamic labTest;
+  final List<LabTest> labTest;
   final Map<String, dynamic> selectedLab;
   final String selectedTime;
   final String selectedDate;
@@ -63,7 +64,9 @@ class _PatientLabTestCheckoutPageState
       extra: {
         "bookingId": "LAB248763",
         "labName": widget.selectedLab["name"],
-        "testName": widget.labTest.testName,
+        "testName": widget.labTest.length == 1 
+            ? widget.labTest.first.testName 
+            : "${widget.labTest.length} Tests",
         "date": widget.selectedDate,
         "time": widget.selectedTime,
         "location": widget.selectedLab["address"],
@@ -90,9 +93,10 @@ class _PatientLabTestCheckoutPageState
   @override
   Widget build(BuildContext context) {
     final lab = widget.selectedLab;
-    final test = widget.labTest;
+    final tests = widget.labTest;
 
-    final int amount = lab["price"];
+    final int unitAmount = lab["price"];
+    final int totalAmount = unitAmount * tests.length;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -125,9 +129,11 @@ class _PatientLabTestCheckoutPageState
             child: ElevatedButton(
               onPressed: () {
                 razorpayService.openCheckout(
-                  amount: amount * 100,
+                  amount: totalAmount * 100,
                   name: lab["name"],
-                  description: test.testName,
+                  description: tests.length == 1 
+                      ? tests.first.testName 
+                      : "${tests.length} Lab Tests",
                   contact: "9876543210",
                   email: "patient@gmail.com",
                 );
@@ -141,7 +147,7 @@ class _PatientLabTestCheckoutPageState
                 ),
               ),
               child: Text(
-                "Pay ₹$amount",
+                "Pay ₹$totalAmount",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -189,7 +195,9 @@ class _PatientLabTestCheckoutPageState
                   const SizedBox(height: 16),
 
                   Text(
-                    test.testName,
+                    tests.length == 1 
+                        ? tests.first.testName 
+                        : "${tests.length} Tests Selected",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 20,
@@ -201,7 +209,12 @@ class _PatientLabTestCheckoutPageState
                   const SizedBox(height: 10),
 
                   Text(
-                    test.category,
+                    tests.length == 1 
+                        ? tests.first.category 
+                        : tests.map((e) => e.testName).join(", "),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white70,
                     ),
@@ -278,15 +291,15 @@ class _PatientLabTestCheckoutPageState
                     MainAxisAlignment
                         .spaceBetween,
                     children: [
-                      const Text(
-                        "Lab Test Charge",
-                        style: TextStyle(
+                      Text(
+                        "${tests.length} Lab Test Charge${tests.length > 1 ? 's' : ''}",
+                        style: const TextStyle(
                           fontSize: 14,
                         ),
                       ),
 
                       Text(
-                        "₹$amount",
+                        "₹$totalAmount",
                         style: const TextStyle(
                           fontWeight:
                           FontWeight.w700,
@@ -297,7 +310,7 @@ class _PatientLabTestCheckoutPageState
 
                   const SizedBox(height: 14),
 
-                  Divider(),
+                  const Divider(),
 
                   const SizedBox(height: 14),
 
@@ -316,7 +329,7 @@ class _PatientLabTestCheckoutPageState
                       ),
 
                       Text(
-                        "₹$amount",
+                        "₹$totalAmount",
                         style: const TextStyle(
                           fontSize: 18,
                           color: AppColors.primary,

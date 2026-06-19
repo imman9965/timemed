@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-
-
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientLabSlotSelectionPage extends StatefulWidget {
   final Map<String, dynamic> selectedLab;
-  final dynamic labTest;
+  final List<LabTest> labTest;
 
   const PatientLabSlotSelectionPage({
     super.key,
@@ -41,7 +39,7 @@ class _PatientLabSlotSelectionPageState
   @override
   Widget build(BuildContext context) {
     final lab = widget.selectedLab;
-    final test = widget.labTest;
+    final tests = widget.labTest;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -73,7 +71,7 @@ class _PatientLabSlotSelectionPageState
                 context.push(
                   AppRoutes.patientLabTestCheckout,
                   extra: {
-                    "labTest": test,
+                    "labTest": tests,
                     "selectedLab": lab,
                     "selectedTime": selectedTime,
                     "selectedDate":
@@ -186,7 +184,9 @@ class _PatientLabSlotSelectionPageState
 
                                     Expanded(
                                       child: Text(
-                                        test.testName,
+                                        tests.length == 1 
+                                            ? tests.first.testName 
+                                            : "${tests.length} Tests Selected",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -212,7 +212,7 @@ class _PatientLabSlotSelectionPageState
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               child: Text(
-                                "₹${lab["price"]}",
+                                "₹${lab["price"] * tests.length}",
                                 style: const TextStyle(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,

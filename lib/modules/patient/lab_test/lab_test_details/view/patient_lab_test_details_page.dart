@@ -6,7 +6,7 @@ import 'package:timesmed_project/modules/patient/medical_module/records/model/me
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientLabTestDetailsPage extends StatefulWidget {
-  final LabTest labTest;
+  final List<LabTest> labTest;
 
   const PatientLabTestDetailsPage({
     super.key,
@@ -24,7 +24,7 @@ class _PatientLabTestDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    final lab = widget.labTest;
+    final labs = widget.labTest;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -56,12 +56,12 @@ class _PatientLabTestDetailsPageState
                 if (selectedType == "home") {
                   context.push(
                     AppRoutes.patientHomeCollectionSlot,
-                    extra: lab,
+                    extra: labs,
                   );
                 } else {
                   context.push(
                 AppRoutes.patientNearbyLabsPage,
-                    extra: lab,
+                    extra: labs,
                   );
                 }
               },
@@ -91,102 +91,111 @@ class _PatientLabTestDetailsPageState
         child: Column(
           children: [
             /// 🔹 TOP PREMIUM CARD
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primary,
-                    AppColors.primary.withOpacity(.82),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// ICON + CATEGORY
-                  Row(
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: labs.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              itemBuilder: (context, index) {
+                final lab = labs[index];
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary,
+                        AppColors.primary.withOpacity(.82),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.18),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: const Icon(
-                          Icons.science,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-
-                      const Spacer(),
-
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.15),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Text(
-                          lab.category,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                      /// ICON + CATEGORY
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(.18),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: const Icon(
+                              Icons.science,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                           ),
+
+                          const Spacer(),
+
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(.15),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Text(
+                              lab.category,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      /// TEST NAME
+                      Text(
+                        lab.testName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ],
-                  ),
 
-                  const SizedBox(height: 24),
+                      const SizedBox(height: 14),
 
-                  /// TEST NAME
-                  Text(
-                    lab.testName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-
-                  const SizedBox(height: 14),
-
-                  Text(
-                    lab.instructions,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
-                      height: 1.5,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  Row(
-                    children: [
-                      _infoChip(
-                        Icons.access_time,
-                        "Reports in 24 hrs",
+                      Text(
+                        lab.instructions,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13,
+                          height: 1.5,
+                        ),
                       ),
-                      const SizedBox(width: 10),
-                      _infoChip(
-                        Icons.verified,
-                        "NABL Certified",
+
+                      const SizedBox(height: 24),
+
+                      Row(
+                        children: [
+                          _infoChip(
+                            Icons.access_time,
+                            "Reports in 24 hrs",
+                          ),
+                          const SizedBox(width: 10),
+                          _infoChip(
+                            Icons.verified,
+                            "NABL Certified",
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
 
             const SizedBox(height: 26),

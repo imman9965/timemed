@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
+import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class PatientHomeCollectionSuccessPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class PatientHomeCollectionSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final test = bookingData["labTest"];
+    final tests = bookingData["labTest"] as List<LabTest>;
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FB),
@@ -118,7 +119,9 @@ appBar: CommonAppBar(title: "Booking Successful"),
                             CrossAxisAlignment.start,
                             children: [
                               Text(
-                                test.testName,
+                                tests.length == 1 
+                                    ? tests.first.testName 
+                                    : "${tests.length} Tests Booked",
                                 style: const TextStyle(
                                   fontWeight:
                                   FontWeight.w700,
@@ -129,7 +132,11 @@ appBar: CommonAppBar(title: "Booking Successful"),
                               const SizedBox(height: 6),
 
                               Text(
-                                test.category,
+                                tests.length == 1 
+                                    ? tests.first.category 
+                                    : tests.map((e) => e.testName).join(", "),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color:
                                   Colors.grey.shade600,

@@ -18,29 +18,29 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
   final List<PatientSelectionModel> patients = [
     PatientSelectionModel(
       id: '1',
-      name: 'Sara',
+      name: 'Vignesh',
       relation: 'Self',
       gender: "Male",
       age: 30,
     ),
     PatientSelectionModel(
       id: '2',
-      name: 'Sarah Doe',
-      relation: 'Spouse',
+      name: 'Immanuel',
+      relation: 'Brother',
       gender: "Female",
       age: 28,
     ),
     PatientSelectionModel(
       id: '3',
-      name: 'Emma Doe',
-      relation: 'Daughter',
+      name: 'Subash',
+      relation: 'Brother',
       gender: "Female",
       age: 5,
     ),
     PatientSelectionModel(
       id: '4',
-      name: 'Robert Doe',
-      relation: 'Father',
+      name: 'Aravind',
+      relation: 'Brother',
       gender: "Male",
       age: 60,
     ),
@@ -87,83 +87,6 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
     );
   }
 
-  /// Patient List - Show list of patients to select from
-  /* Widget _buildPatientList() {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: patients.length + 1,
-      itemBuilder: (context, index) {
-        if (index == patients.length) {
-          return _buildAddPatientCard();
-        }
-
-        final patient = patients[index];
-        final isSelected = selectedPatient?.id == patient.id;
-
-        return GestureDetector(
-          onTap: () {
-            setState(() => selectedPatient = patient);
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.blue.shade50 : Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : Colors.grey.shade200,
-                width: isSelected ? 1.5 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8),
-              ],
-            ),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 22,
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
-                  child: Text(
-                    patient.name[0],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 12),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        patient.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        "${patient.relation} • ${patient.age} yrs • ${patient.gender}",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                if (isSelected)
-                  const Icon(Icons.check_circle, color: AppColors.primary),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }*/
   Widget _buildPatientList() {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),

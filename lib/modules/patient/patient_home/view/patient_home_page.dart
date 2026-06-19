@@ -91,7 +91,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     child: const CircleAvatar(
                       radius: 32,
                       backgroundImage: NetworkImage(
-                        "https://thumbs.dreamstime.com/b/profile-picture-young-indian-woman-renter-headshot-portrait-confident-tenant-pose-modern-own-new-apartment-house-226719004.jpg",
+                        "https://t3.ftcdn.net/jpg/06/99/46/60/360_F_699466075_DaPTBNlNQTOwwjkOiFEoOvzDV0ByXR9E.jpg",
                       ),
                     ),
                   ),
@@ -110,7 +110,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       children: [
                         Expanded(
                           child: Text(
-                            "Sara",
+                            "Vignesh",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -132,7 +132,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       runSpacing: 6,
                       children: [
                         _infoChip("30 yrs"),
-                        _infoChip("Female"),
+                        _infoChip("Male"),
                         _infoChip("Self"),
                       ],
                     ),
@@ -554,7 +554,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   const CircleAvatar(
                     radius: 24,
                     backgroundImage: NetworkImage(
-                      "https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?semt=ais_hybrid&w=740&q=80",
+                      "https://manage.healu360.com/uploads/2024/09/5a4d97684d10837be6911fab06257c86.jpg",
                     ),
                   ),
 
@@ -566,7 +566,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Dr. Hanna",
+                          "Dr. Mariappan",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -705,7 +705,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 const CircleAvatar(
                   radius: 22,
                   backgroundImage: NetworkImage(
-                    "https://images.pexels.com/photos/32254655/pexels-photo-32254655.jpeg?cs=srgb&dl=pexels-konrads-photo-32254655.jpg&fm=jpg",
+                    "https://manage.healu360.com/uploads/2024/09/5a4d97684d10837be6911fab06257c86.jpg",
                   ),
                 ),
 
@@ -717,14 +717,14 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Dr. Andrew",
+                        "Dr. Mariappan",
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
                       const SizedBox(height: 2),
 
                       Text(
-                        "Dentist • MIOT Hospital",
+                        "Cardiologist • Apollo Clinic",
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey.shade600,

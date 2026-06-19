@@ -248,7 +248,9 @@ class AppRouter {
       // ...........Dashboard................ //
       GoRoute(
         path: AppRoutes.patientDashboard,
-        builder: (context, state) => PatientDashboardPage(),
+        builder: (context, state) => PatientDashboardPage(
+
+        ),
       ),
       // ...........Appointments ............ //
 
@@ -423,16 +425,16 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.patientLabTestDetails,
         builder: (context, state) {
-          final labTest = state.extra as LabTest;
-          return PatientLabTestDetailsPage(labTest: labTest);
+          final labTests = state.extra as List<LabTest>;
+          return PatientLabTestDetailsPage(labTest: labTests);
         },
       ),
 
       GoRoute(
         path: AppRoutes.patientNearbyLabsPage,
         builder: (context, state) {
-          final labTest = state.extra as LabTest;
-          return PatientNearbyLabsPage(labTest :labTest);
+          final labTests = state.extra as List<LabTest>;
+          return PatientNearbyLabsPage(labTest: labTests);
         },
       ),
       GoRoute(
@@ -473,10 +475,10 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.patientHomeCollectionSlot,
         builder: (context, state) {
-          final labTest = state.extra as LabTest;
+          final labTests = state.extra as List<LabTest>;
 
           return PatientHomeCollectionSlotPage(
-            labTest: labTest,
+            labTest: labTests,
           );
         },
       ),
