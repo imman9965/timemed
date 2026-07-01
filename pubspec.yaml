@@ -94,6 +94,8 @@ flutter:
     - assets/images/track_order/
     - assets/icons/speciality/
     - assets/bottom_nav_icon/
+    - assets/icons/gender/category/man/
+    - assets/icons/gender/category/woman/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

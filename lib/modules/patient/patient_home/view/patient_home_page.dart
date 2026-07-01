@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/modules/auth/controller/auth_controller.dart';
 import 'package:timesmed_project/modules/patient/patient_home/controller/patient_home_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
@@ -90,8 +91,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     ),
                     child: const CircleAvatar(
                       radius: 32,
-                      backgroundImage: NetworkImage(
-                        "https://t3.ftcdn.net/jpg/06/99/46/60/360_F_699466075_DaPTBNlNQTOwwjkOiFEoOvzDV0ByXR9E.jpg",
+                      backgroundImage: AssetImage(
+                        "assets/icons/gender/category/man/adult_man.png",
                       ),
                     ),
                   ),
@@ -215,33 +216,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
     );
   }
 
-  Widget _statusBadge(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.6),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 6,
-            height: 6,
-            decoration: const BoxDecoration(
-              color: Colors.green,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _infoChip(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -338,69 +312,24 @@ class _PatientHomePageState extends State<PatientHomePage> {
         Row(
           children: [
             Expanded(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+              child: CommonButton(
+                isOutlined: true,
+                title: "Clinical Visit",
                 onPressed: () {
                   context.push(AppRoutes.clinicalFilter);
                 },
-                child: const Text("Clinical Visit"),
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+              child: CommonButton(
+                title: "Video Consultation",
                 onPressed: () {
                   context.push(AppRoutes.videoFilter);
                 },
-                child: const Text("Video Consultation"),
               ),
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  Widget _appointmentButton({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required bool isPrimary,
-    required VoidCallback onTap,
-  }) {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isPrimary ? AppColors.primary : AppColors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(
-                  color: isPrimary ? AppColors.primary : Colors.grey.shade300,
-                  width: 1,
-                ),
-              ),
-            ),
-            onPressed: onTap,
-            child: Text(
-              title,
-              style: TextStyle(
-                color: isPrimary ? Colors.white : Colors.black87,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
         ),
       ],
     );

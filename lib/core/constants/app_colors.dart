@@ -7,6 +7,7 @@ class AppColors {
 
   /// 🌟 Primary Theme Colors
   static const Color primary = Color(0xff0673de);
+  static const Color secondaryColor= Color(0xff61c24a);
 
   static const Color primaryBackground = Color(0xffE6F1FD);
   static const Color secondary = Color(0xff2f6f7e);

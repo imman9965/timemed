@@ -21,28 +21,28 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
       name: 'Vignesh',
       relation: 'Self',
       gender: "Male",
-      age: 30,
+      age: 28,
     ),
     PatientSelectionModel(
       id: '2',
       name: 'Immanuel',
       relation: 'Brother',
-      gender: "Female",
-      age: 28,
+      gender: "Male",
+      age: 16,
     ),
     PatientSelectionModel(
       id: '3',
-      name: 'Subash',
-      relation: 'Brother',
+      name: 'Ramya',
+      relation: 'Mother',
       gender: "Female",
-      age: 5,
+      age: 40,
     ),
     PatientSelectionModel(
       id: '4',
-      name: 'Aravind',
-      relation: 'Brother',
+      name: 'Ravi',
+      relation: 'Father',
       gender: "Male",
-      age: 60,
+      age: 41,
     ),
   ];
 
@@ -97,7 +97,6 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
         }
 
         final patient = patients[index];
-        final isSelected = selectedPatient?.id == patient.id;
 
         return _patientCard(patient);
       },
@@ -164,8 +163,33 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
     );
   }
 
+  String _getPatientAvatar(String gender, int age) {
+    final g = gender.toLowerCase();
+    if (g == 'male') {
+      if (age < 3) return 'assets/icons/gender/category/man/baby_boy.png';
+      if (age < 18) return 'assets/icons/gender/category/man/child_boy.png';
+      if (age < 35) return 'assets/icons/gender/category/man/adult_man.png';
+      if (age < 61) return 'assets/icons/gender/category/man/mature_man.png';
+      return 'assets/icons/gender/category/man/old_man.png';
+    } else if (g == 'female') {
+      if (age < 3) return 'assets/icons/gender/category/woman/baby_girl.png';
+      if (age < 18) return 'assets/icons/gender/category/woman/child_girl.png';
+      if (age < 35) return 'assets/icons/gender/category/woman/adult_woman.png';
+      if (age < 61) return 'assets/icons/gender/category/woman/mature_woman.png';
+      return 'assets/icons/gender/category/woman/old_women.png';
+    } else if (g == 'others') {
+      if (age < 3) return 'assets/icons/gender/category/woman/baby_girl.png';
+      if (age < 18) return 'assets/icons/gender/category/woman/child_girl.png';
+      if (age < 35) return 'assets/icons/gender/category/woman/adult_woman.png';
+      if (age < 61) return 'assets/icons/gender/category/woman/mature_woman.png';
+      return 'assets/icons/gender/category/woman/old_women.png';
+    }
+    return '';
+  }
+
   Widget _patientCard(PatientSelectionModel patient) {
     final isSelected = selectedPatient?.id == patient.id;
+    final avatarPath = _getPatientAvatar(patient.gender, patient.age);
 
     String genderIcon;
     Color genderColor;
@@ -216,14 +240,18 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                 CircleAvatar(
                   radius: 26,
                   backgroundColor: AppColors.primary.withOpacity(0.1),
-                  child: Text(
-                    patient.name[0],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: AppColors.primary,
-                    ),
-                  ),
+                  backgroundImage:
+                      avatarPath.isNotEmpty ? AssetImage(avatarPath) : null,
+                  child: avatarPath.isEmpty
+                      ? Text(
+                          patient.name[0],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: AppColors.primary,
+                          ),
+                        )
+                      : null,
                 ),
 
                 /// 🔹 GENDER BADGE (SECONDARY)
@@ -233,10 +261,10 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: genderColor.withOpacity(0.15),
+                      color: genderColor.withOpacity(0.8),
                       shape: BoxShape.circle,
                     ),
-                    child: Image.asset(genderIcon, width: 14, height: 14),
+                    child: Image.asset(genderIcon, width: 14, height: 14,color: AppColors.white,),
                   ),
                 ),
               ],

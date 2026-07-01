@@ -9,6 +9,8 @@ import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/modules/patient/patient_login/controller/patient_login_controller.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
+import '../../../../core/constants/app_text_styles.dart';
+
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});
 
@@ -63,21 +65,13 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                               children: [
                                 const Text(
                                   "Login",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.white,
-                                  ),
+                                  style: AppTextStyles.headerTitle,
                                 ),
 
                                 const Space(height: 25),
                                 const Text(
                                   "Please sign in to continue",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.white,
-                                  ),
+                                  style: AppTextStyles.headerTitleSmall
                                 ),
                                 const Space(height: 25),
 
