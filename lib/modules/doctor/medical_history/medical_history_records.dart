@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
-import 'package:timesmed_project/modules/doctor/theme/doctor_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 
 class medicalRecordHistoryDetails extends StatelessWidget {
   const medicalRecordHistoryDetails({super.key});
@@ -16,7 +16,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea (
       child: Scaffold(
-        backgroundColor: const Color(0xFFF2F4F7),
+        backgroundColor: DoctorColors.backgroundStone,
         body: Column(
           children: [
             _buildHeader(context),
@@ -51,7 +51,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      color: AppColors.primary,
+      color: DoctorColors.primaryBrand,
       child: SafeArea(
         bottom: false,
         child: Padding(
@@ -93,7 +93,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
 
   Widget _buildPatientCard() {
     return Container(
-      color: AppColors.primary,
+      color: DoctorColors.primaryBrand,
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 14),
@@ -112,13 +112,13 @@ class medicalRecordHistoryDetails extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1EFE8),
+                      color:  DoctorColors.stoneTan,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black12, width: 0.5),
                     ),
                     child: const Icon(
                       Icons.person_outline_rounded,
-                      color: Color(0xFF888780),
+                      color: DoctorColors.stoneGrey,
                       size: 22,
                     ),
                   ),
@@ -132,7 +132,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF111111),
+                            color: DoctorColors.textBlack,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -162,7 +162,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: DoctorColors.primaryBrand,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 11),
@@ -217,7 +217,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF111111),
+                color: DoctorColors.textBlack,
               ),
             ),
             _buildPrintButton(),
@@ -230,7 +230,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
           decoration: BoxDecoration(
             color: notesBg,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: const Color(0xFFF0C8A0), width: 0.5),
+            border: Border.all(color:  DoctorColors.stonePeachLine, width: 0.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +248,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
                 'Follow the above mentioned drugs for 5 days',
                 style: TextStyle(
                   fontSize: 13,
-                  color: Color(0xFF111111),
+                  color: DoctorColors.textBlack,
                   height: 1.5,
                 ),
               ),
@@ -271,7 +271,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF111111),
+                color: DoctorColors.textBlack,
               ),
             ),
             _buildPrintButton(),
@@ -296,7 +296,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111111),
+            color: DoctorColors.textBlack,
           ),
         ),
         const SizedBox(height: 8),
@@ -324,14 +324,14 @@ class medicalRecordHistoryDetails extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, size: 40, color: const Color(0xFFB4B2A9)),
+          Icon(icon, size: 40, color:  DoctorColors.stoneLight),
           const SizedBox(height: 10),
           Text(
             title,
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF888780),
+              color: DoctorColors.stoneGrey,
             ),
           ),
           const SizedBox(height: 4),
@@ -339,7 +339,7 @@ class medicalRecordHistoryDetails extends StatelessWidget {
             subtitle,
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFFB4B2A9),
+              color: DoctorColors.stoneLight,
             ),
             textAlign: TextAlign.center,
           ),

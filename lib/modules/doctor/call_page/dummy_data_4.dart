@@ -1,11 +1,8 @@
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:timesmed_project/routes/app_pages.dart';
-
 import '../../../routes/app_routes.dart';
+
+
 class MenuItem {
-  // final IconData icon;
   final String icon;
   final String label;
   final String route;
@@ -17,16 +14,12 @@ class MenuItem {
   });
 }
 
-final menuItems = [
+// ── Doctor input menu: lab test, prescription, history ──────────────────────
+final doctorMenuItems = [
   MenuItem(
     icon: "assets/icons/img.png",
     label: 'Lab Test',
     route: AppRoutes.labTest, // ✅ use constant
-  ),
-  MenuItem(
-    icon: "assets/icons/img_1.png",
-    label: 'Move to Queue',
-    route: AppRoutes.queue,
   ),
   MenuItem(
     icon: "assets/icons/img_10.png",
@@ -38,6 +31,10 @@ final menuItems = [
     label: 'History',
     route: AppRoutes.medicalRecordHistory,
   ),
+];
+
+// ── Patient menu: notes, medical records ────────────────────────────────────
+final patientMenuItems = [
   MenuItem(
     icon: "assets/icons/img_7.png",
     label: 'Notes',

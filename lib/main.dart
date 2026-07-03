@@ -1,27 +1,17 @@
-// import 'package:flutter/material.dart';
-//
-// import 'core/constants/app_colors.dart';
-//
-// void main() {
-//   runApp(const MyApp());
-// }
+import 'package:flutter/material.dart';
+import 'app/app.dart';
+import 'core/config/app_config.dart';
+import 'core/services/local_notification_service.dart';
+import 'modules/doctor/doctor_basic_details/dummy_data_5.dart';
 
-
-// /// ROOT APP
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: const DoctorNotificationsScreen(),
-//     );
-//   }
-// }
-
-
-
-/// CURVED HEADER (APP BAR)
-
-/// SCREEN
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  AppConfig(
+    baseUrl: "https://yourapi.com/api",
+    appName: "TimesMed Health Care",
+    flavor: AppFlavor.superApp,
+  );
+  await DoctorProfileStore.load();
+  await LocalNotificationService.instance.init();
+  runApp(const MyApp());
+}

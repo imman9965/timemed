@@ -37,12 +37,16 @@ class HospitalSchedule {
 
 class OnlineSchedule {
   final String id;
+  String? hospitalId;
+  String? hospitalName;
   TimeOfDay? fromTime;
   TimeOfDay? toTime;
   Set<String> selectedDays;
 
   OnlineSchedule({
     required this.id,
+    this.hospitalId,
+    this.hospitalName,
     this.fromTime,
     this.toTime,
     Set<String>? selectedDays,
@@ -52,6 +56,8 @@ class OnlineSchedule {
   /// until the user confirms.
   OnlineSchedule copy() => OnlineSchedule(
     id: id,
+    hospitalId: hospitalId,
+    hospitalName: hospitalName,
     fromTime: fromTime,
     toTime: toTime,
     selectedDays: {...selectedDays},
@@ -62,20 +68,9 @@ class OnlineSchedule {
 //  STATIC DATA
 // ════════════════════════════════════════════════════════
 
-final List<Hospital> initialHospitals = [
-  Hospital(
-      id: 'h1', name: 'Mariapan Clinic',
-      phone: '8056567194', type: 'Own'),
-  Hospital(
-      id: 'h2', name: 'Mariapan Clinic',
-      phone: '8056567194', type: 'Own'),
-];
+// Screen starts empty — data is added by the user via the Add New form
+final List<Hospital> initialHospitals = [];
 
-final List<HospitalSchedule> initialSchedules = [
-  HospitalSchedule(
-      id: 's1', hospitalName: 'Sangamithra Hospital',
-      fee: '₹550', intervalMins: 9),
-  HospitalSchedule(
-      id: 's2', hospitalName: 'Sangamithra Hospital',
-      fee: '₹550', intervalMins: 9),
-];
+final List<HospitalSchedule> initialSchedules = [];
+
+final List<OnlineSchedule> initialOnlineSchedules = [];

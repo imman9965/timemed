@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/widgets/common/curved_header.dart';
-import '../theme/doctor_colors.dart';
+import '../theme/doctor_theme.dart';
 
 class PatientRegistrationScreen extends StatefulWidget {
   const PatientRegistrationScreen({super.key});
@@ -29,16 +29,6 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
 
   String? _selectedGender; // 'Male' or 'Female'
   bool _obscurePassword = true;
-
-  // Theme color used in the header gradient (forwarded to DoctorColors)
-  static const Color _primaryGreen = DoctorColors.successFresh;
-  static const Color _primaryTeal  = DoctorColors.successJade;
-  static const Color _bgLavender   = DoctorColors.backgroundLavender;
-  static const Color _fieldBorder  = DoctorColors.borderGreyLight;
-  static const Color _hintGrey     = DoctorColors.textHintGrey;
-  static const Color _genderIcon   = DoctorColors.warningGold;
-  static const Color _closeRed     = DoctorColors.errorCoral;
-  static const Color _saveYellow   = DoctorColors.warningAmber;
 
   @override
   void dispose() {
@@ -92,7 +82,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgLavender,
+      backgroundColor: DoctorColors.backgroundLavender,
       body: SafeArea(
         child: Column(
           children: [
@@ -176,7 +166,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                             _obscurePassword
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined,
-                            color: _hintGrey,
+                            color: DoctorColors.textHintGrey,
                           ),
                           onPressed: () => setState(
                                 () => _obscurePassword = !_obscurePassword,
@@ -242,7 +232,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
       width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [_primaryTeal, _primaryGreen],
+          colors: [DoctorColors.successJade, DoctorColors.successFresh],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -296,7 +286,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
       style: const TextStyle(fontSize: 16, color: Colors.black87),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: _hintGrey, fontSize: 16),
+        hintStyle: const TextStyle(color: DoctorColors.textHintGrey, fontSize: 16),
         filled: true,
         fillColor: Colors.white,
         suffixIcon: suffixIcon,
@@ -304,23 +294,23 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
         const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.borderGreyLight),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.borderGreyLight),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _primaryGreen, width: 1.5),
+          borderSide: const BorderSide(color: DoctorColors.successFresh, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.redAccent),
+          borderSide: const BorderSide(color: DoctorColors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+          borderSide: const BorderSide(color: DoctorColors.error, width: 1.5),
         ),
       ),
     );
@@ -378,13 +368,13 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: selected ? _primaryGreen : _fieldBorder,
+            color: selected ? DoctorColors.successFresh : DoctorColors.borderGreyLight,
             width: selected ? 1.8 : 1,
           ),
         ),
         child: Column(
           children: [
-            Icon(icon, color: _genderIcon, size: 44),
+            Icon(icon, color: DoctorColors.warningGold, size: 44),
             const SizedBox(height: 6),
             Text(
               label,
@@ -407,7 +397,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
           child: ElevatedButton(
             onPressed: _onClose,
             style: ElevatedButton.styleFrom(
-              backgroundColor: _closeRed,
+              backgroundColor: DoctorColors.errorCoral,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -426,8 +416,8 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
           child: ElevatedButton(
             onPressed: _onSave,
             style: ElevatedButton.styleFrom(
-              backgroundColor: _saveYellow,
-              foregroundColor: const Color(0xFF6B4FBE),
+              backgroundColor: DoctorColors.warningAmber,
+              foregroundColor: DoctorColors.purple,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

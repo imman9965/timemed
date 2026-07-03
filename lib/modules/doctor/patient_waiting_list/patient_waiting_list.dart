@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import '../missed_call_page/missed_call.dart';
+import '../notifications/notification_controller.dart';
+import '../notifications/notification_popup.dart';
 import '../widgets/doctor_stamp.dart';
 import 'dummy_data_9.dart' hide PaymentStatus;
 
@@ -30,7 +33,7 @@ class SectionHeader extends StatelessWidget {
             Text(label,
                 style: const TextStyle(
                     fontSize: 13,
-                    color: AppColors.textSecond,
+                    color: DoctorColors.textSecondary,
                     fontWeight: FontWeight.w500)),
             const SizedBox(width: 6),
             Container(
@@ -47,7 +50,7 @@ class SectionHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 6),
-         Divider(color:Colors.grey.shade300, height: 1),
+         Divider(color:DoctorColors.dividerNeutral, height: 1),
       ],
     );
   }
@@ -98,22 +101,22 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
   Color get _statusBg {
     switch (widget.patient.waitingStatus) {
       case WaitingStatus.waiting:
-        return AppColors.waitingYellow;
+        return DoctorColors.warningSoftBg;
       case WaitingStatus.inProgress:
-        return const Color(0xFFE3F2FD);
+        return DoctorColors.blue50;
       case WaitingStatus.done:
-        return AppColors.green2;
+        return DoctorColors.success;
     }
   }
 
   Color get _statusTextColor {
     switch (widget.patient.waitingStatus) {
       case WaitingStatus.waiting:
-        return AppColors.waitingText;
+        return DoctorColors.warningPending;
       case WaitingStatus.inProgress:
-        return AppColors.primary;
+        return DoctorColors.primaryBrand;
       case WaitingStatus.done:
-        return AppColors.green2;
+        return DoctorColors.success;
     }
   }
 
@@ -337,7 +340,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: DoctorColors.primaryBrand,
                         borderRadius: BorderRadius.circular(28),
                         boxShadow: [
                           BoxShadow(
@@ -379,7 +382,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.cardBg,
+                  color: DoctorColors.cardWhite,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -401,7 +404,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFE0E0E0),
+                            color: DoctorColors.dividerNeutral,
                             borderRadius: BorderRadius.circular(22),
                           ),
                           child: const Icon(Icons.person,
@@ -419,7 +422,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                                 child: Container(
                                   padding: EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
+                                    color: DoctorColors.dividerNeutral,
                                     borderRadius: BorderRadius.circular(4),
                                     boxShadow: [
                                       BoxShadow(
@@ -433,7 +436,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                                     'Appointment ID: ${patient.appointmentId}',
                                     style: const TextStyle(
                                         fontSize: 11.5,
-                                        color: AppColors.textDark,
+                                        color: DoctorColors.textDark,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -444,7 +447,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                                   'Type: $_typeIcon $_typeLabel',
                                   style: const TextStyle(
                                       fontSize: 11.5,
-                                      color: AppColors.textSecond),
+                                      color: DoctorColors.textSecondary),
                                 ),
                               )
 
@@ -465,22 +468,25 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
-                            color: AppColors.textDark,
+                            color: DoctorColors.textDark,
                           ),
                         ),
                         Row(
                           children: [
-                            Text(!isPaid ? '💰' : '❌',
-                                style: const TextStyle(fontSize: 16)),
+                            Image.asset(
+                              'assets/icons/img_20.png',
+                              width: 18,
+                              height: 18,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               isPaid ? 'UNPAID' : 'PAID',
                               style: TextStyle(
                                 color: !isPaid
-                                    ? AppColors.paidGreen
-                                    : Colors.red,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 13,
+                                    ? DoctorColors.success
+                                    : DoctorColors.error,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -492,12 +498,12 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                     Row(
                       children: [
                         const Icon(Icons.phone,
-                            size: 13, color: AppColors.primary),
+                            size: 13, color: DoctorColors.primaryBrand),
                         const SizedBox(width: 4),
                         Text(patient.phone,
                             style: const TextStyle(
                                 fontSize: 12,
-                                color: AppColors.textSecond)),
+                                color: DoctorColors.textSecondary)),
                       ],
                     ),
 
@@ -508,10 +514,10 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 7),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: DoctorColors.greyLight,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey,
+                            color: DoctorColors.textMuted,
                             blurRadius:5,
                             offset: const Offset(0, 4),
                           ),
@@ -556,12 +562,12 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                           Row(
                             children: [
                               const Icon(Icons.calendar_month,
-                                  size: 13, color: AppColors.primary),
+                                  size: 13, color: DoctorColors.primaryBrand),
                               const SizedBox(width: 4),
                               Text(patient.date,
                                   style: const TextStyle(
                                       fontSize: 12,
-                                      color: AppColors.textDark,
+                                      color: DoctorColors.textDark,
                                       fontWeight: FontWeight.w500)),
                             ],
                           ),
@@ -570,12 +576,12 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                           Row(
                             children: [
                               const Icon(Icons.access_time,
-                                  size: 13, color: AppColors.primary),
+                                  size: 13, color: DoctorColors.primaryBrand),
                               const SizedBox(width: 4),
                               Text(patient.time,
                                   style: const TextStyle(
                                       fontSize: 12,
-                                      color: AppColors.textDark,
+                                      color: DoctorColors.textDark,
                                       fontWeight: FontWeight.w500)),
                             ],
                           ),
@@ -671,7 +677,7 @@ class _PatientWaitingCardState extends State<PatientWaitingCard>
                                   ),
                                   child: const Icon(
                                     Icons.touch_app,
-                                    color: AppColors.primary,
+                                    color: DoctorColors.primaryBrand,
                                     size: 26,
                                   ),
                                 ),
@@ -704,11 +710,11 @@ class AddPatientButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
         decoration: BoxDecoration(
-          color: AppColors.primary,
+          color: DoctorColors.primaryBrand,
           borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.35),
+              color: DoctorColors.primaryBrand.withOpacity(0.35),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -752,12 +758,43 @@ class _PatientWaitingListScreenState
     context.push(AppRoutes.addPatientScreen);
   }
 
+  /// Bell tap = simulate a new local notification (system tray + badge),
+  /// then show the in-app slide-in popup which opens the notifications screen.
+  void _onBellTap(BuildContext context) {
+    NotificationController.to.simulateNotification();
+    _showNotificationPopup(context);
+  }
+
+  void _showNotificationPopup(BuildContext context) {
+    late OverlayEntry overlayEntry;
+    final n = NotificationController.to.current;
+
+    overlayEntry = OverlayEntry(
+      builder: (ctx) => NotificationPopup(
+        title: 'INSTANT CALL REQUEST',
+        message: n != null
+            ? '${n.patientName} (${n.patientId}) requested an instant call'
+            : 'A patient requested an instant video call',
+        onTap: () {
+          overlayEntry.remove();
+          context.push(AppRoutes.doctorNotifications);
+        },
+        onDismiss: () => overlayEntry.remove(),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
+    Future.delayed(const Duration(seconds: 4), () {
+      if (overlayEntry.mounted) overlayEntry.remove();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var doctor =  'Dr.Mariappan';
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Stack(
         children: [
           // ── Main scrollable content ────────────────────────
@@ -765,7 +802,20 @@ class _PatientWaitingListScreenState
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               children: [
-                const CurvedHeader(title: 'Patient Waiting List'),
+                Obx(
+                  () => CurvedHeader(
+                    showNotification: true,
+                    badgeCount: NotificationController.to.queue.length,
+                    onNotificationTap: () => _onBellTap(context),
+                    title: 'PATIENT WAITING LIST',
+                    showBackButton: false,
+                    titleStyle: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
 
                 Expanded(
                   child: SingleChildScrollView(
@@ -782,7 +832,7 @@ class _PatientWaitingListScreenState
                         const SectionHeader(
                           label:       'Patients Available',
                           statusText:  'Online',
-                          statusColor: Colors.blue,
+                          statusColor: DoctorColors.primary,
                         ),
 
                         const SizedBox(height: 12),
@@ -814,7 +864,7 @@ class _PatientWaitingListScreenState
                         const SectionHeader(
                           label:       'Patients in',
                           statusText:  'Online',
-                          statusColor: Colors.red,
+                          statusColor: DoctorColors.error,
                         ),
 
                          SizedBox(height:MediaQuery.of(context).size.height/5),

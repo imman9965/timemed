@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/doctor_colors.dart';
+import '../theme/doctor_theme.dart';
 
 /// A modal dialog that lists tests with multi-select circles.
 /// Returns the selected list via Navigator.pop, or null if cancelled.
@@ -19,15 +19,6 @@ class TestSelectionDialog extends StatefulWidget {
 }
 
 class _TestSelectionDialogState extends State<TestSelectionDialog> {
-  // ---------- Theme (forwarded to DoctorColors) ----------
-  static const Color _primaryDark   = DoctorColors.primaryDark;
-  static const Color _primary       = DoctorColors.primary;
-  static const Color _primaryLight  = DoctorColors.primaryLight;
-  static const Color _cardWhite     = DoctorColors.cardWhite;
-  static const Color _divider       = DoctorColors.dividerCool;
-  static const Color _textPrimary   = DoctorColors.textPrimary;
-  static const Color _circleBorder  = DoctorColors.circleBorder;
-
   late final Set<String> _selected;
   late final TextEditingController _searchController;
   String _query = '';
@@ -76,7 +67,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: _cardWhite,
+            color: DoctorColors.cardWhite,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -98,7 +89,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [_primaryDark, _primaryLight],
+          colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -137,25 +128,25 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
       child: TextField(
         controller: _searchController,
         onChanged: (v) => setState(() => _query = v),
-        style: const TextStyle(fontSize: 15, color: _textPrimary),
+        style: const TextStyle(fontSize: 15, color: DoctorColors.textPrimary),
         decoration: InputDecoration(
           hintText: 'Search tests...',
-          hintStyle: const TextStyle(color: _circleBorder, fontSize: 15),
-          prefixIcon: const Icon(Icons.search, color: _circleBorder, size: 20),
+          hintStyle: const TextStyle(color: DoctorColors.circleBorder, fontSize: 15),
+          prefixIcon: const Icon(Icons.search, color: DoctorColors.circleBorder, size: 20),
           isDense: true,
           contentPadding:
           const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: _divider),
+            borderSide: const BorderSide(color: DoctorColors.dividerCool),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: _divider),
+            borderSide: const BorderSide(color: DoctorColors.dividerCool),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: _primary, width: 1.5),
+            borderSide: const BorderSide(color: DoctorColors.primary, width: 1.5),
           ),
         ),
       ),
@@ -171,7 +162,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
         child: Center(
           child: Text(
             'No matching tests',
-            style: TextStyle(color: _circleBorder, fontSize: 14),
+            style: TextStyle(color: DoctorColors.circleBorder, fontSize: 14),
           ),
         ),
       );
@@ -181,7 +172,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemCount: tests.length,
       separatorBuilder: (_, __) => const Divider(
-        color: _divider,
+        color: DoctorColors.dividerCool,
         height: 1,
         indent: 16,
         endIndent: 16,
@@ -203,7 +194,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
                     test,
                     style: TextStyle(
                       fontSize: 15,
-                      color: _textPrimary,
+                      color: DoctorColors.textPrimary,
                       fontWeight:
                       isSelected ? FontWeight.w600 : FontWeight.w400,
                     ),
@@ -224,9 +215,9 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
       height: 22,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: selected ? _primary : Colors.transparent,
+        color: selected ? DoctorColors.primary : Colors.transparent,
         border: Border.all(
-          color: selected ? _primary : _circleBorder,
+          color: selected ? DoctorColors.primary : DoctorColors.circleBorder,
           width: 1.5,
         ),
       ),
@@ -246,7 +237,7 @@ class _TestSelectionDialogState extends State<TestSelectionDialog> {
         child: ElevatedButton(
           onPressed: () => Navigator.of(context).pop(_selected.toList()),
           style: ElevatedButton.styleFrom(
-            backgroundColor: _primary,
+            backgroundColor: DoctorColors.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

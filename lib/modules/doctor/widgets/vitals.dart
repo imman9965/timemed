@@ -1,74 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/doctor_colors.dart';
-
-// ════════════════════════════════════════════════════════
-//  APP COLORS — forwarded to DoctorColors (single source of truth)
-// ════════════════════════════════════════════════════════
-
-class AppColors {
-  static const primaryBlue  = DoctorColors.primaryVivid;
-  static const scaffoldBg   = DoctorColors.backgroundCream;
-  static const cardBg       = DoctorColors.cardWhite;
-  static const textDark     = DoctorColors.textDark;
-  static const textMuted    = DoctorColors.textMuted;
-  static const textSecond   = DoctorColors.textSecondary;
-  static const inputBg      = DoctorColors.inputBg;
-  static const dividerColor = DoctorColors.divider;
-  static const redClose     = DoctorColors.error;
-  static const vitalRowBg   = DoctorColors.rowBg;
-}
-
-// ════════════════════════════════════════════════════════
-//  APP DIMENSIONS
-// ════════════════════════════════════════════════════════
-
-class AppDimens {
-  static const double xs  = 4;
-  static const double s   = 8;
-  static const double m   = 12;
-  static const double l   = 16;
-  static const double xl  = 20;
-  static const double xxl = 24;
-
-  static const double radiusSm = 8;
-  static const double radiusMd = 12;
-  static const double radiusLg = 16;
-  static const double radiusXl = 24;
-
-  static const double screenHPadding = 16;
-}
-
-// ════════════════════════════════════════════════════════
-//  APP TEXT STYLES
-// ════════════════════════════════════════════════════════
-
-class AppTextStyles {
-  static const bodyBold = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    color: AppColors.textDark,
-  );
-
-  static const inputLabel = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    color: AppColors.textDark,
-  );
-
-  static const inputHint = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textMuted,
-  );
-
-  static const modalTitle = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.w800,
-    fontSize: 18,
-    letterSpacing: 1.2,
-  );
-}
+import '../theme/doctor_theme.dart';
 
 // ════════════════════════════════════════════════════════
 //  VITAL DATA CLASS
@@ -99,13 +31,12 @@ class _Vital {
 class VitalSignDialog extends StatefulWidget {
   const VitalSignDialog({super.key, required BuildContext context});
 
-  /// Open as a centered popup dialog
   static Future<void> show(BuildContext context) {
     return showDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.55),
-      builder: (_) => VitalSignDialog(context: context,),
+      builder: (_) => VitalSignDialog(context: context),
     );
   }
 
@@ -114,7 +45,6 @@ class VitalSignDialog extends StatefulWidget {
 }
 
 class _VitalSignDialogState extends State<VitalSignDialog> {
-  // ── Vital data list ───────────────────────────────────
   final List<_Vital> _vitals = [
     _Vital(
       label:     'Pulse Rate',
@@ -166,9 +96,9 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.light(
-            primary:   AppColors.primaryBlue,
+            primary:   DoctorColors.primaryVivid,
             onPrimary: Colors.white,
-            onSurface: AppColors.textDark,
+            onSurface: DoctorColors.textDark,
           ),
         ),
         child: child!,
@@ -177,7 +107,6 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     if (picked != null) setState(() => _selectedDate = picked);
   }
 
-  // ── Time picker ───────────────────────────────────────
   Future<void> _pickTime() async {
     final picked = await showTimePicker(
       context:     context,
@@ -185,9 +114,9 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.light(
-            primary:   AppColors.primaryBlue,
+            primary:   DoctorColors.primaryVivid,
             onPrimary: Colors.white,
-            onSurface: AppColors.textDark,
+            onSurface: DoctorColors.textDark,
           ),
         ),
         child: child!,
@@ -199,9 +128,7 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
   String _formatDate() {
     if (_selectedDate == null) return 'DD/MM/YYYY';
     final d = _selectedDate!;
-    return '${d.day.toString().padLeft(2, '0')}/'
-        '${d.month.toString().padLeft(2, '0')}/'
-        '${d.year}';
+    return '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
   }
 
   String _formatTime() {
@@ -225,15 +152,11 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Vital signs saved successfully'),
-        backgroundColor: Colors.green,
+        backgroundColor: DoctorColors.success,
         duration: Duration(seconds: 2),
       ),
     );
   }
-
-  // ════════════════════════════════════════════════════
-  //  BUILD
-  // ════════════════════════════════════════════════════
 
   @override
   Widget build(BuildContext context) {
@@ -245,110 +168,103 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // ── Main popup card ──────────────────────────
           Container(
             constraints: BoxConstraints(maxHeight: screenH * 0.82),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(AppDimens.radiusXl),
+              borderRadius: DoctorRadii.brXxl,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppDimens.radiusXl),
+              borderRadius: DoctorRadii.brXxl,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-
-                  // ── Blue header ──────────────────────
+                  // Blue header
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    color: AppColors.primaryBlue,
+                    color: DoctorColors.primaryVivid,
                     child: const Text(
                       'VITAL SIGN',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.modalTitle,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: DoctorFontWeight.extraBold,
+                        fontSize: DoctorFontSize.title,
+                        letterSpacing: DoctorLetterSpacing.widest,
+                      ),
                     ),
                   ),
 
-                  // ── Scrollable body ──────────────────
                   Flexible(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(AppDimens.l),
+                      padding: DoctorSpacing.cardPaddingLg,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
-                          // "Add Vital Sign" label
-                          const Text(
+                          Text(
                             'Add Vital Sign',
-                            style: TextStyle(
-                              color: AppColors.primaryBlue,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
+                            style: DoctorTextStyles.sectionTitle.copyWith(
+                              color: DoctorColors.primaryVivid,
                             ),
                           ),
-                          const SizedBox(height: AppDimens.m),
+                          const SizedBox(height: DoctorSpacing.md),
 
-                          // ── Date + Time row ──────────
                           Row(
                             children: [
                               Expanded(
                                 child: _dateTimeField(
-                                  label:    'Date',
-                                  hint:     _formatDate(),
-                                  hasValue: _selectedDate != null,
-                                  icon:     Icons.calendar_month,
-                                  iconBg:   Colors.transparent,
-                                  iconColor: AppColors.primaryBlue,
-                                  onTap:    _pickDate,
+                                  label:     'Date',
+                                  hint:      _formatDate(),
+                                  hasValue:  _selectedDate != null,
+                                  icon:      Icons.calendar_month,
+                                  iconBg:    Colors.transparent,
+                                  iconColor: DoctorColors.primaryVivid,
+                                  onTap:     _pickDate,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: DoctorSpacing.md),
                               Expanded(
                                 child: _dateTimeField(
-                                  label:    'Time',
-                                  hint:     _formatTime(),
-                                  hasValue: _selectedTime != null,
-                                  icon:     Icons.access_time,
-                                  iconBg:   AppColors.primaryBlue,
+                                  label:     'Time',
+                                  hint:      _formatTime(),
+                                  hasValue:  _selectedTime != null,
+                                  icon:      Icons.access_time,
+                                  iconBg:    DoctorColors.primaryVivid,
                                   iconColor: Colors.white,
-                                  onTap:    _pickTime,
+                                  onTap:     _pickTime,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: AppDimens.l),
+                          const SizedBox(height: DoctorSpacing.lg),
 
-                          // ── Vitals card ──────────────
                           _buildVitalsCard(),
-                          const SizedBox(height: AppDimens.l),
+                          const SizedBox(height: DoctorSpacing.lg),
 
-                          // ── Save button ──────────────
                           SizedBox(
                             width: double.infinity,
                             child: GestureDetector(
                               onTap: _onSave,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 14),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue,
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimens.radiusMd),
+                                  color: DoctorColors.primaryVivid,
+                                  borderRadius: DoctorRadii.brMd,
                                 ),
                                 child: const Text(
                                   'Save',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
+                                    fontWeight: DoctorFontWeight.bold,
+                                    fontSize: DoctorFontSize.bodyLarge,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: AppDimens.s),
+                          const SizedBox(height: DoctorSpacing.sm),
                         ],
                       ),
                     ),
@@ -358,6 +274,7 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
             ),
           ),
 
+          // Close button
           Positioned(
             top:   -12,
             right: -12,
@@ -367,7 +284,7 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
                 width:  34,
                 height: 34,
                 decoration: BoxDecoration(
-                  color: AppColors.redClose,
+                  color: DoctorColors.error,
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 3),
                   boxShadow: [
@@ -378,11 +295,7 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 17,
-                ),
+                child: const Icon(Icons.close, color: Colors.white, size: 17),
               ),
             ),
           ),
@@ -391,7 +304,6 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     );
   }
 
-  // ── Date/Time field ───────────────────────────────────
   Widget _dateTimeField({
     required String       label,
     required String       hint,
@@ -404,37 +316,33 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.inputLabel),
+        Text(label, style: DoctorTextStyles.label.copyWith(
+          fontWeight: DoctorFontWeight.bold,
+          color: DoctorColors.textDark,
+        )),
         const SizedBox(height: 6),
         GestureDetector(
           onTap: onTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-              color: AppColors.inputBg,
-              borderRadius:
-              BorderRadius.circular(AppDimens.radiusSm),
+              color: DoctorColors.inputBg,
+              borderRadius: DoctorRadii.brSm,
             ),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
                     hint,
-                    style: hasValue
-                        ? AppTextStyles.inputHint.copyWith(
-                      color: AppColors.textDark,
-                      fontWeight: FontWeight.w600,
-                    )
-                        : AppTextStyles.inputHint,
+                    style: DoctorTextStyles.hint.copyWith(
+                      color: hasValue ? DoctorColors.textDark : DoctorColors.textMuted,
+                      fontWeight: hasValue ? DoctorFontWeight.semiBold : DoctorFontWeight.medium,
+                    ),
                   ),
                 ),
                 Container(
                   width: 26, height: 26,
-                  decoration: BoxDecoration(
-                    color: iconBg,
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
                   child: Icon(icon, size: 16, color: iconColor),
                 ),
               ],
@@ -445,24 +353,22 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     );
   }
 
-  // ── Vitals card ───────────────────────────────────────
   Widget _buildVitalsCard() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.vitalRowBg,
-        borderRadius: BorderRadius.circular(AppDimens.radiusMd),
+        color: DoctorColors.rowBg,
+        borderRadius: DoctorRadii.brMd,
       ),
       child: Column(
         children: [
-          // Blue section header
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: const BoxDecoration(
-              color: AppColors.primaryBlue,
+            decoration: BoxDecoration(
+              color: DoctorColors.primaryVivid,
               borderRadius: BorderRadius.only(
-                topLeft:  Radius.circular(AppDimens.radiusMd),
-                topRight: Radius.circular(AppDimens.radiusMd),
+                topLeft:  Radius.circular(DoctorRadii.md),
+                topRight: Radius.circular(DoctorRadii.md),
               ),
             ),
             child: const Text(
@@ -470,21 +376,18 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+                fontSize: DoctorFontSize.subtitle,
+                fontWeight: DoctorFontWeight.bold,
               ),
             ),
           ),
-
-          // Vitals list — iterated from _vitals
           Padding(
-            padding: const EdgeInsets.all(AppDimens.m),
+            padding: DoctorSpacing.cardPadding,
             child: Column(
               children: _vitals.asMap().entries.map((e) {
                 final isLast = e.key == _vitals.length - 1;
                 return Padding(
-                  padding:
-                  EdgeInsets.only(bottom: isLast ? 0 : 8),
+                  padding: EdgeInsets.only(bottom: isLast ? 0 : DoctorSpacing.sm),
                   child: _vitalRow(e.value),
                 );
               }).toList(),
@@ -495,70 +398,57 @@ class _VitalSignDialogState extends State<VitalSignDialog> {
     );
   }
 
-  // ── Single vital row ──────────────────────────────────
   Widget _vitalRow(_Vital v) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Icon(v.icon, size: 22, color: AppColors.textMuted),
+            Icon(v.icon, size: 22, color: DoctorColors.textMuted),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(v.label, style: AppTextStyles.bodyBold),
+              child: Text(v.label, style: DoctorTextStyles.body.copyWith(
+                fontWeight: DoctorFontWeight.bold,
+              )),
             ),
-            // Live value chip
             Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: AppColors.dividerColor),
+                borderRadius: DoctorRadii.brXs,
+                border: Border.all(color: DoctorColors.divider),
               ),
               child: Text(
                 v.formatter(v.sliderValue * v.max),
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
+                style: DoctorTextStyles.caption,
               ),
             ),
           ],
         ),
-
-        // Slider
         Padding(
           padding: const EdgeInsets.only(left: 32, top: 2),
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
               trackHeight:        3,
-              activeTrackColor:   AppColors.primaryBlue,
-              inactiveTrackColor: const Color(0xFFE0E0E0),
-              thumbColor:         AppColors.primaryBlue,
-              thumbShape: const RoundSliderThumbShape(
-                  enabledThumbRadius: 7),
-              overlayShape: const RoundSliderOverlayShape(
-                  overlayRadius: 14),
+              activeTrackColor:   DoctorColors.primaryVivid,
+              inactiveTrackColor: DoctorColors.dividerNeutral,
+              thumbColor:         DoctorColors.primaryVivid,
+              thumbShape:  const RoundSliderThumbShape(enabledThumbRadius: 7),
+              overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
             ),
             child: Slider(
               value:    v.sliderValue,
               min:      0,
               max:      1,
-              onChanged: (val) =>
-                  setState(() => v.sliderValue = val),
+              onChanged: (val) => setState(() => v.sliderValue = val),
             ),
           ),
         ),
-
-        const Divider(height: 4, color: AppColors.dividerColor),
+        Divider(height: 4, color: DoctorColors.divider),
       ],
     );
   }
 }
-
-
 
 class VitalSignDemoScreen extends StatelessWidget {
   const VitalSignDemoScreen({super.key});
@@ -566,15 +456,12 @@ class VitalSignDemoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundCream,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
+        backgroundColor: DoctorColors.primaryVivid,
         title: const Text(
           'Call Logs',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: DoctorFontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
@@ -583,20 +470,16 @@ class VitalSignDemoScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => VitalSignDialog.show(context),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryBlue,
-            padding: const EdgeInsets.symmetric(
-                horizontal: 28, vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.circular(AppDimens.radiusMd),
-            ),
+            backgroundColor: DoctorColors.primaryVivid,
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+            shape: RoundedRectangleBorder(borderRadius: DoctorRadii.brMd),
           ),
           child: const Text(
             'Open Vital Sign',
             style: TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
+              fontWeight: DoctorFontWeight.bold,
+              fontSize: DoctorFontSize.bodyLarge,
             ),
           ),
         ),

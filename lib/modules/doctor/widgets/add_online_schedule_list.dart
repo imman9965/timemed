@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../hospital_list_doctor/hospital_list_based_on_doctor.dart';
 import '../medical_records/dummy_data_7.dart';
-
-// ════════════════════════════════════════════════════════
-//  APP COLORS
-// ════════════════════════════════════════════════════════
-
-// class AppColors {
-//   static const primaryBlue5  = Color(0xFF1A6BF5);
-//   static const scaffoldBg   = Color(0xFFFAF5EC);
-//   static const cardBg       = Colors.white;
-//   static const textDark     = Color(0xFF1A1A2E);
-//   static const textMuted    = Color(0xFF9E9E9E);
-//   static const textSecond   = Color(0xFF6B7280);
-//   static const inputBg      = Color(0xFFF5F5F5);
-//   static const dividerColor = Color(0xFFE0E0E0);
-//   static const redClose     = Color(0xFFE53935);
-//   static const greenBtn     = Color(0xFF4CAF50);
-// }
 
 // ════════════════════════════════════════════════════════
 //  DATA MODELS
@@ -130,9 +113,9 @@ class _AddOnlineConsultationDialogState
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.light(
-            primary: AppColors.primaryBlue,
+            primary: DoctorColors.primaryBrand,
             onPrimary: Colors.white,
-            onSurface: AppColors.textDark,
+            onSurface: DoctorColors.textDark,
           ),
         ),
         child: child!,
@@ -177,7 +160,7 @@ class _AddOnlineConsultationDialogState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(error),
-          backgroundColor: Colors.red,
+          backgroundColor: DoctorColors.error,
           duration: const Duration(seconds: 2),
         ),
       );
@@ -226,7 +209,7 @@ class _AddOnlineConsultationDialogState
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 20),
-                      color: AppColors.primaryBlue,
+                      color: DoctorColors.primaryBrand,
                       child: Text(
                         _isEditMode
                             ? 'EDIT ONLINE\nCONSULTATION SCHEDULE'
@@ -271,7 +254,7 @@ class _AddOnlineConsultationDialogState
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: AppColors.redClose2,
+                    color: DoctorColors.error,
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 3),
                     boxShadow: [
@@ -302,11 +285,11 @@ class _AddOnlineConsultationDialogState
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: DoctorColors.textDark,
           ),
         ),
         const SizedBox(height: 10),
-        const Divider(height: 1, color: AppColors.dividerColor),
+        const Divider(height: 1, color: DoctorColors.divider),
         const SizedBox(height: 10),
 
         // Days grid — 2 rows × 4 columns
@@ -341,7 +324,7 @@ class _AddOnlineConsultationDialogState
             padding: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppColors.primaryBlue
+                  ? DoctorColors.primaryBrand
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(30),
             ),
@@ -351,7 +334,7 @@ class _AddOnlineConsultationDialogState
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : AppColors.textDark,
+                color: isSelected ? Colors.white : DoctorColors.textDark,
               ),
             ),
           ),
@@ -365,7 +348,7 @@ class _AddOnlineConsultationDialogState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.inputBg,
+        color: DoctorColors.inputBg,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -381,7 +364,7 @@ class _AddOnlineConsultationDialogState
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
             child: Icon(Icons.arrow_forward,
-                color: AppColors.textDark, size: 16),
+                color: DoctorColors.textDark, size: 16),
           ),
           Expanded(
             child: _buildTimeField(
@@ -408,7 +391,7 @@ class _AddOnlineConsultationDialogState
           style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: DoctorColors.textDark,
           ),
         ),
         const SizedBox(height: 4),
@@ -423,7 +406,7 @@ class _AddOnlineConsultationDialogState
               color: Colors.white,
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
-                color: AppColors.primaryBlue,
+                color: DoctorColors.primaryBrand,
                 width: 1.2,
               ),
             ),
@@ -433,8 +416,8 @@ class _AddOnlineConsultationDialogState
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: time != null
-                    ? AppColors.textDark
-                    : AppColors.textMuted,
+                    ? DoctorColors.textDark
+                    : DoctorColors.textMuted,
               ),
             ),
           ),
@@ -451,11 +434,11 @@ class _AddOnlineConsultationDialogState
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.greenBtn2,
+          color: DoctorColors.success,
           borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
-              color: AppColors.greenBtn2.withOpacity(0.3),
+              color: DoctorColors.success.withOpacity(0.3),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),

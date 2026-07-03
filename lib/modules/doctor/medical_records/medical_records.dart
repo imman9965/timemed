@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimens.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import '../../../core/widgets/common/pill_button.dart';
 import '../../../core/widgets/common/primary_card.dart';
@@ -131,51 +129,55 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Column(
         children: [
-          const CurvedHeader(title: 'Medical Records'),
+          const CurvedHeader(title: 'MEDICAL RECORDS',titleStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
-                AppDimens.screenHPadding,
-                AppDimens.l,
-                AppDimens.screenHPadding,
-                AppDimens.xxl,
+                DoctorSpacing.lg,
+                DoctorSpacing.lg,
+                DoctorSpacing.lg,
+                DoctorSpacing.xxl,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPatientCard(_patient),
-                  const SizedBox(height: AppDimens.l),
+                  const SizedBox(height: DoctorSpacing.lg),
                   _buildSectionHeader('Prescription', onPrint: () {}),
-                  const SizedBox(height: AppDimens.m),
+                  const SizedBox(height: DoctorSpacing.md),
 
                   // ── Prescriptions iterated ──────────────────────────────
                   ..._prescriptions.map((rx) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppDimens.m),
+                    padding: const EdgeInsets.only(bottom: DoctorSpacing.md),
                     child: _buildPrescriptionCard(rx),
                   )),
 
-                  const SizedBox(height: AppDimens.xl),
+                  const SizedBox(height: DoctorSpacing.xl),
                   _buildDoctorNotes(_doctorNote),
-                  const SizedBox(height: AppDimens.xl),
+                  const SizedBox(height: DoctorSpacing.xl),
                   _buildSectionHeader('Lab Test', onPrint: () {}),
-                  const SizedBox(height: AppDimens.m),
+                  const SizedBox(height: DoctorSpacing.md),
 
                   // ── Lab tests iterated ──────────────────────────────────
                   ..._labTests.map((test) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppDimens.m),
+                    padding: const EdgeInsets.only(bottom: DoctorSpacing.md),
                     child: _buildLabTest(test),
                   )),
 
-                  const SizedBox(height: AppDimens.xl),
-                  Text('Health Records', style: AppTextStyles.sectionTitle),
-                  const SizedBox(height: AppDimens.m),
+                  const SizedBox(height: DoctorSpacing.xl),
+                  Text('Health Records', style: DoctorTextStyles.sectionTitleLarge),
+                  const SizedBox(height: DoctorSpacing.md),
 
                   // ── Health records iterated ─────────────────────────────
                   ..._healthRecords.map((record) => Container(
-                    // padding: const EdgeInsets.only(bottom: AppDimens.m),
+                    // padding: const EdgeInsets.only(bottom: DoctorSpacing.md),
                     child: _buildHealthRecord(record),
                   )),
                 ],
@@ -194,7 +196,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
       radius: 18,
       padding: EdgeInsets.only(top: 14,bottom: 14,right: 14,left: 14),
 
-      // padding: const EdgeInsets.all(AppDimens.l),
+      // padding: const EdgeInsets.all(DoctorSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -202,30 +204,30 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             children: [
               const CircleAvatar(
                 radius: 14,
-                backgroundColor: Color(0xFFE0E0E0),
+                backgroundColor: DoctorColors.dividerNeutral,
                 child: Icon(Icons.person, size: 18, color: Colors.white),
               ),
               const SizedBox(width: 10),
-              Text(patient.name, style: AppTextStyles.titleBody),
+              Text(patient.name, style: DoctorTextStyles.titleBody),
             ],
           ),
-          const Divider(height: 24, color: AppColors.dividerColor),
+          const Divider(height: 24, color: DoctorColors.divider),
           Row(
             spacing: 24,
             children: [
               Row(
                 children: [
                   const Icon(Icons.calendar_month,
-                      size: 18, color: AppColors.primaryBlue),
+                      size: 18, color: DoctorColors.primaryBrand),
                   const SizedBox(width: 6),
-                  Text(patient.date, style: AppTextStyles.titleBody),
+                  Text(patient.date, style: DoctorTextStyles.titleBody),
                 ],
               ),
               Row(
                 children: [
                   const Icon(Icons.access_time,
-                      size: 18, color: AppColors.primaryBlue),
-                  Text(patient.time, style: AppTextStyles.titleBody),
+                      size: 18, color: DoctorColors.primaryBrand),
+                  Text(patient.time, style: DoctorTextStyles.titleBody),
 
                 ],
               ),
@@ -233,7 +235,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                 children: [
                   Text(
                       patient.doctor,
-                      style: AppTextStyles.titleBodyblue
+                      style: DoctorTextStyles.titleBodyBlue
                   ),
                 ],
               )
@@ -245,7 +247,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          Text('Visit ID : ${patient.visitId}', style: AppTextStyles.titleBody),
+          Text('Visit ID : ${patient.visitId}', style: DoctorTextStyles.titleBody),
         ],
       ),
     );
@@ -255,7 +257,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: AppTextStyles.sectionTitle),
+        Text(title, style: DoctorTextStyles.sectionTitleLarge),
         PillButton.green(
           label: 'Print',
           icon: Icons.print,
@@ -276,9 +278,9 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(rx.name, style: AppTextStyles.titleBody),
+                Text(rx.name, style: DoctorTextStyles.titleBody),
                 const SizedBox(height: 4),
-                Text(rx.instruction, style: AppTextStyles.titleBody),
+                Text(rx.instruction, style: DoctorTextStyles.titleBody),
               ],
             ),
           ),
@@ -287,14 +289,14 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(rx.dosage, style: AppTextStyles.titleBody),
+                Text(rx.dosage, style: DoctorTextStyles.titleBody),
                 const SizedBox(height: 4),
                 Text(rx.dosageSub,
-                    style: AppTextStyles.titleBody),
+                    style: DoctorTextStyles.titleBody),
               ],
             ),
           ),
-          Text(rx.days, style: AppTextStyles.titleBody),
+          Text(rx.days, style: DoctorTextStyles.titleBody),
         ],
       ),
     );
@@ -305,7 +307,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
       width: double.infinity,
       padding: EdgeInsets.only(top: 10,bottom: 10,right: 10,left: 10),
       decoration: BoxDecoration(
-        color: AppColors.primaryBlue,
+        color: DoctorColors.primaryBrand,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -341,12 +343,12 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
         children: [
           Text(
             test.category,
-            style: AppTextStyles.titleBody
+            style: DoctorTextStyles.titleBody
           ),
-          const Divider(height: 16, color: AppColors.dividerColor),
+          const Divider(height: 16, color: DoctorColors.divider),
           RichText(
             text: TextSpan(
-              style: AppTextStyles.titleBody,
+              style: DoctorTextStyles.titleBody,
               children: [
                 const TextSpan(
                   text: 'Test Name: ',
@@ -359,7 +361,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           const SizedBox(height: 4),
           RichText(
             text: TextSpan(
-              style: AppTextStyles.titleBody,
+              style: DoctorTextStyles.titleBody,
               children: [
                 const TextSpan(
                   text: 'Instructions: ',
@@ -367,7 +369,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                 ),
                 TextSpan(
                   text: test.instructions,
-                  style: const TextStyle(color: AppColors.primaryBlue),
+                  style: const TextStyle(color: DoctorColors.primaryBrand),
                 ),
               ],
             ),
@@ -387,25 +389,25 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: AppColors.accentGreen.withOpacity(0.15),
+              color: DoctorColors.successMint.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.health_and_safety,
-                color: AppColors.accentGreen, size: 26),
+                color: DoctorColors.successMint, size: 26),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               '${record.title}\n${record.fileName}',
-              style: AppTextStyles.titleBody,
+              style: DoctorTextStyles.titleBody,
             ),
           ),
-          _circleIconButton(Icons.remove_red_eye, AppColors.primaryBlue,),
+          _circleIconButton(Icons.remove_red_eye, DoctorColors.primaryBrand,),
           const SizedBox(width: 8),
           _circleIconButton(
-              Icons.arrow_downward_rounded, AppColors.accentGreen),
+              Icons.arrow_downward_rounded, DoctorColors.successMint),
           const SizedBox(width: 8),
-          _circleIconButton(Icons.delete_outline, AppColors.accentRed),
+          _circleIconButton(Icons.delete_outline, DoctorColors.error),
         ],
       ),
     );
@@ -428,7 +430,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    color: const Color(0xFF0C447C),
+                    color: DoctorColors.medicalNavy,
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,13 +488,13 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                           children: [
                             CircleAvatar(
                               radius: 24,
-                              backgroundColor: const Color(0xFF378ADD),
+                              backgroundColor:  DoctorColors.medicalBlueMed,
                               child: const Text(
                                 "JD",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFFE6F1FB),
+                                  color: DoctorColors.medicalBlueSoft,
                                 ),
                               ),
                             ),
@@ -541,9 +543,9 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            Expanded(child: _vitalCard(Icons.monitor_heart, "Heart rate", "78", "bpm", Colors.red)),
+                            Expanded(child: _vitalCard(Icons.monitor_heart, "Heart rate", "78", "bpm", DoctorColors.error)),
                             const SizedBox(width: 10),
-                            Expanded(child: _vitalCard(Icons.show_chart, "Blood pressure", "120", "/80", Colors.blue)),
+                            Expanded(child: _vitalCard(Icons.show_chart, "Blood pressure", "120", "/80", DoctorColors.primary)),
                           ],
                         ),
                         const SizedBox(height: 16),
@@ -559,12 +561,12 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFCEBEB),
+                            color:  DoctorColors.errorPink,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Row(
                             children: [
-                              Icon(Icons.coronavirus_outlined, color: Color(0xFFA32D2D), size: 22),
+                              Icon(Icons.coronavirus_outlined, color: DoctorColors.errorDeep, size: 22),
                               SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -574,14 +576,14 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0xFF791F1F),
+                                      color: DoctorColors.errorDeeper,
                                     ),
                                   ),
                                   Text(
                                     "Under observation · Low severity",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFFA32D2D),
+                                      color: DoctorColors.errorDeep,
                                     ),
                                   ),
                                 ],
@@ -595,7 +597,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () => Navigator.pop(context),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0C447C),
+                              backgroundColor: DoctorColors.medicalNavy,
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -631,7 +633,7 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: DoctorColors.inputBgSoft,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -697,7 +699,7 @@ Widget _recordTile(String title, String value) {
     child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: DoctorColors.inputBgSoft,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

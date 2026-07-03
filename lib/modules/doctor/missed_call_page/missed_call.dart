@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import '../../../routes/app_routes.dart';
 import '../widgets/doctor_stamp.dart';
@@ -91,7 +91,7 @@ class ListTabBar extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 13),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: DoctorColors.primaryBrand,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -114,7 +114,7 @@ class ListTabBar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: 20, vertical: 13),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: DoctorColors.primaryBrand,
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Row(
@@ -155,7 +155,7 @@ class MissedCallCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.cardBg,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -175,7 +175,7 @@ class MissedCallCard extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0E0E0),
+                  color: DoctorColors.dividerNeutral,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: const Icon(Icons.person,
@@ -190,34 +190,42 @@ class MissedCallCard extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
-                    color: AppColors.textDark,
+                    color: DoctorColors.textDark,
                   ),
                 ),
               ),
 
               // Date
               Row(children: [
-                const Icon(Icons.calendar_month,
-                    size: 13, color: AppColors.primary),
+                Image.asset(
+                  'assets/icons/img_21.png',
+                  width: 13,
+                  height: 13,
+                  color: DoctorColors.primaryBrand,
+                ),
                 const SizedBox(width: 4),
                 Text(patient.date,
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.textDark)),
+                        color: DoctorColors.textDark)),
               ]),
               const SizedBox(width: 12),
 
               // Time
               Row(children: [
-                const Icon(Icons.access_time,
-                    size: 13, color: AppColors.primary),
+                Image.asset(
+                  'assets/icons/img_22.png',
+                  width: 14,
+                  height: 14,
+                  color: DoctorColors.primaryBrand,
+                ),
                 const SizedBox(width: 4),
                 Text(patient.time,
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.textDark)),
+                        color: DoctorColors.textDark)),
               ]),
             ],
           ),
@@ -231,15 +239,23 @@ class MissedCallCard extends StatelessWidget {
               // Paid/Unpaid
               Row(
                 children: [
-                  Text(isPaid ? '💰' : '❌',
-                      style: const TextStyle(fontSize: 15)),
+                  isPaid
+                      ? Image.asset(
+                    'assets/icons/img_20.png',
+                    width: 18,
+                    height: 18,
+                  )
+                      : const Text(
+                    '❌',
+                    style: TextStyle(fontSize: 15),
+                  ),
                   const SizedBox(width: 5),
                   Text(
                     isPaid ? 'PAID' : 'UNPAID',
                     style: TextStyle(
                       color: isPaid
-                          ? AppColors.paidGreen
-                          : Colors.red,
+                          ? DoctorColors.success
+                          : DoctorColors.error,
                       fontWeight: FontWeight.w800,
                       fontSize: 13,
                     ),
@@ -254,7 +270,7 @@ class MissedCallCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: DoctorColors.primaryBrand,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
@@ -312,11 +328,11 @@ class _MissedCallPatientListScreenState
                 style: TextStyle(
                     fontSize: 18, fontWeight: FontWeight.w700)),
             const SizedBox(height: 16),
-            _filterTile(Icons.check_circle, AppColors.green2,
+            _filterTile(Icons.check_circle, DoctorColors.success,
                 'Paid only', () => _applyFilter('Paid')),
-            _filterTile(Icons.cancel, Colors.red,
+            _filterTile(Icons.cancel, DoctorColors.error,
                 'Unpaid only', () => _applyFilter('Unpaid')),
-            _filterTile(Icons.sort, AppColors.primary,
+            _filterTile(Icons.sort, DoctorColors.primaryBrand,
                 'Sort by date', () => _applyFilter('Date')),
           ],
         ),
@@ -359,7 +375,7 @@ class _MissedCallPatientListScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Stack(
         children: [
           // ── Scrollable content ───────────────────────────
@@ -367,7 +383,11 @@ class _MissedCallPatientListScreenState
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               children: [
-                const CurvedHeader(title: 'Missed Call Patient List'),
+                const CurvedHeader(title: 'MISSED CALL PATIENT LIST', showBackButton: false, titleStyle: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),),
                 Expanded(
                   child: SingleChildScrollView(
                     padding:

@@ -124,6 +124,7 @@ abstract class AppRoutes {
 
 
   static const  medicalRecordsScreenHistory = '/medicalRecordsScreenHistory';
+  static const callLogsScreenDash = '/CallLogsScreenDash';
 
 
 

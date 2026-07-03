@@ -53,16 +53,7 @@ final List<WaitingPatient> onlinePatients = [
     date:          '1/7/2026',
     time:          '12:20 PM',
   ),
-  // const WaitingPatient(
-  //   appointmentId: '259227',
-  //   type:          AppointmentType.schedule,
-  //   name:          'Ms. Priya',
-  //   phone:         '901XXXXXX2',
-  //   paymentStatus: PaymentStatus.unpaid,
-  //   waitingStatus: WaitingStatus.inProgress,
-  //   date:          '1/7/2026',
-  //   time:          '01:00 PM',
-  // ),
+
 ];
 
 final List<WaitingPatient> inPersonPatients = [

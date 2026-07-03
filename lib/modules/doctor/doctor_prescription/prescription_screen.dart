@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_details_dialog.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_screen_list.dart';
-import 'package:timesmed_project/modules/doctor/widgets/curverd_display.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
-
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
+import '../doctor_basic_details/signature_pad.dart';
+import '../doctor_basic_details/dummy_data_5.dart'
+    show doctorSignature, dummyPatient, prescriptionAdvice;
 
 class DoctorPrescriptionScreen extends StatefulWidget {
   const DoctorPrescriptionScreen({super.key});
@@ -18,19 +19,6 @@ class DoctorPrescriptionScreen extends StatefulWidget {
 }
 
 class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
-  // ---------- Theme ----------
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _background = Color(0xFFF4F8FE);
-  static const Color _cardWhite = Colors.white;
-  static const Color _fieldBorder = Color(0xFFD9E2F0);
-  static const Color _hintGrey = Color(0xFF6B7280);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _textSecondary = Color(0xFF6B7280);
-  static const Color _clearRed = Color(0xFFEF4444);
-  static const Color _accentSoft = Color(0xFFE5EFFC);
-
   // ---------- Mock master data ----------
   final List<String> _drugDatabase = const [
     'Paracetamol 500mg',
@@ -311,6 +299,19 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
     );
   }
 
+  Future<void> _previewTemplate() async {
+    if (_prescription.isEmpty) {
+      _snack('Add at least one drug to preview the template');
+      return;
+    }
+    await showDialog(
+      context: context,
+      builder: (_) => _PrescriptionTemplateDialog(
+        items: List<_PrescriptionItem>.from(_prescription),
+      ),
+    );
+  }
+
   Future<void> _openDrugSearch() async {
     final picked = await showDialog<String>(
       context: context,
@@ -324,67 +325,71 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      body: SafeArea(
-        child: Column(
-          children: [
-            CurvedHeader(title: "DOCTOR PRESCRIPTION"),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDrugNameField(),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(child: _buildFrequencyDropdown()),
-                        const SizedBox(width: 12),
-                        Expanded(child: _buildDaysSpinner()),
-                      ],
+      backgroundColor: DoctorColors.backgroundWarm,
+      body: Column(
+        children: [
+          CurvedHeader(title: "DOCTOR PRESCRIPTION",titleStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDrugNameField(),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _buildFrequencyDropdown()),
+                      const SizedBox(width: 12),
+                      Expanded(child: _buildDaysSpinner()),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _buildQtySpinner()),
+                      const SizedBox(width: 12),
+                      Expanded(child: _buildFoodRelationDropdown()),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _buildNotesField(),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(child: _buildClearButton()),
+                      const SizedBox(width: 12),
+                      Expanded(child: _buildAddDrugButton()),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  const Divider(color: DoctorColors.fieldBorder, height: 1),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'Prescription',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: DoctorColors.textPrimary,
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(child: _buildQtySpinner()),
-                        const SizedBox(width: 12),
-                        Expanded(child: _buildFoodRelationDropdown()),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _buildNotesField(),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(child: _buildClearButton()),
-                        const SizedBox(width: 12),
-                        Expanded(child: _buildAddDrugButton()),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    const Divider(color: _fieldBorder, height: 1),
-                    const SizedBox(height: 14),
-                    const Text(
-                      'Prescription',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: _textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildPrescriptionList(),
-                    const SizedBox(height: 14),
-                    _buildTemplateActions(),
-                    const SizedBox(height: 18),
-                    _buildSendButton(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildPrescriptionList(),
+                  const SizedBox(height: 14),
+                  _buildTemplateActions(),
+                  const SizedBox(height: 18),
+                  _buildPreviewButton(),
+                  const SizedBox(height: 12),
+                  _buildSendButton(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -395,7 +400,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
   //     width: double.infinity,
   //     decoration: const BoxDecoration(
   //       gradient: LinearGradient(
-  //         colors: [_primaryDark, _primaryLight],
+  //         colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
   //         begin: Alignment.topLeft,
   //         end: Alignment.bottomRight,
   //       ),
@@ -434,19 +439,19 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
   Widget _buildDrugNameField() {
     return Container(
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: _drugNameController,
-              style: const TextStyle(fontSize: 16, color: _textPrimary),
+              style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
               decoration: const InputDecoration(
                 hintText: 'Drug Name',
-                hintStyle: TextStyle(fontSize: 16, color: _hintGrey),
+                hintStyle: TextStyle(fontSize: 16, color: DoctorColors.textSecondary),
                 border: InputBorder.none,
                 contentPadding:
                 EdgeInsets.symmetric(horizontal: 14, vertical: 16),
@@ -454,7 +459,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.search, color: _primary, size: 26),
+            icon: const Icon(Icons.search, color: DoctorColors.primary, size: 26),
             onPressed: _openDrugSearch,
             tooltip: 'Search drugs',
           ),
@@ -471,10 +476,10 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
           isExpanded: true,
           value: _selectedFrequency,
           hint: const Text('Frequency',
-              style: TextStyle(fontSize: 16, color: _hintGrey)),
-          icon: const Icon(Icons.keyboard_arrow_down, color: _hintGrey),
-          style: const TextStyle(fontSize: 16, color: _textPrimary),
-          dropdownColor: _cardWhite,
+              style: TextStyle(fontSize: 16, color: DoctorColors.textSecondary)),
+          icon: const Icon(Icons.keyboard_arrow_down, color: DoctorColors.textSecondary),
+          style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
+          dropdownColor: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
           items: _frequencyOptions
               .map((f) => DropdownMenuItem(value: f, child: Text(f)))
@@ -515,11 +520,11 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
           value: _selectedFoodRelation,
           hint: const Text(
             'Food\nRelation',
-            style: TextStyle(fontSize: 14, color: _hintGrey, height: 1.2),
+            style: TextStyle(fontSize: 14, color: DoctorColors.textSecondary, height: 1.2),
           ),
-          icon: const Icon(Icons.keyboard_arrow_down, color: _hintGrey),
-          style: const TextStyle(fontSize: 16, color: _textPrimary),
-          dropdownColor: _cardWhite,
+          icon: const Icon(Icons.keyboard_arrow_down, color: DoctorColors.textSecondary),
+          style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
+          dropdownColor: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
           items: _foodRelationOptions
               .map((f) => DropdownMenuItem(value: f, child: Text(f)))
@@ -535,9 +540,9 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Center(child: child),
     );
@@ -553,9 +558,9 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Row(
         children: [
@@ -568,7 +573,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                   label,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: _hintGrey,
+                    color: DoctorColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -577,7 +582,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: _textPrimary,
+                    color: DoctorColors.textPrimary,
                   ),
                 ),
               ],
@@ -591,7 +596,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   child: Icon(Icons.arrow_drop_up,
-                      size: 22, color: _hintGrey),
+                      size: 22, color: DoctorColors.textSecondary),
                 ),
               ),
               InkWell(
@@ -599,7 +604,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   child: Icon(Icons.arrow_drop_down,
-                      size: 22, color: _hintGrey),
+                      size: 22, color: DoctorColors.textSecondary),
                 ),
               ),
             ],
@@ -615,25 +620,25 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       controller: _notesController,
       maxLines: 4,
       minLines: 4,
-      style: const TextStyle(fontSize: 16, color: _textPrimary),
+      style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
       decoration: InputDecoration(
         hintText: 'Add Notes',
-        hintStyle: const TextStyle(fontSize: 16, color: _hintGrey),
+        hintStyle: const TextStyle(fontSize: 16, color: DoctorColors.textSecondary),
         filled: true,
-        fillColor: _cardWhite,
+        fillColor: DoctorColors.cardWhite,
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.fieldBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.fieldBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _primary, width: 1.5),
+          borderSide: const BorderSide(color: DoctorColors.primary, width: 1.5),
         ),
       ),
     );
@@ -646,7 +651,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       child: ElevatedButton(
         onPressed: _clearForm,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _clearRed,
+          backgroundColor: DoctorColors.errorRed,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -670,7 +675,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       child: ElevatedButton(
         onPressed: _addDrug,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: DoctorColors.success,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -695,14 +700,14 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 24),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: _fieldBorder),
+          border: Border.all(color: DoctorColors.fieldBorder),
         ),
         child: const Center(
           child: Text(
             'No drugs added yet',
-            style: TextStyle(color: _hintGrey, fontSize: 14),
+            style: TextStyle(color: DoctorColors.textSecondary, fontSize: 14),
           ),
         ),
       );
@@ -714,9 +719,9 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
           margin: EdgeInsets.only(bottom: i == _prescription.length - 1 ? 0 : 10),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: _cardWhite,
+            color: DoctorColors.cardWhite,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: _fieldBorder),
+            border: Border.all(color: DoctorColors.fieldBorder),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -726,13 +731,13 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                 height: 32,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
-                  color: _accentSoft,
+                  color: DoctorColors.primarySoft,
                   shape: BoxShape.circle,
                 ),
                 child: Text(
                   '${i + 1}',
                   style: const TextStyle(
-                    color: _primary,
+                    color: DoctorColors.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -747,7 +752,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: _textPrimary,
+                        color: DoctorColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -755,7 +760,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                       '${p.frequency} • ${p.days} day${p.days > 1 ? 's' : ''} • Qty ${p.qty}',
                       style: const TextStyle(
                         fontSize: 13,
-                        color: _textSecondary,
+                        color: DoctorColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -763,7 +768,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                       p.foodRelation,
                       style: const TextStyle(
                         fontSize: 13,
-                        color: _primary,
+                        color: DoctorColors.primary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -773,7 +778,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                         'Note: ${p.notes}',
                         style: const TextStyle(
                           fontSize: 12,
-                          color: _textSecondary,
+                          color: DoctorColors.textSecondary,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -782,7 +787,7 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.close, color: _clearRed, size: 20),
+                icon: const Icon(Icons.close, color: DoctorColors.errorRed, size: 20),
                 onPressed: () => _removePrescriptionItem(i),
               ),
             ],
@@ -832,17 +837,44 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
         child: Row(
           children: [
-            Icon(icon, color: _primary, size: 20),
+            Icon(icon, color: DoctorColors.primary, size: 20),
             const SizedBox(width: 6),
             Text(
               label,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: _primary,
+                color: DoctorColors.primary,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // ---------- Preview as Template ----------
+  Widget _buildPreviewButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: OutlinedButton.icon(
+        onPressed: _previewTemplate,
+        icon: const Icon(Icons.description_outlined,
+            color: DoctorColors.primary, size: 22),
+        label: const Text(
+          'Preview as Template',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            color: DoctorColors.primary,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: DoctorColors.primary, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );
@@ -856,12 +888,12 @@ class _DoctorPrescriptionScreenState extends State<DoctorPrescriptionScreen> {
       child: ElevatedButton(
         onPressed: _sendPrescription,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: DoctorColors.success,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 2,
-          shadowColor: _primary.withOpacity(0.3),
+          shadowColor: DoctorColors.primary.withOpacity(0.3),
         ),
         child: const Text(
           'Send Prescription',
@@ -909,6 +941,391 @@ class _PrescriptionItem {
 }
 
 // ============================================================
+// Prescription template (formatted Rx sheet with signature)
+// ============================================================
+class _PrescriptionTemplateDialog extends StatelessWidget {
+  final List<_PrescriptionItem> items;
+  const _PrescriptionTemplateDialog({required this.items});
+
+  String _today() {
+    final d = DateTime.now();
+    return '${d.day.toString().padLeft(2, '0')}/'
+        '${d.month.toString().padLeft(2, '0')}/${d.year}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 28),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: size.height * 0.9,
+          maxWidth: 500,
+
+        ),
+        child: Container(
+
+          // clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: DoctorColors.cardWhite,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: DoctorColors.dividerCool),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _topBar(context),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _letterhead(),
+                      _sectionDivider(),
+                      _patientBlock(),
+                      _sectionDivider(),
+                      _rxHeading(),
+                      _sectionDivider(),
+                      _medicineTable(),
+                      _sectionDivider(),
+                      _adviceBlock(),
+                      _sectionDivider(),
+                      _signatureFooter(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionDivider() =>
+      const Divider(height: 1, thickness: 1, color: DoctorColors.dividerCool);
+
+  // Slim coloured title bar with a close affordance
+  Widget _topBar(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: DoctorColors.primary,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: DoctorColors.dividerCool),
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 10, 6, 10),
+      child: Row(
+        children: [
+          const Expanded(
+            child: Text(
+              'PRESCRIPTION',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.6,
+              ),
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.close, color: Colors.white, size: 22),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Doctor letterhead — all details from Basic Details (persisted locally)
+  Widget _letterhead() {
+    final sig = doctorSignature;
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'DR. ${sig.doctorName.toUpperCase()}',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: DoctorColors.primary,
+                letterSpacing: 0.3,
+              ),
+            ),
+            const SizedBox(height: 3),
+            if (sig.qualification.isNotEmpty)
+              Text(
+                sig.qualification,
+                style: const TextStyle(
+                    fontSize: 13, color: DoctorColors.textPrimary),
+              ),
+            if (sig.regNo.isNotEmpty)
+              Text(
+                'Reg No: ${sig.regNo}',
+                style: const TextStyle(
+                    fontSize: 12, color: DoctorColors.textSecondary),
+              ),
+            const SizedBox(height: 4),
+            Text(
+              sig.clinic,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w700,
+                color: DoctorColors.textPrimary,
+              ),
+            ),
+            if (sig.city.isNotEmpty)
+              Text(
+                sig.city,
+                style: const TextStyle(
+                    fontSize: 12, color: DoctorColors.textSecondary),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Aligned "Label : value" row
+  Widget _kv(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 70,
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: DoctorColors.textPrimary,
+              ),
+            ),
+          ),
+          const Text(':  ',
+              style: TextStyle(fontSize: 13, color: DoctorColors.textSecondary)),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                  fontSize: 13, color: DoctorColors.textPrimary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Patient details block
+  Widget _patientBlock() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _kv('Patient', dummyPatient.name),
+          _kv('Age', dummyPatient.age),
+          _kv('Gender', dummyPatient.gender),
+          _kv('Date', _today()),
+        ],
+      ),
+    );
+  }
+
+  // Rx section heading
+  Widget _rxHeading() {
+    return Container(
+      width: double.infinity,
+      color: DoctorColors.primarySoft,
+      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 10),
+      child: Row(
+        children: [
+          const Text(
+            '℞',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              color: DoctorColors.primary,
+              height: 1,
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'Prescription',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: DoctorColors.textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Medicine table: #  Medicine  Freq  Days
+  Widget _medicineTable() {
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Table(
+        border: TableBorder(
+          horizontalInside:
+              BorderSide(color: DoctorColors.dividerCool, width: 1),
+        ),
+        columnWidths: const {
+          0: FixedColumnWidth(28),
+          1: FlexColumnWidth(),
+          2: FixedColumnWidth(60),
+          3: FixedColumnWidth(44),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(
+            decoration: const BoxDecoration(color: DoctorColors.primarySoft),
+            children: [
+              _cell('#', header: true),
+              _cell('Medicine', header: true),
+              _cell('Freq', header: true),
+              _cell('Days', header: true),
+              _cell('Food Relation', header: true),
+            ],
+          ),
+          ...List.generate(items.length, (i) {
+            final p = items[i];
+            return TableRow(children: [
+              _cell('${i + 1}'),
+              _cell(p.drugName),
+              _cell(p.frequency),
+              _cell('${p.days}'),
+              _cell('${p.foodRelation}'),
+
+            ]);
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _cell(String text, {bool header = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 9),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: header ? 12.5 : 13,
+          fontWeight: header ? FontWeight.w700 : FontWeight.w500,
+          color: header ? DoctorColors.primary : DoctorColors.textPrimary,
+        ),
+      ),
+    );
+  }
+
+  // Advice / instructions
+  Widget _adviceBlock() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Note:',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: DoctorColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          ...items.map(
+                (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      item.notes,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: DoctorColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Signature footer — right aligned, scaled + clipped to its box
+  Widget _signatureFooter() {
+    final sig = doctorSignature;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+      child: Row(
+        children: [
+          const Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drawn signature, scaled to fit and clipped so it never overflows
+              SizedBox(
+                height: 50,
+                width: 180,
+                child: sig.hasDrawing
+                    ? ClipRect(
+                        child: CustomPaint(
+                          painter: SignaturePainter(sig.strokes,
+                              strokeWidth: 2, fit: true),
+                          size: Size.infinite,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              Container(
+                width: 150,
+                height: 1,
+                color: DoctorColors.textPrimary,
+                margin: const EdgeInsets.only(bottom: 5),
+              ),
+              const Text(
+                'Signature',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: DoctorColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 1),
+              Text(
+                'Dr. ${sig.doctorName}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: DoctorColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================
 // Drug search dialog
 // ============================================================
 class _DrugSearchDialog extends StatefulWidget {
@@ -920,13 +1337,6 @@ class _DrugSearchDialog extends StatefulWidget {
 }
 
 class _DrugSearchDialogState extends State<_DrugSearchDialog> {
-  static const Color _primaryDark = Color(0xFF1E5FBF);
-  static const Color _primary = Color(0xFF2F7BE0);
-  static const Color _primaryLight = Color(0xFF5EA1F0);
-  static const Color _divider = Color(0xFFE5EAF2);
-  static const Color _textPrimary = Color(0xFF1A2236);
-  static const Color _hintGrey = Color(0xFF94A3B8);
-
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
@@ -965,7 +1375,7 @@ class _DrugSearchDialogState extends State<_DrugSearchDialog> {
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [_primaryDark, _primaryLight],
+                    colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -1003,28 +1413,28 @@ class _DrugSearchDialogState extends State<_DrugSearchDialog> {
                   autofocus: true,
                   onChanged: (v) => setState(() => _query = v),
                   style:
-                  const TextStyle(fontSize: 15, color: _textPrimary),
+                  const TextStyle(fontSize: 15, color: DoctorColors.textPrimary),
                   decoration: InputDecoration(
                     hintText: 'Search drugs...',
                     hintStyle:
-                    const TextStyle(color: _hintGrey, fontSize: 15),
+                    const TextStyle(color: DoctorColors.textHint, fontSize: 15),
                     prefixIcon: const Icon(Icons.search,
-                        color: _hintGrey, size: 20),
+                        color: DoctorColors.textHint, size: 20),
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: _divider),
+                      borderSide: const BorderSide(color: DoctorColors.dividerCool),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: _divider),
+                      borderSide: const BorderSide(color: DoctorColors.dividerCool),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                      const BorderSide(color: _primary, width: 1.5),
+                      const BorderSide(color: DoctorColors.primary, width: 1.5),
                     ),
                   ),
                 ),
@@ -1038,7 +1448,7 @@ class _DrugSearchDialogState extends State<_DrugSearchDialog> {
                     child: Text(
                       'No matching drugs',
                       style: TextStyle(
-                          color: _hintGrey, fontSize: 14),
+                          color: DoctorColors.textHint, fontSize: 14),
                     ),
                   ),
                 )
@@ -1047,7 +1457,7 @@ class _DrugSearchDialogState extends State<_DrugSearchDialog> {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   itemCount: _filtered.length,
                   separatorBuilder: (_, __) => const Divider(
-                    color: _divider,
+                    color: DoctorColors.dividerCool,
                     height: 1,
                     indent: 16,
                     endIndent: 16,
@@ -1062,19 +1472,19 @@ class _DrugSearchDialogState extends State<_DrugSearchDialog> {
                         child: Row(
                           children: [
                             const Icon(Icons.medication_outlined,
-                                color: _primary, size: 20),
+                                color: DoctorColors.primary, size: 20),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 drug,
                                 style: const TextStyle(
                                   fontSize: 15,
-                                  color: _textPrimary,
+                                  color: DoctorColors.textPrimary,
                                 ),
                               ),
                             ),
                             const Icon(Icons.chevron_right,
-                                color: _hintGrey, size: 20),
+                                color: DoctorColors.textHint, size: 20),
                           ],
                         ),
                       ),

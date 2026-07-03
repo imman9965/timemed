@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import '../controller/login_controller.dart';
 
 class OtpPage extends StatefulWidget {
@@ -80,12 +80,12 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
 
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: const Color(0xFF47A6FF),
+          color: DoctorColors.primaryAccent,
           width: 2,
         ),
         // boxShadow: [
         //   BoxShadow(
-        //     color: const Color(0xFF0473EA).withOpacity(0.3),
+        //     color: DoctorColors.primaryDeep.withOpacity(0.3),
         //     blurRadius: 12,
         //     offset: const Offset(0, 4),
         //   ),
@@ -99,7 +99,7 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: const Color(0xFF0473EA).withOpacity(0.4),
+          color: DoctorColors.primaryDeep.withOpacity(0.4),
           width: 1.5,
         ),
       ),
@@ -188,17 +188,17 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              const Color(0xFF0473EA).withOpacity(0.3),
-                              const Color(0xFF47A6FF).withOpacity(0.15),
+                              DoctorColors.primaryDeep.withOpacity(0.3),
+                              DoctorColors.primaryAccent.withOpacity(0.15),
                             ],
                           ),
                           border: Border.all(
-                            color: const Color(0xFF47A6FF).withOpacity(0.3),
+                            color: DoctorColors.primaryAccent.withOpacity(0.3),
                           ),
                         ),
                         child: const Icon(
                           Icons.lock_outline_rounded,
-                          color: Color(0xFF47A6FF),
+                          color: DoctorColors.primaryAccent,
                           size: 36,
                         ),
                       ),
@@ -212,7 +212,7 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                           padding: const EdgeInsets.all(28),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(28),
-                            color: AppColors.primary,
+                            color: DoctorColors.primaryBrand,
                             border: Border.all(
                               color: Colors.white.withOpacity(0.12),
                               width: 1.2,
@@ -258,12 +258,13 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                                 defaultPinTheme: defaultTheme,
                                 focusedPinTheme: focusedTheme,
                                 submittedPinTheme: submittedTheme,
-
+                                onChanged: (_) =>
+                                    controller.otpError.value = '',
                                 cursor: Container(
                                   width: 2,
                                   height: 24,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue,
+                                    color: DoctorColors.primary,
                                     borderRadius: BorderRadius.circular(1),
                                   ),
                                 ),
@@ -272,7 +273,34 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                                     const SizedBox(width: 8),
                               ),
 
-                              const SizedBox(height: 32),
+                              // ── OTP ERROR MESSAGE (outside the pin boxes) ──
+                              Obx(() {
+                                if (controller.otpError.value.isEmpty) {
+                                  return const SizedBox(height: 32);
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 14, bottom: 14),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.error_outline_rounded,
+                                          color: Colors.redAccent, size: 16),
+                                      const SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          controller.otpError.value,
+                                          style: const TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
 
                               // ── VERIFY BUTTON ──
                               GestureDetector(
@@ -287,13 +315,13 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                                     //   colors: [
                                     //     Color(0xFF0473EA),
                                     //     Color(0xFF2196F3),
-                                    //     Color(0xFF47A6FF),
+                                    //     DoctorColors.primaryAccent,
                                     //   ],
                                     // ),
                                     borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color(0xFF0473EA)
+                                        color: DoctorColors.primaryDeep
                                             .withOpacity(0.4),
                                         blurRadius: 20,
                                         offset: const Offset(0, 8),
@@ -306,7 +334,7 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
 
 
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: DoctorColors.primary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
                                         letterSpacing: 1.5,
@@ -337,7 +365,7 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                                       "Resend",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        color: Color(0xFF47A6FF),
+                                        color: DoctorColors.primaryAccent,
                                         fontSize: 13,
                                       ),
                                     ),
@@ -372,7 +400,7 @@ class _OtpPageState extends State<OtpPage> with TickerProviderStateMixin {
                         color: Colors.white.withOpacity(0.1)),
                   ),
                   child: const CircularProgressIndicator(
-                    color: Color(0xFF47A6FF),
+                    color: DoctorColors.primaryAccent,
                     strokeWidth: 3,
                   ),
                 ),
@@ -396,10 +424,10 @@ class _OtpOrbsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final orbs = [
-      _OtpOrb(0.2, 0.3, 100, const Color(0xFF0473EA), 0.10),
-      _OtpOrb(0.75, 0.2, 80, const Color(0xFF47A6FF), 0.08),
-      _OtpOrb(0.5, 0.75, 130, const Color(0xFF0473EA), 0.06),
-      _OtpOrb(0.9, 0.6, 70, const Color(0xFF2196F3), 0.09),
+      _OtpOrb(0.2, 0.3, 100, DoctorColors.primaryDeep, 0.10),
+      _OtpOrb(0.75, 0.2, 80, DoctorColors.primaryAccent, 0.08),
+      _OtpOrb(0.5, 0.75, 130, DoctorColors.primaryDeep, 0.06),
+      _OtpOrb(0.9, 0.6, 70, DoctorColors.blue500, 0.09),
     ];
 
     for (final orb in orbs) {

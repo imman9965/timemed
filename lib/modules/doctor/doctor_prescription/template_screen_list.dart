@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_details_dialog.dart';
-import 'package:timesmed_project/modules/doctor/theme/doctor_colors.dart';
-
-import '../../../core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 
 
 final List<PrescriptionTemplate> templates = [
@@ -84,19 +82,6 @@ class TemplateListScreen extends StatefulWidget {
 }
 
 class _TemplateListScreenState extends State<TemplateListScreen> {
-  // ---------- Theme (forwarded to DoctorColors) ----------
-  static const Color _primaryDark   = DoctorColors.primaryDark;
-  static const Color _primary       = DoctorColors.primary;
-  static const Color _primaryLight  = DoctorColors.primaryLight;
-  static const Color _background    = DoctorColors.background;
-  static const Color _cardWhite     = DoctorColors.cardWhite;
-  static const Color _fieldBorder   = DoctorColors.fieldBorder;
-  static const Color _textPrimary   = DoctorColors.textPrimary;
-  static const Color _textSecondary = DoctorColors.textSecondary;
-  static const Color _accentSoft    = DoctorColors.primarySoft;
-  static const Color _deleteRed     = DoctorColors.errorRed;
-  static const Color _selectBlue    = DoctorColors.primary;
-
   // ---------- Dummy data ----------
 
 
@@ -150,7 +135,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: _deleteRed),
+            style: TextButton.styleFrom(foregroundColor: DoctorColors.errorRed),
             child: const Text('Delete'),
           ),
         ],
@@ -193,7 +178,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: SafeArea(
         child: Column(
           children: [
@@ -223,7 +208,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                   child: ElevatedButton(
                     onPressed: _onDelete,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _deleteRed,
+                      backgroundColor: DoctorColors.errorRed,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -247,7 +232,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                   child: ElevatedButton(
                     onPressed: _onSelect,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: DoctorColors.success,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -285,16 +270,16 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
             width: 80,
             height: 80,
             decoration: const BoxDecoration(
-              color: _accentSoft,
+              color: DoctorColors.primarySoft,
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.description_outlined,
-                size: 40, color: _primary),
+                size: 40, color: DoctorColors.primary),
           ),
           const SizedBox(height: 12),
           const Text(
             'No templates yet',
-            style: TextStyle(color: _textSecondary, fontSize: 15),
+            style: TextStyle(color: DoctorColors.textSecondary, fontSize: 15),
           ),
         ],
       ),
@@ -309,15 +294,15 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? _primary : _fieldBorder,
+            color: isSelected ? DoctorColors.primary : DoctorColors.fieldBorder,
             width: isSelected ? 1.5 : 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: _primary.withOpacity(0.04),
+              color: DoctorColors.primary.withOpacity(0.04),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -334,7 +319,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
               // Vertical divider
               Container(
                 width: 1,
-                color: _fieldBorder,
+                color: DoctorColors.fieldBorder,
                 margin: const EdgeInsets.symmetric(vertical: 10),
               ),
               // Name + description
@@ -352,7 +337,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: _textPrimary,
+                          color: DoctorColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -362,7 +347,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 13,
-                          color: _textSecondary,
+                          color: DoctorColors.textSecondary,
                         ),
                       ),
                     ],
@@ -372,7 +357,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
               // Vertical divider
               Container(
                 width: 1,
-                color: _fieldBorder,
+                color: DoctorColors.fieldBorder,
                 margin: const EdgeInsets.symmetric(vertical: 10),
               ),
               // Date
@@ -384,7 +369,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                   child: Row(
                     children: [
                       const Icon(Icons.calendar_today,
-                          size: 18, color: _primary),
+                          size: 18, color: DoctorColors.primary),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
@@ -392,7 +377,7 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: _primary,
+                            color: DoctorColors.primary,
                           ),
                         ),
                       ),
@@ -412,12 +397,12 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.green.shade100,
+                        color: DoctorColors.successLightBg,
                         shape: BoxShape.circle,
-                        border: Border.all(color: _primary.withOpacity(0.3)),
+                        border: Border.all(color: DoctorColors.primary.withOpacity(0.3)),
                       ),
                       child: const Icon(Icons.visibility_outlined,
-                          color: Colors.green, size: 20),
+                          color: DoctorColors.success, size: 20),
                     ),
                   ),
                 ),
@@ -435,10 +420,10 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
       width: 22,
       height: 22,
       decoration: BoxDecoration(
-        color: selected ? _primary : Colors.transparent,
+        color: selected ? DoctorColors.primary : Colors.transparent,
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: selected ? _primary : _fieldBorder,
+          color: selected ? DoctorColors.primary : DoctorColors.fieldBorder,
           width: 1.5,
         ),
       ),
@@ -480,12 +465,6 @@ class _TemplatePreviewDialog extends StatelessWidget {
   final PrescriptionTemplate template;
   const _TemplatePreviewDialog({required this.template});
 
-  static const Color _primaryDark   = DoctorColors.primaryDark;
-  static const Color _primaryLight  = DoctorColors.primaryLight;
-  static const Color _primary       = DoctorColors.primary;
-  static const Color _textPrimary   = DoctorColors.textPrimary;
-  static const Color _textSecondary = DoctorColors.textSecondary;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -503,7 +482,7 @@ class _TemplatePreviewDialog extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [_primaryDark, _primaryLight],
+                  colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -544,19 +523,19 @@ class _TemplatePreviewDialog extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: _textPrimary,
+                      color: DoctorColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
                       const Icon(Icons.calendar_today,
-                          size: 16, color: _primary),
+                          size: 16, color: DoctorColors.primary),
                       const SizedBox(width: 6),
                       Text(
                         '${template.date.month}/${template.date.day.toString().padLeft(2, '0')}/${template.date.year}',
                         style: const TextStyle(
-                          color: _primary,
+                          color: DoctorColors.primary,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -568,7 +547,7 @@ class _TemplatePreviewDialog extends StatelessWidget {
                     'Description',
                     style: TextStyle(
                       fontSize: 13,
-                      color: _textSecondary,
+                      color: DoctorColors.textSecondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -577,7 +556,7 @@ class _TemplatePreviewDialog extends StatelessWidget {
                     template.description,
                     style: const TextStyle(
                       fontSize: 15,
-                      color: _textPrimary,
+                      color: DoctorColors.textPrimary,
                       height: 1.4,
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routes/app_routes.dart';
+import '../theme/doctor_theme.dart';
 
 
 
@@ -35,7 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 width: 190,
                 height: 190,
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: DoctorColors.blue50,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -51,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const Icon(
                       Icons.local_hospital,
                       size: 40,
-                      color: Colors.blue,
+                      color: DoctorColors.primary,
                     ),
 
                     const SizedBox(height: 10),
@@ -72,7 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Text(
                       "",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: DoctorColors.textMuted),
                     ),
                   ],
                 ),

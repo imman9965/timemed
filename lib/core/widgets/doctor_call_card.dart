@@ -10,29 +10,20 @@ class DoctorCallCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(28),
-          topRight: Radius.circular(28),
-        ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      // decoration: BoxDecoration(
-      //   color: const Color(0xFF1976D2), // blue background
-      //   borderRadius: BorderRadius.circular(20),
-      // ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
       child: Row(
         children: [
           const Expanded(
             child: Text(
-              "Dr.Mariappan",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
+              "DR.MARIAPPAN",
+              style:   TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
             ),
           ),
           Row(

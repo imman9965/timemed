@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\imman\\\\timesmed\\\\timesmed_project\\\\lib\\\\modules\\\\doctor\\\\clinical_notes\" -Recurse)",
+      "Bash(Select-Object -ExpandProperty FullName)"
+    ]
+  }
+}

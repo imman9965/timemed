@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../theme/doctor_colors.dart';
+import '../theme/doctor_theme.dart';
+import '../doctor_basic_details/signature_pad.dart';
 
 /// Shows the list of drugs inside a template.
 /// Open via:
@@ -29,17 +29,6 @@ class TemplateDetailDialog extends StatefulWidget {
 }
 
 class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
-  // ---------- Theme (forwarded to DoctorColors) ----------
-  static const Color _primaryDark    = DoctorColors.primaryDark;
-  static const Color _primary        = DoctorColors.primary;
-  static const Color _primaryLight   = DoctorColors.primaryLight;
-  static const Color _cardWhite      = DoctorColors.cardWhite;
-  static const Color _fieldBorder    = DoctorColors.fieldBorder;
-  static const Color _textPrimary    = DoctorColors.textPrimary;
-  static const Color _textSecondary  = DoctorColors.textSecondary;
-  static const Color _deleteRed      = DoctorColors.errorRed;
-  static const Color _deleteRedSoft  = DoctorColors.errorSoftBg;
-
   late final List<TemplateDrug> _drugs;
 
   @override
@@ -64,7 +53,7 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: _deleteRed),
+            style: TextButton.styleFrom(foregroundColor: DoctorColors.errorRed),
             child: const Text('Remove'),
           ),
         ],
@@ -88,7 +77,7 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFF4F8FE),
+            color: DoctorColors.backgroundFrost,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -106,6 +95,11 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
                   itemBuilder: (_, i) => _buildDrugRow(_drugs[i], i),
                 ),
               ),
+              if (_drugs.isNotEmpty)
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(14, 0, 14, 14),
+                  child: SignatureView(showName: false),
+                ),
             ],
           ),
         ),
@@ -117,9 +111,9 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
   Widget _buildHeader() {
     return Container(
       decoration:  BoxDecoration(
-        color:AppColors.primary,
+        color:DoctorColors.primaryBrand,
         // gradient: LinearGradient(
-        //   colors: [_primaryDark, _primaryLight],
+        //   colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
         //   begin: Alignment.topLeft,
         //   end: Alignment.bottomRight,
         // ),
@@ -160,11 +154,11 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.medication_outlined,
-                size: 56, color: _textSecondary),
+                size: 56, color: DoctorColors.textSecondary),
             SizedBox(height: 12),
             Text(
               'No drugs in this template',
-              style: TextStyle(color: _textSecondary, fontSize: 15),
+              style: TextStyle(color: DoctorColors.textSecondary, fontSize: 15),
             ),
           ],
         ),
@@ -176,12 +170,12 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
   Widget _buildDrugRow(TemplateDrug drug, int index) {
     return Container(
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
         boxShadow: [
           BoxShadow(
-            color: _primary.withOpacity(0.04),
+            color: DoctorColors.primary.withOpacity(0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -199,7 +193,7 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: _textPrimary,
+                    color: DoctorColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -207,7 +201,7 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
                   _formatSubtitle(drug),
                   style: const TextStyle(
                     fontSize: 14,
-                    color: _textSecondary,
+                    color: DoctorColors.textSecondary,
                     height: 1.35,
                   ),
                 ),
@@ -224,13 +218,13 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: _deleteRedSoft,
+                  color: DoctorColors.errorSoftBg,
                   shape: BoxShape.circle,
                   border:
-                  Border.all(color: _deleteRed.withOpacity(0.4)),
+                  Border.all(color: DoctorColors.errorRed.withOpacity(0.4)),
                 ),
                 child: const Icon(Icons.delete_outline,
-                    color: _deleteRed, size: 22),
+                    color: DoctorColors.errorRed, size: 22),
               ),
             ),
           ),

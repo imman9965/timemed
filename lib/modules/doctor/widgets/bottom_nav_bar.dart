@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../calendar/calendar_page.dart';
 
 class CalendarBottomNav extends StatefulWidget {
@@ -19,22 +19,20 @@ class CalendarBottomNav extends StatefulWidget {
 class _CalendarBottomNavState extends State<CalendarBottomNav> {
   late final ScrollController _scrollController;
 
+
   static const List<NavItem> _navItems = [
+    NavItem(iconPath: 'assets/bottom_nav_icon/dashboard.png', label: 'Dashboard'),
     NavItem(iconPath: 'assets/bottom_nav_icon/calendar.png', label: 'Calendar'),
     NavItem(iconPath: 'assets/bottom_nav_icon/person.png', label: 'Waiting'),
     NavItem(iconPath: 'assets/bottom_nav_icon/call_logs.png', label: 'Calls'),
     NavItem(iconPath: 'assets/bottom_nav_icon/call_direct.png', label: 'Missed'),
-    NavItem(iconPath: 'assets/bottom_nav_icon/dashboard.png', label: 'Dashboard'),
     NavItem(iconPath: '', label: 'Patient List'),
-    // NavItem(iconPath: '', label: 'Notes'),
-    // NavItem(iconPath: '', label: 'Appts'),
-    // NavItem(iconPath: '', label: 'Alerts'),
   ];
 
   // Icons for items without PNG assets
   static const List<IconData?> _fallbackIcons = [
     null, // Calendar — has PNG
-    null, // Waiting — has PNG
+    null,
     null, // Calls — has PNG
     null, // Missed — has PNG
     null, // Dashboard — has PNG
@@ -59,8 +57,7 @@ class _CalendarBottomNavState extends State<CalendarBottomNav> {
   }
 
   void _scrollToActive() {
-    // Each item is ~68 wide, scroll to center the active one
-    const itemWidth = 68.0;
+    const itemWidth = 80.0;
     final screenWidth = MediaQuery.of(context).size.width - 32; // minus margins
     final targetOffset =
         (widget.activeIndex * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
@@ -81,13 +78,13 @@ class _CalendarBottomNavState extends State<CalendarBottomNav> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      height: 64,
+      height: 74,
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: DoctorColors.primaryBrand,
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.4),
+            color: DoctorColors.primaryBrand.withOpacity(0.4),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -115,41 +112,40 @@ class _CalendarBottomNavState extends State<CalendarBottomNav> {
                     curve: Curves.bounceInOut,
                     margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                     padding: active
-                        ? const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
-                        : const EdgeInsets.all(10),
+                        ? const EdgeInsets.symmetric(horizontal: 14, vertical: 6)
+                        : const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: active ? Colors.white : Colors.transparent,
                       borderRadius: BorderRadius.circular(60),
                     ),
-                    child: Row(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Icon — PNG or fallback Material icon
                         if (item.iconPath.isNotEmpty)
                           Image.asset(
                             item.iconPath,
                             width: 22,
                             height: 22,
-                            color: active ? AppColors.primary : Colors.white,
+                            color: active ? DoctorColors.primaryBrand : Colors.white,
                           )
                         else if (fallbackIcon != null)
                           Icon(
                             fallbackIcon,
-                            size:  28,
-                            color: active ? AppColors.primary : Colors.white,
+                            size: 22,
+                            color: active ? DoctorColors.primaryBrand : Colors.white,
                           ),
-                        // if (active) ...[
-                        //   const SizedBox(width: 8),
-                        //   Text(
-                        //     item.label,
-                        //     style: TextStyle(
-                        //       fontSize: 13,
-                        //       fontWeight: FontWeight.w700,
-                        //       color: AppColors.primary,
-                        //     ),
-                        //   ),
-                        // ],
-
+                        const SizedBox(height: 2),
+                        Text(
+                          item.label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: active ? FontWeight.w600 : FontWeight.w500,
+                            color: active ? DoctorColors.primaryBrand : Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),

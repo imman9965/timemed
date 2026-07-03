@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class DoctorShellScreen extends StatefulWidget {
@@ -16,23 +17,34 @@ class DoctorShellScreen extends StatefulWidget {
 }
 
 class _DoctorShellScreenState extends State<DoctorShellScreen> {
+  late final DoctorThemeController _themeCtrl;
+
   /// Stack of visited tab indices — most recent on top
   final List<int> _tabHistory = [0];
 
+  @override
+  void initState() {
+    super.initState();
+    _themeCtrl = Get.put(DoctorThemeController(), permanent: false);
+  }
+
+  @override
+  void dispose() {
+    Get.delete<DoctorThemeController>();
+    super.dispose();
+  }
+
   void _onTabTapped(int index) {
     if (index != widget.navigationShell.currentIndex) {
-      // Remove if already in history to avoid duplicates, then push on top
       _tabHistory.remove(index);
       _tabHistory.add(index);
     }
-
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,
     );
   }
 
-  /// Returns true if we handled the back press (went to previous tab)
   bool _onBackPressed() {
     if (_tabHistory.length > 1) {
       _tabHistory.removeLast();
@@ -40,38 +52,44 @@ class _DoctorShellScreenState extends State<DoctorShellScreen> {
       widget.navigationShell.goBranch(previousIndex);
       return true;
     }
-    return false; // let system handle it (exit app)
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: _tabHistory.length <= 1,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) {
-          _onBackPressed();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: AppColors.scaffoldBg,
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 90),
-              child: widget.navigationShell,
+    return Obx(() {
+      final isDark = _themeCtrl.isDark;
+      return Theme(
+        data: isDark ? DoctorTheme.dark : DoctorTheme.light,
+        child: PopScope(
+          canPop: _tabHistory.length <= 1,
+          onPopInvokedWithResult: (didPop, result) {
+            if (!didPop) _onBackPressed();
+          },
+          child: Scaffold(
+            backgroundColor: isDark
+                ? DoctorDarkColors.backgroundWarm
+                : DoctorColors.backgroundWarm,
+            body: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 90),
+                  child: widget.navigationShell,
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: CalendarBottomNav(
+                    activeIndex: widget.navigationShell.currentIndex,
+                    onTap: _onTabTapped,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: CalendarBottomNav(
-                activeIndex: widget.navigationShell.currentIndex,
-                onTap: _onTabTapped,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

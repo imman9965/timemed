@@ -8,20 +8,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        // top:false,
-        bottom: true,
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: AppConfig.instance.appName,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.lightTheme,
-          routerConfig: AppRouter.router,
-        ),
+    return
+      SafeArea(
+      top: false,
+      bottom: true,
+      child:
+      MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: AppConfig.instance.appName,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.lightTheme,
+        routerConfig: AppRouter.router,
       ),
     );
   }
-
 }

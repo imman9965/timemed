@@ -25,8 +25,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
-import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart' hide CurvedHeader;
 import 'package:timesmed_project/routes/app_routes.dart';
+import '../theme/doctor_theme.dart';
 
 class MedicalRecord {
   final String name;
@@ -51,13 +52,18 @@ class MedicalRecordsScreenHistory extends StatelessWidget {
     MedicalRecord(name: 'Mr. Vignesh',  date: '4/17/2026', time: '4:31 PM'),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Column(
         children: [
-          CurvedHeader(title: "MEDICAL HISTORY"),
+          CurvedHeader(title: "MEDICAL HISTORY",titleStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
@@ -85,7 +91,7 @@ class _MedicalRecordCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey, width: 0.8),
+        border: Border.all(color: DoctorColors.textMuted, width: 0.8),
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
@@ -101,12 +107,12 @@ class _MedicalRecordCard extends StatelessWidget {
                   width: 42,
                   height: 42,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFE3F2FD),
+                    color: DoctorColors.blue50,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.person,
-                    color: Color(0xFF1976D2),
+                    color: DoctorColors.blue700,
                     size: 26,
                   ),
                 ),
@@ -118,7 +124,7 @@ class _MedicalRecordCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF0D47A1),
+                      color: DoctorColors.blue900,
                     ),
                   ),
                 ),
@@ -143,7 +149,7 @@ class _MedicalRecordCard extends StatelessWidget {
                 const Spacer(),
                 const Icon(
                   Icons.chevron_right,
-                  color: Color(0xFF90CAF9),
+                  color: DoctorColors.blue200,
                   size: 22,
                 ),
               ],
@@ -160,7 +166,7 @@ class _MedicalRecordCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.green
+                color: DoctorColors.success
               ),
               padding: const EdgeInsets.symmetric(vertical: 12),
               alignment: Alignment.center,
@@ -192,14 +198,14 @@ class _MetaChip extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: const Color(0xFF1976D2)),
+        Icon(icon, size: 14, color: DoctorColors.blue700),
         const SizedBox(width: 4),
         Text(
           label,
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1976D2),
+            color: DoctorColors.blue700,
           ),
         ),
       ],

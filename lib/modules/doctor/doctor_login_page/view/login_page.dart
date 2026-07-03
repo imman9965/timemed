@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 import '../controller/login_controller.dart';
 
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             padding: const EdgeInsets.all(28),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(28),
-                              color: AppColors.primary,
+                              color: DoctorColors.primaryBrand,
                               border: Border.all(
                                 color: Colors.white.withOpacity(0.12),
                                 width: 1.2,
@@ -207,63 +207,66 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
                                   // ── INPUT FIELDS ──
                                   if (isOtpLogin) ...[
-                                    _buildInputField(
-
-                                      controller:
-                                          LoginControllerctr.mobileController,
-                                      hint: "Enter Mobile Number",
-                                      icon: Icons.phone_rounded,
-                                      // keyboardType: TextInputType.number,
-                                      maxLength: 10,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return "Please enter mobile number";
-                                        }
-                                        return null;
-                                      },
+                                    Obx(
+                                      () => _buildInputField(
+                                        controller:
+                                            LoginControllerctr.mobileController,
+                                        hint: "Enter Mobile Number",
+                                        icon: Icons.phone_rounded,
+                                        maxLength: 10,
+                                        keyboardType: TextInputType.phone,
+                                        errorText:
+                                            LoginControllerctr.mobileError.value,
+                                        onChanged: (_) => LoginControllerctr
+                                            .mobileError.value = '',
+                                      ),
                                     ),
                                   ] else ...[
-                                    _buildInputField(
-                                      controller:
-                                          LoginControllerctr.emailController,
-                                      hint: "Enter Email",
-                                      icon: Icons.email_rounded,
-                                      validator: (value) {
-                                        if (LoginControllerctr
-                                            .emailController.text.isEmpty) {
-                                          return "Please enter email";
-                                        }
-                                        return null;
-                                      },
+                                    Obx(
+                                      () => _buildInputField(
+                                        controller:
+                                            LoginControllerctr.emailController,
+                                        hint: "Enter Email",
+                                        icon: Icons.email_rounded,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        errorText:
+                                            LoginControllerctr.emailError.value,
+                                        onChanged: (_) => LoginControllerctr
+                                            .emailError.value = '',
+                                      ),
                                     ),
                                     const SizedBox(height: 16),
-                                    _buildInputField(
-                                      controller:
-                                          LoginControllerctr.passwordController,
-                                      hint: "Enter Password",
-                                      icon: Icons.lock_rounded,
-                                      obscureText: obscurePassword,
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            obscurePassword = !obscurePassword;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          obscurePassword
-                                              ? Icons.visibility_off_rounded
-                                              : Icons.visibility_rounded,
-                                          color: Colors.white.withOpacity(0.5),
-                                          size: 20,
+                                    Obx(
+                                      () => _buildInputField(
+                                        controller: LoginControllerctr
+                                            .passwordController,
+                                        hint: "Enter Password (6 digits)",
+                                        icon: Icons.lock_rounded,
+                                        obscureText: obscurePassword,
+                                        keyboardType: TextInputType.number,
+                                        maxLength: 6,
+                                        errorText: LoginControllerctr
+                                            .passwordError.value,
+                                        onChanged: (_) => LoginControllerctr
+                                            .passwordError.value = '',
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              obscurePassword =
+                                                  !obscurePassword;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            obscurePassword
+                                                ? Icons.visibility_off_rounded
+                                                : Icons.visibility_rounded,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            size: 20,
+                                          ),
                                         ),
                                       ),
-                                      validator: (value) {
-                                        if (LoginControllerctr
-                                            .passwordController.text.isEmpty) {
-                                          return "Please enter password";
-                                        }
-                                        return null;
-                                      },
                                     ),
                                   ],
 
@@ -298,20 +301,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   _buildGradientButton(
                                     text: isOtpLogin ? "Send OTP" : "LOGIN",
                                     onPressed: () {
+                                      // Dismiss keyboard so the error text
+                                      // below the field is clearly visible.
+                                      FocusScope.of(context).unfocus();
                                       if (isOtpLogin) {
-                                        if (formKey.currentState!.validate()) {
-                                          LoginControllerctr.sendOtp();
-                                        }
-                                        LoginControllerctr.mobileController
-                                            .clear();
+                                        LoginControllerctr.sendOtp();
                                       } else {
-                                        if (formKey.currentState!.validate()) {
-                                          LoginControllerctr.loginWithEmail();
-                                        }
-                                        LoginControllerctr.emailController
-                                            .clear();
-                                        LoginControllerctr.passwordController
-                                            .clear();
+                                        LoginControllerctr.loginWithEmail();
                                       }
                                     },
                                   ),
@@ -388,8 +384,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
                                   colors: [
-                                    Color(0xFF0473EA),
-                                    Color(0xFF47A6FF),
+                                    DoctorColors.primaryDeep,
+                                    DoctorColors.primaryAccent,
                                   ],
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -431,7 +427,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         color: Colors.white.withOpacity(0.1)),
                   ),
                   child: const CircularProgressIndicator(
-                    color: Color(0xFF47A6FF),
+                    color: DoctorColors.primaryAccent,
                     strokeWidth: 3,
                   ),
                 ),
@@ -451,11 +447,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         onTap: () {
           setState(() {
             isOtpLogin = value;
-            formKey.currentState?.reset();
             LoginControllerctr.mobileController.clear();
             LoginControllerctr.emailController.clear();
             LoginControllerctr.passwordController.clear();
           });
+          LoginControllerctr.clearErrors();
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
@@ -463,7 +459,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           decoration: BoxDecoration(
             gradient: isActive
                 ? const LinearGradient(
-                    colors: [Color(0xFF0473EA), Color(0xFF2196F3)],
+                    colors: [DoctorColors.primaryDeep, DoctorColors.blue500],
                   )
                 : null,
             borderRadius: BorderRadius.circular(12),
@@ -505,58 +501,90 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     int? maxLength,
     bool obscureText = false,
     Widget? suffixIcon,
-    String? Function(String?)? validator,
+    String? errorText,
+    ValueChanged<String>? onChanged,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+    final bool hasError = errorText != null && errorText.isNotEmpty;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
 
-        /// 🎨 UPDATED BACKGROUND COLOR
-        color:Colors.white,
+            /// 🎨 UPDATED BACKGROUND COLOR
+            color: Colors.white,
 
-        /// 🔵 BORDER
-        border: Border.all(
-          color: const Color(0xFF47A6FF).withOpacity(0.2),
+            /// 🔵 BORDER — turns red when there is a validation error
+            border: Border.all(
+              color: hasError
+                  ? Colors.red
+                  : DoctorColors.primaryAccent.withOpacity(0.2),
+              width: hasError ? 1.4 : 1,
+            ),
+
+            /// ✨ SHADOW (optional but nice)
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            maxLength: maxLength,
+            obscureText: obscureText,
+            onChanged: onChanged,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            decoration: InputDecoration(
+              focusedBorder: InputBorder.none,
+              hintText: hint,
+              hintStyle: TextStyle(
+                color: Colors.black.withOpacity(0.5),
+              ),
+              prefixIcon: Icon(
+                icon,
+                color: DoctorColors.primaryAccent,
+              ),
+              suffixIcon: suffixIcon,
+              border: InputBorder.none,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              counterText: '',
+            ),
+          ),
         ),
 
-        /// ✨ SHADOW (optional but nice)
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+        /// ❗ ERROR MESSAGE — rendered OUTSIDE / below the input box
+        if (hasError)
+          Padding(
+            padding: const EdgeInsets.only(top: 6, left: 6),
+            child: Row(
+              children: [
+                const Icon(Icons.error_outline_rounded,
+                    color: Colors.red, size: 15),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    errorText,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        // keyboardType: keyboardType,
-        maxLength: maxLength,
-        obscureText: obscureText,
-        validator: validator,
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
-        decoration: InputDecoration(
-          focusedBorder: InputBorder.none,
-          hintText: hint,
-          hintStyle: TextStyle(
-            color: Colors.black.withOpacity(0.5),
-
-          ),
-          prefixIcon: Icon(
-            icon,
-            color: const Color(0xFF47A6FF),
-          ),
-          suffixIcon: suffixIcon,
-          border: InputBorder.none,
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          counterText: '',
-        ),
-      ),
+      ],
     );
   }
 
@@ -571,14 +599,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.green.shade300,
+          color: DoctorColors.successLight,
           // gradient: const LinearGradient(
-          //   colors: [Color(0xFF0473EA), Color(0xFF2196F3), Color(0xFF47A6FF)],
+          //   colors: [DoctorColors.primaryDeep, DoctorColors.blue500, DoctorColors.primaryAccent],
           // ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0473EA).withOpacity(0.4),
+              color: DoctorColors.primaryDeep.withOpacity(0.4),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -598,6 +626,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       ),
     );
   }
+
 }
 
 // ══════════════════════════════════════════════════════════
@@ -611,11 +640,11 @@ class _FloatingOrbsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final orbs = [
-      _Orb(0.15, 0.2, 120, const Color(0xFF0473EA), 0.12),
-      _Orb(0.8, 0.15, 90, const Color(0xFF2196F3), 0.08),
-      _Orb(0.5, 0.7, 160, const Color(0xFF0473EA), 0.06),
-      _Orb(0.85, 0.75, 100, const Color(0xFF47A6FF), 0.10),
-      _Orb(0.3, 0.85, 80, const Color(0xFF6CBD4F), 0.05),
+      _Orb(0.15, 0.2, 120, DoctorColors.primaryDeep, 0.12),
+      _Orb(0.8, 0.15, 90, DoctorColors.blue500, 0.08),
+      _Orb(0.5, 0.7, 160, DoctorColors.primaryDeep, 0.06),
+      _Orb(0.85, 0.75, 100, DoctorColors.primaryAccent, 0.10),
+      _Orb(0.3, 0.85, 80, DoctorColors.successFresh, 0.05),
     ];
 
     for (final orb in orbs) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 import 'widgets/request_card.dart';
 
@@ -36,7 +36,7 @@ class RequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: DoctorColors.backgroundCool,
       body: Column(
         children: [
           const CurvedHeader(title: 'INSTANT CALL REQUEST'),
@@ -91,7 +91,7 @@ class RequestScreen extends StatelessWidget {
           Icon(
             Icons.phone_disabled_rounded,
             size: 72,
-            color: AppColors.disabled.withOpacity(0.5),
+            color: DoctorColors.avatarGrey.withOpacity(0.5),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -99,7 +99,7 @@ class RequestScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+              color: DoctorColors.textSecondary,
             ),
           ),
           const SizedBox(height: 6),
@@ -107,7 +107,7 @@ class RequestScreen extends StatelessWidget {
             'New call requests will appear here',
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.textHint,
+              color: DoctorColors.textHint,
             ),
           ),
         ],

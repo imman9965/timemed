@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
+import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart' hide CurvedHeader;
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import '../../../routes/app_routes.dart';
 
@@ -8,43 +9,45 @@ class PatientScreenBlue extends StatelessWidget {
   const PatientScreenBlue({super.key});
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.scaffoldBg,
-        body: Column(
-          children: [
-            const CurvedHeader(title: "Patient Register"),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.all(16),
-                children: [
-                  _buildPatientCard(
-                    name: "Vijay G",
-                    age: "36",
-                    phone: "8056567194",
-                    email: "vijayguru173@gmail.com",
-                    inr: "5.0 - 2.0",
-                  ),
-                  _buildPatientCard(
-                    name: "Aravind A",
-                    age: "25",
-                    phone: "9551917102",
-                    email: "aravind@gmail.com",
-                    inr: "2 - 3",
-                  ),
-                  _buildPatientCard(
-                    name: "Aravind A",
-                    age: "25",
-                    phone: "9551917102",
-                    email: "aravind@gmail.com",
-                    inr: "2 - 3",
-                  ),
-                  _buildButton(context)
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: DoctorColors.backgroundWarm,
+      body: Column(
+        children: [
+          const CurvedHeader(title: "PATIENT LIST SCREEN", showBackButton: false, titleStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                _buildPatientCard(
+                  name: "Vijay G",
+                  age: "36",
+                  phone: "8056567194",
+                  email: "vijayguru173@gmail.com",
+                  inr: "5.0 - 2.0",
+                ),
+                _buildPatientCard(
+                  name: "Aravind A",
+                  age: "25",
+                  phone: "9551917102",
+                  email: "aravind@gmail.com",
+                  inr: "2 - 3",
+                ),
+                _buildPatientCard(
+                  name: "Aravind A",
+                  age: "25",
+                  phone: "9551917102",
+                  email: "aravind@gmail.com",
+                  inr: "2 - 3",
+                ),
+                _buildButton(context)
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -65,7 +68,7 @@ class PatientScreenBlue extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.1),
+            color: DoctorColors.primary.withOpacity(0.1),
             blurRadius: 10,
             spreadRadius: 2,
           )
@@ -78,8 +81,8 @@ class PatientScreenBlue extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
-                backgroundColor: Colors.blue.shade100,
-                child: Icon(Icons.person, color: Colors.blue),
+                backgroundColor: DoctorColors.blue100,
+                child: Icon(Icons.person, color: DoctorColors.primary),
               ),
               SizedBox(width: 12),
               Expanded(
@@ -89,16 +92,16 @@ class PatientScreenBlue extends StatelessWidget {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Colors.blue,size: 20,)
+              Icon(Icons.arrow_forward_ios, color: DoctorColors.primary, size: 20,)
             ],
           ),
           SizedBox(height: 10),
           Text("Age: $age, Male",
-              style: TextStyle(color: Colors.grey,fontSize: 12)),
+              style: TextStyle(color: DoctorColors.textMuted,fontSize: 12)),
           SizedBox(height: 10),
           Row(
             children: [
-              Icon(Icons.email, color: Colors.blue),
+              Icon(Icons.email, color: DoctorColors.primary),
               SizedBox(width: 8),
               Text(email,
                 style: TextStyle(
@@ -113,7 +116,7 @@ class PatientScreenBlue extends StatelessWidget {
 
           Row(
             children: [
-              Icon(Icons.phone, color: Colors.blue),
+              Icon(Icons.phone, color: DoctorColors.primary),
               SizedBox(width: 8),
               Text(phone,style: TextStyle(
                 fontSize: 12,
@@ -128,7 +131,7 @@ class PatientScreenBlue extends StatelessWidget {
             "Target INR: $inr",
             style: TextStyle(
               fontSize: 12,
-              color: Colors.green,
+              color: DoctorColors.success,
               fontWeight: FontWeight.bold,
             ),
           )
@@ -142,7 +145,7 @@ class PatientScreenBlue extends StatelessWidget {
       // padding: EdgeInsets.all(8),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: DoctorColors.success,
           minimumSize: Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

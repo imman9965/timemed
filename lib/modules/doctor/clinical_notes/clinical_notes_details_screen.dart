@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:timesmed_project/modules/doctor/widgets/theme.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'dummy.dart';
 
@@ -12,76 +11,78 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const CurvedHeader(title: 'CLINICAL NOTES'),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Vitals row 1
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _vitalCard(
-                            icon: Icons.height,
-                            label: 'Height',
-                            value: '${note.height.toStringAsFixed(0)} cm',
-                          ),
+      backgroundColor: DoctorColors.backgroundWarm,
+      body: Column(
+        children: [
+          const CurvedHeader(title: 'CLINICAL NOTES',titleStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Vitals row 1
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _vitalCard(
+                          icon: Icons.height,
+                          label: 'Height',
+                          value: '${note.height.toStringAsFixed(0)} cm',
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _vitalCard(
-                            icon: Icons.monitor_weight_outlined,
-                            label: 'Weight',
-                            value: '${note.weight.toStringAsFixed(0)} kg',
-                          ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _vitalCard(
+                          icon: Icons.monitor_weight_outlined,
+                          label: 'Weight',
+                          value: '${note.weight.toStringAsFixed(0)} kg',
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    // Vitals row 2
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _vitalCard(
-                            icon: Icons.favorite_outline,
-                            label: 'Pulse',
-                            value: '${note.pulse} /min',
-                          ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  // Vitals row 2
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _vitalCard(
+                          icon: Icons.favorite_outline,
+                          label: 'Pulse',
+                          value: '${note.pulse} /min',
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _vitalCard(
-                            icon: Icons.thermostat_outlined,
-                            label: 'Temperature',
-                            value: '${note.temperature.toStringAsFixed(0)} c',
-                          ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _vitalCard(
+                          icon: Icons.thermostat_outlined,
+                          label: 'Temperature',
+                          value: '${note.temperature.toStringAsFixed(0)} c',
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    _readOnlyField('Disease Complaints', note.diseaseComplaints),
-                    const SizedBox(height: 12),
-                    _readOnlyField('Allergies', note.allergies),
-                    const SizedBox(height: 12),
-                    _readOnlyField('Symptoms', note.symptoms),
-                    const SizedBox(height: 12),
-                    _readOnlyField('Diagnosis', note.diagnosis),
-                    const SizedBox(height: 12),
-                    _readOnlyField('Causes', note.causes),
-                    const SizedBox(height: 12),
-                    _readOnlyField('Investigation', note.investigation),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  _readOnlyField('Disease Complaints', note.diseaseComplaints),
+                  const SizedBox(height: 12),
+                  _readOnlyField('Allergies', note.allergies),
+                  const SizedBox(height: 12),
+                  _readOnlyField('Symptoms', note.symptoms),
+                  const SizedBox(height: 12),
+                  _readOnlyField('Diagnosis', note.diagnosis),
+                  const SizedBox(height: 12),
+                  _readOnlyField('Causes', note.causes),
+                  const SizedBox(height: 12),
+                  _readOnlyField('Investigation', note.investigation),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -94,9 +95,9 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
     return Container(
       padding:  EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors100.cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors100.fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Row(
         children: [
@@ -104,10 +105,10 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: const BoxDecoration(
-              color: AppColors100.iconBlueSoft,
+              color: DoctorColors.primarySoft,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors100.iconBlue, size: 22),
+            child: Icon(icon, color: DoctorColors.primaryBrand, size: 22),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -118,7 +119,7 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
                   label,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: AppColors100.textSecondary,
+                    color: DoctorColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -127,7 +128,7 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors100.textPrimary,
+                    color: DoctorColors.textPrimary,
                   ),
                 ),
               ],
@@ -143,9 +144,9 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors100.cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors100.fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +155,7 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
             label,
             style: const TextStyle(
               fontSize: 15,
-              color: AppColors100.textPrimary,
+              color: DoctorColors.textPrimary,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -164,7 +165,7 @@ class ClinicalNoteDetailScreen extends StatelessWidget {
               value,
               style: const TextStyle(
                 fontSize: 15,
-                color: AppColors100.textSecondary,
+                color: DoctorColors.textSecondary,
               ),
             ),
           ],

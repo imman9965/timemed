@@ -1,94 +1,163 @@
 import 'package:flutter/material.dart';
 
 import 'doctor_colors.dart';
+import 'doctor_typography.dart';
 
 /// Common text styles used throughout the Doctor module.
 ///
-/// Values mirror what the existing screens already render — these are
-/// just centralised so future widgets can share them without being
-/// re-declared in every file.
+/// Built from [DoctorFontSize] and [DoctorFontWeight] tokens so that
+/// individual screens never hard-code raw font values.
 class DoctorTextStyles {
   DoctorTextStyles._();
 
-  // ───────────── Headings (used in headers / app bar titles) ─────────────
+  // ─────────────────────────────────────────────────────────────
+  //  Headings — headers / app-bar titles
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle headerTitle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
+    fontSize: DoctorFontSize.headerTitle,
+    fontWeight: DoctorFontWeight.bold,
     color: Colors.white,
-    letterSpacing: 0.2,
+    letterSpacing: DoctorLetterSpacing.wide,
   );
 
   static const TextStyle headerSubtitle = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w400,
+    fontSize: DoctorFontSize.md,
+    fontWeight: DoctorFontWeight.regular,
     color: Colors.white70,
   );
 
-  // ───────────── Section / Card titles ─────────────
+  // ─────────────────────────────────────────────────────────────
+  //  Login / Auth page
+  // ─────────────────────────────────────────────────────────────
+  static const TextStyle loginTitle = TextStyle(
+    fontSize: DoctorFontSize.loginTitle,
+    fontWeight: DoctorFontWeight.extraBold,
+    color: Colors.white,
+    letterSpacing: DoctorLetterSpacing.wider,
+  );
+
+  static const TextStyle loginSubtitle = TextStyle(
+    fontSize: DoctorFontSize.bodyLarge,
+    fontWeight: DoctorFontWeight.regular,
+    color: Colors.white60,
+  );
+
+  static const TextStyle otpTitle = TextStyle(
+    fontSize: DoctorFontSize.otpTitle,
+    fontWeight: DoctorFontWeight.extraBold,
+    color: Colors.white,
+    letterSpacing: DoctorLetterSpacing.wider,
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  //  Section / Card titles
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle sectionTitle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w700,
+    fontSize: DoctorFontSize.subtitle,
+    fontWeight: DoctorFontWeight.bold,
     color: DoctorColors.textPrimary,
   );
 
   static const TextStyle cardTitle = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w600,
+    fontSize: DoctorFontSize.bodyLarge,
+    fontWeight: DoctorFontWeight.semiBold,
     color: DoctorColors.textPrimary,
   );
 
   static const TextStyle cardSubtitle = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w400,
+    fontSize: DoctorFontSize.md,
+    fontWeight: DoctorFontWeight.regular,
     color: DoctorColors.textSecondary,
   );
 
-  // ───────────── Body ─────────────
+  // ─────────────────────────────────────────────────────────────
+  //  Body
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle bodyLarge = TextStyle(
-    fontSize: 15,
+    fontSize: DoctorFontSize.bodyLarge,
     color: DoctorColors.textPrimary,
   );
 
   static const TextStyle body = TextStyle(
-    fontSize: 14,
+    fontSize: DoctorFontSize.bodyText,
     color: DoctorColors.textPrimary,
   );
 
   static const TextStyle bodySmall = TextStyle(
-    fontSize: 13,
+    fontSize: DoctorFontSize.md,
     color: DoctorColors.textSecondary,
   );
 
-  // ───────────── Labels / Hints ─────────────
+  // ─────────────────────────────────────────────────────────────
+  //  Labels / Hints
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle label = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w500,
+    fontSize: DoctorFontSize.label,
+    fontWeight: DoctorFontWeight.medium,
     color: DoctorColors.textSecondary,
   );
 
   static const TextStyle hint = TextStyle(
-    fontSize: 13,
+    fontSize: DoctorFontSize.hint,
     color: DoctorColors.textHint,
   );
 
-  // ───────────── Buttons ─────────────
+  static const TextStyle caption = TextStyle(
+    fontSize: DoctorFontSize.caption,
+    fontWeight: DoctorFontWeight.semiBold,
+    color: DoctorColors.textPrimary,
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  //  Buttons
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle buttonPrimary = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w600,
+    fontSize: DoctorFontSize.bodyLarge,
+    fontWeight: DoctorFontWeight.semiBold,
     color: Colors.white,
-    letterSpacing: 0.4,
+    letterSpacing: DoctorLetterSpacing.wide,
   );
 
   static const TextStyle buttonSecondary = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
+    fontSize: DoctorFontSize.bodyText,
+    fontWeight: DoctorFontWeight.semiBold,
     color: DoctorColors.primary,
   );
 
-  // ───────────── Status chips ─────────────
+  static const TextStyle loginButton = TextStyle(
+    fontSize: DoctorFontSize.subtitle,
+    fontWeight: DoctorFontWeight.bold,
+    color: Colors.black,
+    letterSpacing: DoctorLetterSpacing.widest,
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  //  Status chips
+  // ─────────────────────────────────────────────────────────────
   static const TextStyle statusChip = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 0.3,
+    fontSize: DoctorFontSize.chip,
+    fontWeight: DoctorFontWeight.semiBold,
+    letterSpacing: DoctorLetterSpacing.wide,
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  //  Medical Records / compact body styles
+  // ─────────────────────────────────────────────────────────────
+  static const TextStyle titleBody = TextStyle(
+    fontSize: 11.8,
+    fontWeight: DoctorFontWeight.bold,
+    color: DoctorColors.textBlack,
+  );
+
+  static const TextStyle titleBodyBlue = TextStyle(
+    fontSize: DoctorFontSize.base,
+    fontWeight: DoctorFontWeight.bold,
+    color: DoctorColors.primaryBrand,
+  );
+
+  static const TextStyle sectionTitleLarge = TextStyle(
+    fontSize: DoctorFontSize.title,
+    fontWeight: DoctorFontWeight.bold,
+    color: DoctorColors.primaryVivid,
   );
 }

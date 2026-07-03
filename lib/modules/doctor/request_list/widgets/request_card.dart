@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import 'action_button.dart';
 
 class RequestCard extends StatelessWidget {
@@ -29,7 +29,7 @@ class RequestCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0473EA).withOpacity(0.06),
+            color:  DoctorColors.primaryDeep.withOpacity(0.06),
             blurRadius: 20,
             offset: const Offset(0, 6),
           ),
@@ -55,7 +55,7 @@ class RequestCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF2DCE89), Color(0xFF26B875)],
+          colors: [DoctorColors.successMint, DoctorColors.successMintDeep],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -121,7 +121,7 @@ class RequestCard extends StatelessWidget {
                 height: 48,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF0473EA), Color(0xFF47A6FF)],
+                    colors: [DoctorColors.primaryDeep, DoctorColors.primaryAccent],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -151,7 +151,7 @@ class RequestCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textDark,
+                        color: DoctorColors.textDark,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -160,7 +160,7 @@ class RequestCard extends StatelessWidget {
                         Icon(
                           Icons.badge_outlined,
                           size: 14,
-                          color: AppColors.textHint,
+                          color: DoctorColors.textHint,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -168,7 +168,7 @@ class RequestCard extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.textSecondary,
+                            color: DoctorColors.textSecondary,
                           ),
                         ),
                       ],
@@ -186,7 +186,7 @@ class RequestCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8F9FB),
+              color: DoctorColors.backgroundMist,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
@@ -194,7 +194,7 @@ class RequestCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 height: 1.5,
-                color: AppColors.textSecondary,
+                color: DoctorColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -209,7 +209,7 @@ class RequestCard extends StatelessWidget {
                 child: ActionButton(
                   label: 'Accept',
                   icon: Icons.check_rounded,
-                  gradient: const [Color(0xFF2DCE89), Color(0xFF26B875)],
+                  gradient: const [DoctorColors.successMint, DoctorColors.successMintDeep],
                   onTap: onAccept,
                 ),
               ),
@@ -218,7 +218,7 @@ class RequestCard extends StatelessWidget {
                 child: ActionButton(
                   label: 'Reject',
                   icon: Icons.close_rounded,
-                  gradient: const [Color(0xFFFF6B6B), Color(0xFFEE5A5A)],
+                  gradient: const [DoctorColors.errorRose, DoctorColors.errorRoseDeep],
                   onTap: onReject,
                 ),
               ),

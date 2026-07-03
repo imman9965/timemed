@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../constants/app_colors.dart';
+import '../../../modules/doctor/theme/doctor_colors.dart';
 import '../../constants/app_dimens.dart';
-import '../../constants/app_text_styles.dart';
 
-
-/// The blue header banner used on every screen. It sits flush to the top
-/// of the scaffold body and curves on its bottom edge.
-///
-/// Supports single- or two-line titles and an optional trailing widget
-/// (e.g. the "On call 02:39" indicator on the video call screen).
 class CurvedHeader extends StatelessWidget {
   const CurvedHeader({
     super.key,
@@ -20,6 +14,9 @@ class CurvedHeader extends StatelessWidget {
     this.titleAlignment = TextAlign.center,
     this.onNotificationTap,
     this.showNotification = false,
+    this.badgeCount = 0,
+    this.showBackButton = true,
+    this.onBackTap,
   });
 
   final String title;
@@ -28,111 +25,143 @@ class CurvedHeader extends StatelessWidget {
   final TextStyle? titleStyle;
   final TextAlign titleAlignment;
 
-  /// 🔔 NEW
   final VoidCallback? onNotificationTap;
   final bool showNotification;
 
+  /// Unread notification count shown on the bell. When 0, no badge is drawn.
+  final int badgeCount;
+
+  final bool showBackButton;
+  final VoidCallback? onBackTap;
+
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: HeaderClipper(),
-      child: Container(
-
-        height: height ?? 80,
-        width: double.infinity,
-        color: AppColors.primaryBlue,
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.screenHPadding,
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            /// 🏷 TITLE
-            Center(
-              child: Text(
-                title,
-                textAlign: titleAlignment,
-                style: titleStyle ?? AppTextStyles.headerTitle,
+    return Container(
+      height: height ?? 100,
+      width: double.infinity,
+      color: DoctorColors.primary,
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenHPadding),
+      child: Stack(
+        children: [
+          if (showBackButton && context.canPop())
+            Positioned(
+              left: 0,
+              top: 41,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: onBackTap ?? () => context.pop(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
+                ),
               ),
             ),
-
-            /// 🔔 NOTIFICATION BUTTON
-            if (showNotification)
-              Positioned(
-                right: AppDimens.l,
-                top: 17,
-                child: Stack(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.notifications_none,
-                          color: Colors.white),
-                      onPressed: onNotificationTap,
+          Positioned(
+            left: 60,
+            right: 60,
+            bottom: 26,
+            child: Text(
+              title,
+              textAlign: titleAlignment,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  titleStyle ??
+                  const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+          if (showNotification)
+            Positioned(
+              right: 0,
+              top: 41,
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      color: Colors.white,
+                      size: 26,
                     ),
+                    onPressed: onNotificationTap,
+                  ),
 
-                    /// 🔴 Badge
+                  if (badgeCount > 0)
                     Positioned(
-                      right: 6,
-                      top: 6,
+                      right: 4,
+                      top: 4,
                       child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
+                        constraints: const BoxConstraints(
+                          minWidth: 18,
+                          minHeight: 18,
+                        ),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
                           color: Colors.red,
-                          shape: BoxShape.circle,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(9),
+                          border: Border.all(color: Colors.white, width: 1.5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            badgeCount > 99 ? '99+' : '$badgeCount',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              height: 1.1,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
+            ),
 
-            /// 👉 EXISTING TRAILING (kept safe)
-            if (trailing != null)
-              Positioned(
-                right: AppDimens.l,
-                bottom: AppDimens.headerBottomRadius + 4,
-                child: trailing!,
-              ),
-          ],
-        ),
+          /// Trailing Widget
+          if (trailing != null)
+            Positioned(
+              right: 0,
+              bottom:26 ,
+              child: trailing!,
+            ),
+        ],
       ),
     );
   }
 }
-/// Carves a generous rounded bottom on the header, matching the mockups.
+
+/// Optional Clipper
 class HeaderClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     const radius = 50.0;
 
-    Path path = Path();
+    final path = Path();
 
-    // Start from bottom left
     path.lineTo(0, radius);
 
-    // Top left curve
-    path.quadraticBezierTo(
-      0,
-      0,
-      radius,
-      0,
-    );
+    path.quadraticBezierTo(0, 0, radius, 0);
 
-    // Top line
     path.lineTo(size.width - radius, 0);
 
-    // Top right curve
-    path.quadraticBezierTo(
-      size.width,
-      0,
-      size.width,
-      radius,
-    );
+    path.quadraticBezierTo(size.width, 0, size.width, radius);
 
-    // Right side down
     path.lineTo(size.width, size.height);
 
-    // Bottom line
     path.lineTo(0, size.height);
 
     path.close();

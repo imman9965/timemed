@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/context_extensions.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 
 class DoctorProfileScreen extends StatelessWidget {
   const DoctorProfileScreen({super.key});
@@ -9,7 +9,7 @@ class DoctorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: DoctorColors.inputBgSoft,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -18,7 +18,7 @@ class DoctorProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.only(
                   top: 30, left: 16, right: 16, bottom: 24),
               decoration: const BoxDecoration(
-                color: AppColors.primary,
+                color: DoctorColors.primaryBrand,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
@@ -102,7 +102,7 @@ class DoctorProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: DoctorColors.warningOrange,
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () {
@@ -150,7 +150,7 @@ class DoctorProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(14),
                 decoration: const BoxDecoration(
-                  color: Color(0xFF1565C0),
+                  color: DoctorColors.blue800,
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
@@ -215,7 +215,7 @@ class DoctorProfileScreen extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1565C0),
+                              backgroundColor: DoctorColors.blue800,
                             ),
                             onPressed: () {
                               if (newController.text != confirmController.text) {
@@ -271,7 +271,7 @@ class DoctorProfileScreen extends StatelessWidget {
             "Dr Mariappan",
             style: TextStyle(
               fontSize: 18,
-              color: Colors.blue,
+              color: DoctorColors.primary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -294,12 +294,12 @@ class DoctorProfileScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon1, color: Colors.orange),
+          Icon(icon1, color: DoctorColors.warningOrange),
           const SizedBox(width: 8),
           Expanded(child: Text(text1)),
-          Container(width: 1, height: 30, color: Colors.grey.shade300),
+          Container(width: 1, height: 30, color: DoctorColors.dividerNeutral),
           const SizedBox(width: 8),
-          Icon(icon2, color: Colors.green),
+          Icon(icon2, color: DoctorColors.success),
           const SizedBox(width: 8),
           Expanded(child: Text(text2)),
         ],

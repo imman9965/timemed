@@ -11,37 +11,36 @@ import '../widgets/vitals.dart';
 // ════════════════════════════════════════════════════════
 
 class AppColors {
-  static const primary     = DoctorColors.primaryVivid;
-  static const scaffoldBg  = DoctorColors.backgroundCream;
-  static const cardBg      = DoctorColors.cardWhite;
-  static const textDark    = DoctorColors.textDark;
-  static const textSecond  = DoctorColors.textSecondary;
-  static const green       = DoctorColors.success;
-  static const paidGreen   = DoctorColors.successDeep;
-  static const unpaidRed   = DoctorColors.error;
-  static const divider     = DoctorColors.dividerNeutral;
+  static const primary = DoctorColors.primaryVivid;
+  static const scaffoldBg = DoctorColors.backgroundCream;
+  static const cardBg = DoctorColors.cardWhite;
+  static const textDark = DoctorColors.textDark;
+  static const textSecond = DoctorColors.textSecondary;
+  static const green = DoctorColors.success;
+  static const paidGreen = DoctorColors.successDeep;
+  static const unpaidRed = DoctorColors.error;
+  static const divider = DoctorColors.dividerNeutral;
   static const unknownGrey = DoctorColors.dividerDark;
 }
 
-
-
 enum PaymentStatus { paid, unpaid }
-enum VitalStatus   { unknown, collected }
+
+enum VitalStatus { unknown, collected }
 
 class AppointmentListItem {
-  final String        hospitalName;
-  final int           confirmedCount;
-  final int           missedCount;
-  final String        visitId;
-  final String        tokenNo;
-  final VitalStatus   vitalStatus;
+  final String hospitalName;
+  final int confirmedCount;
+  final int missedCount;
+  final String visitId;
+  final String tokenNo;
+  final VitalStatus vitalStatus;
   final PaymentStatus paymentStatus;
   // Optional patient info (second card style)
-  final String?       patientName;
-  final String?       patientId;
-  final String?       date;
-  final String?       time;
-  final String?       symptoms;
+  final String? patientName;
+  final String? patientId;
+  final String? date;
+  final String? time;
+  final String? symptoms;
 
   const AppointmentListItem({
     required this.hospitalName,
@@ -65,34 +64,33 @@ class AppointmentListItem {
 
 final List<AppointmentListItem> _appointmentList = [
   const AppointmentListItem(
-    hospitalName:   'Sangamithra Hospital',
+    hospitalName: 'Sangamithra Hospital',
     confirmedCount: 0,
-    missedCount:    0,
-    visitId:        '244477',
-    tokenNo:        '02',
-    vitalStatus:    VitalStatus.unknown,
-    paymentStatus:  PaymentStatus.paid,
+    missedCount: 0,
+    visitId: '244477',
+    tokenNo: '02',
+    vitalStatus: VitalStatus.unknown,
+    paymentStatus: PaymentStatus.paid,
   ),
   const AppointmentListItem(
-    hospitalName:   'Sangamithra Hospital',
+    hospitalName: 'Sangamithra Hospital',
     confirmedCount: 0,
-    missedCount:    0,
-    visitId:        '244477',
-    tokenNo:        '01',
-    vitalStatus:    VitalStatus.unknown,
-    paymentStatus:  PaymentStatus.unpaid,
-    patientName:    'Vignesh',
-    patientId:      '313311',
-    date:           '1/7/2026',
-    time:           '12:20 PM',
-    symptoms:       'No Symtoms',
+    missedCount: 0,
+    visitId: '244477',
+    tokenNo: '01',
+    vitalStatus: VitalStatus.unknown,
+    paymentStatus: PaymentStatus.unpaid,
+    patientName: 'Vignesh',
+    patientId: '313311',
+    date: '1/7/2026',
+    time: '12:20 PM',
+    symptoms: 'No Symtoms',
   ),
 ];
 
 // ════════════════════════════════════════════════════════
 //  REUSABLE — CURVED HEADER
 // ════════════════════════════════════════════════════════
-
 
 // ════════════════════════════════════════════════════════
 //  REUSABLE — BARCODE (accurate rendering)
@@ -102,7 +100,7 @@ class BarcodeWidget extends StatelessWidget {
   final double width;
   final double height;
   const BarcodeWidget({Key? key, this.width = 120, this.height = 42})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +116,54 @@ class _BarcodePainter extends CustomPainter {
   // Bar widths pattern (width, gap, width, gap, ...)
   // Thick = 3px, Medium = 2px, Thin = 1px, gaps = 1-2px
   static const _pattern = [
-    3, 1, 1, 2, 2, 1, 1, 1, 3, 2, 1, 1, 2, 1, 1, 2, 3, 1, 2, 1,
-    1, 2, 3, 1, 1, 1, 2, 2, 1, 1, 3, 1, 2, 1, 1, 3, 1, 2, 2, 1,
-    1, 2, 3, 1, 1, 1, 2, 3,
+    3,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    3,
+    2,
+    1,
+    1,
+    2,
+    1,
+    1,
+    2,
+    3,
+    1,
+    2,
+    1,
+    1,
+    2,
+    3,
+    1,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    3,
+    1,
+    2,
+    1,
+    1,
+    3,
+    1,
+    2,
+    2,
+    1,
+    1,
+    2,
+    3,
+    1,
+    1,
+    1,
+    2,
+    3,
   ];
 
   @override
@@ -165,22 +208,22 @@ class QrCodeWidget extends StatelessWidget {
 class _QrPainter extends CustomPainter {
   // 11×11 pattern — 1 = black, 0 = white
   static const _grid = [
-    [1,1,1,1,1,1,1,0,1,0,1],
-    [1,0,0,0,0,0,1,0,0,1,1],
-    [1,0,1,1,1,0,1,0,1,0,1],
-    [1,0,1,1,1,0,1,0,1,1,0],
-    [1,0,1,1,1,0,1,0,0,0,1],
-    [1,0,0,0,0,0,1,0,1,1,1],
-    [1,1,1,1,1,1,1,0,1,0,1],
-    [0,0,0,0,0,0,0,0,1,1,0],
-    [1,0,1,1,0,1,1,0,1,0,1],
-    [0,1,0,0,1,0,0,1,0,1,1],
-    [1,1,1,0,1,1,1,0,1,0,1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0],
+    [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1],
   ];
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey.shade300;
+    final paint = Paint()..color = DoctorColors.dividerNeutral;
     final cell = size.width / 11;
 
     for (int r = 0; r < 11; r++) {
@@ -204,8 +247,9 @@ class _QrPainter extends CustomPainter {
 // ════════════════════════════════════════════════════════
 
 class PillButton extends StatelessWidget {
-  final IconData     icon;
-  final String       label;
+  final IconData icon;
+  final String? name;
+  final String label;
   final VoidCallback onTap;
 
   const PillButton({
@@ -213,6 +257,7 @@ class PillButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.name,
   }) : super(key: key);
 
   @override
@@ -220,16 +265,16 @@ class PillButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.primary,
+          color: name == "Missed" ? Colors.red :name == "Completed"?Colors.green:AppColors.primary,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: Colors.white, size: 16),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Text(
               label,
               style: const TextStyle(
@@ -253,18 +298,20 @@ class AppointmentCard extends StatelessWidget {
   final AppointmentListItem item;
   final VoidCallback onPrint;
   final VoidCallback onVitalSign;
+  final String? resolvedTitle;
 
   const AppointmentCard({
     Key? key,
     required this.item,
     required this.onPrint,
     required this.onVitalSign,
+    this.resolvedTitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isPaid    = item.paymentStatus == PaymentStatus.paid;
-    final isUnknown = item.vitalStatus   == VitalStatus.unknown;
+    final isPaid = item.paymentStatus == PaymentStatus.paid;
+    final isUnknown = item.vitalStatus == VitalStatus.unknown;
     final hasPatient = item.patientName != null;
 
     return Container(
@@ -292,88 +339,130 @@ class AppointmentCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      const Icon(Icons.calendar_month,
-                          size: 14, color: AppColors.primary),
-                      const SizedBox(width: 5),
-                      Text(item.date!,
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_month,
+                          size: 14,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          item.date!,
                           style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textDark)),
-                    ]),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 4),
-                    Row(children: [
-                      const Icon(Icons.access_time,
-                          size: 14, color: AppColors.primary),
-                      const SizedBox(width: 5),
-                      Text(item.time!,
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.access_time,
+                          size: 14,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          item.time!,
                           style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textDark)),
-                    ]),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 const Spacer(),
-                Row(children: [
-                  Container(
-                    width: 40, height: 40,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFE0E0E0),
-                      shape: BoxShape.circle,
+                Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: DoctorColors.dividerNeutral,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ),
-                    child: const Icon(Icons.person,
-                        color: Colors.white, size: 22),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.patientName!,
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.patientName!,
                           style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15)),
-                      Text('Patient ID: ${item.patientId}',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          'Patient ID: ${item.patientId}',
                           style: const TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textSecond)),
-                    ],
-                  ),
-                ]),
+                            fontSize: 11,
+                            color: AppColors.textSecond,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
             const SizedBox(height: 10),
             Row(
               children: [
-                const Text('Symptoms: ',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textDark)),
-                Text(item.symptoms!,
-                    style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600)),
+                const Text(
+                  'Symptoms: ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
+                  ),
+                ),
+                Text(
+                  item.symptoms!,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 4),
           ],
 
           // ── Hospital name ──────────────────────────────
-          Row(children: [
-            const Text('Hospital Name: ',
+          Row(
+            children: [
+              const Text(
+                'Hospital Name: ',
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textDark)),
-            Text(item.hospitalName,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textDark,
+                ),
+              ),
+              Text(
+                item.hospitalName,
                 style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600)),
-          ]),
+                  fontSize: 13,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
           const Divider(height: 1, color: AppColors.divider),
           const SizedBox(height: 10),
@@ -385,23 +474,34 @@ class AppointmentCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Confirmed',
-                        style: TextStyle(
+                    const Text(
+                      'Confirmed',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Appointments: ',
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.textDark)),
-                    Row(children: [
-                      const Text('Appointments: ',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textDark)),
-                      Text('${item.confirmedCount}',
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        Text(
+                          '${item.confirmedCount}',
                           style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.green,
-                              fontWeight: FontWeight.w700)),
-                    ]),
+                            fontSize: 13,
+                            color: AppColors.green,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -409,23 +509,34 @@ class AppointmentCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Missed',
-                        style: TextStyle(
+                    const Text(
+                      'Missed',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Appointments: ',
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.textDark)),
-                    Row(children: [
-                      const Text('Appointments: ',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textDark)),
-                      Text('${item.missedCount}',
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        Text(
+                          '${item.missedCount}',
                           style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.unpaidRed,
-                              fontWeight: FontWeight.w700)),
-                    ]),
+                            fontSize: 13,
+                            color: AppColors.unpaidRed,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -443,31 +554,47 @@ class AppointmentCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      const Text('Visit ID: ',
+                    Row(
+                      children: [
+                        const Text(
+                          'Visit ID: ',
                           style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textDark)),
-                      Text(item.visitId,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        Text(
+                          item.visitId,
                           style: const TextStyle(
-                              fontSize: 14,
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w700)),
-                    ]),
+                            fontSize: 14,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 4),
-                    Row(children: [
-                      const Text('Token No.  :  ',
+                    Row(
+                      children: [
+                        const Text(
+                          'Token No.  :  ',
                           style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textDark)),
-                      Text(item.tokenNo,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        Text(
+                          item.tokenNo,
                           style: const TextStyle(
-                              fontSize: 14,
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w700)),
-                    ]),
+                            fontSize: 14,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -476,7 +603,9 @@ class AppointmentCard extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 6),
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
@@ -491,11 +620,14 @@ class AppointmentCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text('VITAL COLLECTED',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700)),
+                  const Text(
+                    'VITAL COLLECTED',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -506,19 +638,24 @@ class AppointmentCard extends StatelessWidget {
 
           // ── Patient ID + Barcode + PAID + QR ─────────
           Row(
-
             children: [
-              const Text('Patient ID:',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textDark)),
+              const Text(
+                'Patient ID:',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textDark,
+                ),
+              ),
               const Spacer(),
-              const Text('Bar Code:',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textDark)),
+              const Text(
+                'Bar Code:',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textDark,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -531,17 +668,17 @@ class AppointmentCard extends StatelessWidget {
               // PAID / UNPAID
               Row(
                 children: [
-                  Text(isPaid ? '💰' : '❌',
-                      style: const TextStyle(fontSize: 22)),
+                  Text(
+                    isPaid ? '💰' : '❌',
+                    style: const TextStyle(fontSize: 22),
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     isPaid ? 'PAID' : 'UNPAID',
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 16,
-                      color: isPaid
-                          ? AppColors.paidGreen
-                          : AppColors.unpaidRed,
+                      color: isPaid ? AppColors.paidGreen : AppColors.unpaidRed,
                     ),
                   ),
                 ],
@@ -558,18 +695,40 @@ class AppointmentCard extends StatelessWidget {
 
           // ── Print + Vital Sign ────────────────────────
           Row(
+            spacing: 8,
+
             children: [
+              PillButton(icon: Icons.print, label: 'Print', onTap: onPrint),
               PillButton(
-                icon:  Icons.print,
-                label: 'Print',
-                onTap: onPrint,
-              ),
-              const SizedBox(width: 14),
-              PillButton(
-                icon:  Icons.monitor_heart_outlined,
+                icon: Icons.monitor_heart_outlined,
                 label: 'Vital Sign',
                 onTap: onVitalSign,
               ),
+              if (resolvedTitle == "For Confirmation") ...[
+                PillButton(
+                  icon: Icons.monitor_heart_outlined,
+                  label: 'Completed',
+                  name: "Completed",
+
+                  onTap: onVitalSign,
+                ),
+              ],
+              if (resolvedTitle == "Missed Appointments") ...[
+                PillButton(
+                  name: "Missed",
+                  icon: Icons.monitor_heart_outlined,
+                  label: 'Missed',
+                  onTap: onVitalSign,
+                ),
+              ],
+              if (resolvedTitle == "Cancelled Appointments") ...[
+                PillButton(
+                  name: "Missed",
+                  icon: Icons.monitor_heart_outlined,
+                  label: 'Cancelled',
+                  onTap: onVitalSign,
+                ),
+              ],
             ],
           ),
         ],
@@ -583,32 +742,46 @@ class AppointmentCard extends StatelessWidget {
 // ════════════════════════════════════════════════════════
 
 class ScheduledAppointmentListScreen extends StatelessWidget {
-  const ScheduledAppointmentListScreen({Key? key}) : super(key: key);
+  /// Title shown in the [CurvedHeader]. Usually passed in via
+  /// `context.push(AppRoutes.scheduleAppointment, extra: '<title>')`.
+  final String? title;
+
+  const ScheduledAppointmentListScreen({Key? key, this.title})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Resolve the title from the constructor or fall back to the
+    // GoRouter `extra` value so the screen also works when the route
+    // builder forwards `state.extra` directly.
+    final resolvedTitle =
+        title ??
+        (GoRouterState.of(context).extra is String
+            ? GoRouterState.of(context).extra as String
+            : 'Scheduled Appointment List');
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          const CurvedHeader(title: 'Scheduled Appointment\nList'),
+          CurvedHeader(title: resolvedTitle),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
               child: Column(
                 children: _appointmentList.map((item) {
                   return AppointmentCard(
+                    resolvedTitle: resolvedTitle,
                     item: item,
-                    onPrint: () => ScaffoldMessenger.of(context)
-                        .showSnackBar(const SnackBar(
-                      content: Text('Printing…'),
-                      duration: Duration(seconds: 1),
-                    )),
+                    onPrint: () => ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Printing…'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    ),
                     onVitalSign: () {
                       VitalSignDialog.show(context);
-
-                    }
-
+                    },
                   );
                 }).toList(),
               ),

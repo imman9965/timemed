@@ -41,6 +41,8 @@ import 'package:timesmed_project/routes/app_routes.dart';
 import 'package:timesmed_project/modules/doctor/patient_register/patient_registeration.dart';
 
 import '../modules/doctor/call_page/disconnect_screen.dart';
+import '../modules/doctor/dashboard/schedule_from_dashboard.dart';
+import '../modules/doctor/end_call_screen.dart';
 import '../modules/doctor/medical_history/medical_history.dart';
 import '../modules/doctor/medical_history/medical_history_records.dart';
 import '../modules/doctor/calendar/dashboard.dart';
@@ -68,19 +70,25 @@ import '../modules/patient/patient_main/binding/patient_main_binding.dart';
 import '../modules/doctor/patient_register/patients_list.dart';
 
 // Navigator keys for each shell branch
+final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
 final _calendarNavKey = GlobalKey<NavigatorState>(debugLabel: 'calendar');
 final _waitingListNavKey = GlobalKey<NavigatorState>(debugLabel: 'waitingList');
 final _callLogsNavKey = GlobalKey<NavigatorState>(debugLabel: 'callLogs');
 final _missedCallsNavKey = GlobalKey<NavigatorState>(debugLabel: 'missedCalls');
-final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
-final _prescriptionNavKey = GlobalKey<NavigatorState>(debugLabel: 'prescription');
-final _clinicalNotesNavKey = GlobalKey<NavigatorState>(debugLabel: 'clinicalNotes');
-final _appointmentsNavKey = GlobalKey<NavigatorState>(debugLabel: 'appointments');
-final _notificationsNavKey = GlobalKey<NavigatorState>(debugLabel: 'notifications');
+final _prescriptionNavKey = GlobalKey<NavigatorState>(
+  debugLabel: 'prescription',
+);
+final _clinicalNotesNavKey = GlobalKey<NavigatorState>(
+  debugLabel: 'clinicalNotes',
+);
+final _appointmentsNavKey = GlobalKey<NavigatorState>(
+  debugLabel: 'appointments',
+);
+final _notificationsNavKey = GlobalKey<NavigatorState>(
+  debugLabel: 'notifications',
+);
 
 class AppRouter {
-
-
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.splash,
 
@@ -95,7 +103,6 @@ class AppRouter {
         path: AppRoutes.aiChat,
         builder: (context, state) {
           final userType = state.extra as String? ?? 'patient';
-
           return AIChatPage(userType: userType);
         },
       ),
@@ -106,7 +113,6 @@ class AppRouter {
         builder: (context, state) => SplashView(),
       ),
 
-      /// 🔹 Super Admin
       GoRoute(
         path: AppRoutes.superAdminHome,
         builder: (context, state) => SuperHomeView(),
@@ -310,8 +316,6 @@ class AppRouter {
         builder: (context, state) => LoginPage(),
       ),
 
-
-
       // ConsultationSummaryScreen
 
       /// ================================
@@ -322,53 +326,6 @@ class AppRouter {
           return DoctorShellScreen(navigationShell: navigationShell);
         },
         branches: [
-          // Tab 0: Calendar
-          StatefulShellBranch(
-            navigatorKey: _calendarNavKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.doctorCalendar,
-                builder: (context, state) => const CalendarScreen(),
-              ),
-            ],
-          ),
-
-          // Tab 1: Patient Waiting List
-          StatefulShellBranch(
-            navigatorKey: _waitingListNavKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.doctorWaitingList,
-                builder: (context, state) =>
-                const PatientWaitingListScreen(),
-              ),
-            ],
-          ),
-
-          // Tab 2: Call Logs
-          StatefulShellBranch(
-            navigatorKey: _callLogsNavKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.doctorCallLogs,
-                builder: (context, state) => const CallLogsScreen(),
-              ),
-            ],
-          ),
-
-          // Tab 3: Missed Calls
-          StatefulShellBranch(
-            navigatorKey: _missedCallsNavKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.doctorMissedCalls,
-                builder: (context, state) =>
-                const MissedCallPatientListScreen(),
-              ),
-            ],
-          ),
-
-          // Tab 4: Dashboard
           StatefulShellBranch(
             navigatorKey: _dashboardNavKey,
             routes: [
@@ -378,8 +335,47 @@ class AppRouter {
               ),
             ],
           ),
-
-          // Tab 5: Prescription
+          StatefulShellBranch(
+            navigatorKey: _calendarNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorCalendar,
+                builder: (context, state) => const CalendarScreen(),
+              ),
+            ],
+          ),
+          // Tab 1: Patient Waiting List
+          StatefulShellBranch(
+            navigatorKey: _waitingListNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorWaitingList,
+                builder: (context, state) => const PatientWaitingListScreen(),
+              ),
+            ],
+          ),
+          // Tab 2: Call Logs
+          StatefulShellBranch(
+            navigatorKey: _callLogsNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorCallLogs,
+                builder: (context, state) => CallLogsScreen(
+                         ),
+              ),
+            ],
+          ),
+          // Tab 3: Missed Calls
+          StatefulShellBranch(
+            navigatorKey: _missedCallsNavKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.doctorMissedCalls,
+                builder: (context, state) =>
+                    const MissedCallPatientListScreen(),
+              ),
+            ],
+          ),
           StatefulShellBranch(
             navigatorKey: _prescriptionNavKey,
             routes: [
@@ -389,50 +385,21 @@ class AppRouter {
               ),
             ],
           ),
-          //
-          // // Tab 6: Clinical Notes
-          // StatefulShellBranch(
-          //   navigatorKey: _clinicalNotesNavKey,
-          //   routes: [
-          //     GoRoute(
-          //       path: AppRoutes.doctorClinicalNotes,
-          //       builder: (context, state) => const ClinicalNotesListScreen(),
-          //     ),
-          //   ],
-          // ),
-          //
-          // // Tab 7: Appointments
-          // StatefulShellBranch(
-          //   navigatorKey: _appointmentsNavKey,
-          //   routes: [
-          //     GoRoute(
-          //       path: AppRoutes.doctorAppointments,
-          //       builder: (context, state) => ScheduledAppointmentListScreen(),
-          //     ),
-          //   ],
-          // ),
-          //
-          // // Tab 8: Notifications
-          // StatefulShellBranch(
-          //   navigatorKey: _notificationsNavKey,
-          //   routes: [
-          //     GoRoute(
-          //       path: AppRoutes.doctorNotifications,
-          //       builder: (context, state) => const DoctorNotificationsScreen(),
-          //     ),
-          //   ],
-          // ),
-
         ],
       ),
 
       /// ================================
       /// 🔹 DOCTOR — Sub-pages (pushed on top, no bottom nav)
       /// ================================
-
       GoRoute(
         path: AppRoutes.doctorNotifications,
         builder: (context, state) => const DoctorNotificationsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.callLogsScreenDash,
+        builder: (context, state) => CallLogsScreenDash(
+            title: state.extra as String?
+        ),
       ),
 
       GoRoute(
@@ -467,18 +434,21 @@ class AppRouter {
         builder: (context, state) => MedicalRecordsScreen(),
       ),
 
-
-
+      GoRoute(
+        path: AppRoutes.consultationSummaryScreen,
+        name: AppRoutes.consultationSummaryScreen,
+        builder: (context, state) => UpdateCallStatusScreen(),
+      ),
       GoRoute(
         path: AppRoutes.videoPage,
         name: AppRoutes.videoPage,
         builder: (context, state) => VideoCallScreen(),
       ),
-     GoRoute(
+      GoRoute(
         path: AppRoutes.appointmentDashboard,
         name: AppRoutes.appointmentDashboard,
         builder: (context, state) => AppointmentDashboard(),
-        ),
+      ),
       GoRoute(
         path: AppRoutes.requestScreen,
         name: AppRoutes.requestScreen,
@@ -524,12 +494,6 @@ class AppRouter {
         builder: (context, state) => ClinicalNotesListScreen(),
       ),
 
-      // GoRoute(
-      //   path: AppRoutes.medicalRecordHistoryDetails,
-      //   name: AppRoutes.medicalRecordHistoryDetails,
-      //   builder: (context, state) => medicalRecordHistoryDetails(),
-      // ),
-
       GoRoute(
         path: AppRoutes.addPatientScreen,
         name: AppRoutes.addPatientScreen,
@@ -559,28 +523,6 @@ class AppRouter {
         builder: (context, state) => ScheduledAppointmentListScreen(),
       ),
 
-      GoRoute(
-        path: AppRoutes.consultationSummaryScreen,
-        name: AppRoutes.consultationSummaryScreen,
-        builder: (context, state) => ConsultationSummaryScreen(),
-      ),
-      // GoRoute(
-      //   path: AppRoutes.hospitalList,
-      //   name: AppRoutes.hospitalList,
-      //   builder: (context, state) => HospitalListScreen(),
-      // ),
-      //
-      // GoRoute(
-      //   path: AppRoutes.medicalRecordHistoryDetails,
-      //   name: AppRoutes.medicalRecordHistoryDetails,
-      //   builder: (context, state) => medicalRecordHistoryDetails(),
-      // ),
-
-      // GoRoute(
-      //   path: AppRoutes.patientListScreen,
-      //   name: AppRoutes.patientListScreen,
-      //   builder: (context, state) => PatientScreenBlue(),
-      // ),
-  ],
+    ],
   );
 }

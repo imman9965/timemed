@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../theme/doctor_colors.dart';
+import '../theme/doctor_theme.dart';
 import 'dropdown&.dart';
 
 class LabTestRequestScreen extends StatefulWidget {
@@ -13,16 +12,6 @@ class LabTestRequestScreen extends StatefulWidget {
 }
 
 class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
-  // ---------- Theme (forwarded to DoctorColors) ----------
-  static const Color _primaryDark  = DoctorColors.primaryDark;
-  static const Color _primary      = DoctorColors.primary;
-  static const Color _primaryLight = DoctorColors.primaryLight;
-  static const Color _background   = DoctorColors.background;
-  static const Color _cardWhite    = Colors.white;
-  static const Color _fieldBorder  = DoctorColors.fieldBorder;
-  static const Color _hintGrey     = DoctorColors.textSecondary;
-  static const Color _textPrimary  = DoctorColors.textPrimary;
-
   // ---------- Mock data ----------
   final List<String> _departments = const [
     'Hematology',
@@ -140,45 +129,49 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.scaffoldBg,
-      body: SafeArea(
-        child: Column(
-          children: [
-            CurvedHeader(
-              title: "LAB TEST REQUEST",
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDepartmentDropdown(),
-                    const SizedBox(height: 12),
-                    _buildTestsField(),
-                    const SizedBox(height: 16),
-                    _buildAddTestPanel(),
-                    const SizedBox(height: 16),
-                    _buildInstructionsField(),
-                    const SizedBox(height: 16),
-                    _buildSendRequestButton(),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Lab Test Records',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: _textPrimary,
-                      ),
+        backgroundColor: DoctorColors.backgroundWarm,
+      body: Column(
+        children: [
+          CurvedHeader(
+            title: "LAB TEST REQUEST",
+              titleStyle: TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )
+
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDepartmentDropdown(),
+                  const SizedBox(height: 12),
+                  _buildTestsField(),
+                  const SizedBox(height: 16),
+                  _buildAddTestPanel(),
+                  const SizedBox(height: 16),
+                  _buildInstructionsField(),
+                  const SizedBox(height: 16),
+                  _buildSendRequestButton(),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Lab Test Records',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: DoctorColors.textPrimary,
                     ),
-                    const SizedBox(height: 24),
-                    _buildEmptyRecords(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildEmptyRecords(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -190,7 +183,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   //     decoration:  BoxDecoration(
   //       color: AppColors.primary,
   //       // gradient: LinearGradient(
-  //       //   colors: [_primaryDark, _primaryLight],
+  //       //   colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
   //       //   begin: Alignment.topLeft,
   //       //   end: Alignment.bottomRight,
   //       // ),
@@ -229,9 +222,9 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   Widget _buildDepartmentDropdown() {
     return Container(
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14),
       child: DropdownButtonHideUnderline(
@@ -240,11 +233,11 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
           value: _selectedDepartment,
           hint: const Text(
             'Department',
-            style: TextStyle(fontSize: 16, color: _hintGrey),
+            style: TextStyle(fontSize: 16, color: DoctorColors.textSecondary),
           ),
-          icon: const Icon(Icons.keyboard_arrow_down, color: _hintGrey),
-          style: const TextStyle(fontSize: 16, color: _textPrimary),
-          dropdownColor: _cardWhite,
+          icon: const Icon(Icons.keyboard_arrow_down, color: DoctorColors.textSecondary),
+          style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
+          dropdownColor: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
           items: _departments
               .map((d) => DropdownMenuItem(
@@ -272,9 +265,9 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: _fieldBorder),
+          border: Border.all(color: DoctorColors.fieldBorder),
         ),
         child: Row(
           children: [
@@ -282,7 +275,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
               child: _selectedTests.isEmpty
                   ? const Text(
                 'Please select Department first',
-                style: TextStyle(fontSize: 16, color: _hintGrey),
+                style: TextStyle(fontSize: 16, color: DoctorColors.textSecondary),
               )
                   : Wrap(
                 spacing: 6,
@@ -294,21 +287,21 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
                     style: const TextStyle(fontSize: 12),
                   ),
                   backgroundColor:
-                  _primary.withOpacity(0.1),
+                  DoctorColors.primary.withOpacity(0.1),
                   side: BorderSide(
-                      color: _primary.withOpacity(0.3)),
+                      color: DoctorColors.primary.withOpacity(0.3)),
                   materialTapTargetSize:
                   MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                   onDeleted: () {
                     setState(() => _selectedTests.remove(t));
                   },
-                  deleteIconColor: _primary,
+                  deleteIconColor: DoctorColors.primary,
                 ))
                     .toList(),
               ),
             ),
-            const Icon(Icons.keyboard_arrow_down, color: _hintGrey),
+            const Icon(Icons.keyboard_arrow_down, color: DoctorColors.textSecondary),
           ],
         ),
       ),
@@ -321,9 +314,9 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
       decoration: BoxDecoration(
-        color: _cardWhite,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _fieldBorder),
+        border: Border.all(color: DoctorColors.fieldBorder),
       ),
       child: Column(
         children: [
@@ -332,7 +325,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
             text: const TextSpan(
               style: TextStyle(
                 fontSize: 15,
-                color: _hintGrey,
+                color: DoctorColors.textSecondary,
                 fontWeight: FontWeight.w500,
               ),
               children: [
@@ -340,7 +333,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
                 TextSpan(
                   text: 'Add New Test',
                   style: TextStyle(
-                    color: _primary,
+                    color: DoctorColors.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -355,7 +348,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
             child: ElevatedButton(
               onPressed: _openTestSelector,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: DoctorColors.success,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -382,25 +375,25 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
       controller: _instructionsController,
       maxLines: 4,
       minLines: 4,
-      style: const TextStyle(fontSize: 16, color: _textPrimary),
+      style: const TextStyle(fontSize: 16, color: DoctorColors.textPrimary),
       decoration: InputDecoration(
         hintText: 'Instructions',
-        hintStyle: const TextStyle(fontSize: 16, color: _hintGrey),
+        hintStyle: const TextStyle(fontSize: 16, color: DoctorColors.textSecondary),
         filled: true,
-        fillColor: _cardWhite,
+        fillColor: DoctorColors.cardWhite,
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.fieldBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _fieldBorder),
+          borderSide: const BorderSide(color: DoctorColors.fieldBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _primary, width: 1.5),
+          borderSide: const BorderSide(color: DoctorColors.primary, width: 1.5),
         ),
       ),
     );
@@ -414,12 +407,12 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
       child: ElevatedButton(
         onPressed: _sendRequest,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: DoctorColors.success,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 2,
-          shadowColor: _primary.withOpacity(0.3),
+          shadowColor: DoctorColors.primary.withOpacity(0.3),
         ),
         child: const Text(
           'Send Request',
@@ -442,16 +435,16 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: _primary.withOpacity(0.08),
+              color: DoctorColors.primary.withOpacity(0.08),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.inbox_outlined,
-                color: _primary, size: 32),
+                color: DoctorColors.primary, size: 32),
           ),
           const SizedBox(height: 8),
           const Text(
             'No records yet',
-            style: TextStyle(color: _hintGrey, fontSize: 14),
+            style: TextStyle(color: DoctorColors.textSecondary, fontSize: 14),
           ),
         ],
       ),
