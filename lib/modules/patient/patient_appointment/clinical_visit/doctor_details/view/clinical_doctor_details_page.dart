@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class ClinicalDoctorDetailsPage extends StatefulWidget {
@@ -19,115 +20,17 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Doctor Details")),
+      backgroundColor: AppColors.primaryBackground,
+      appBar: CommonAppBar(title: "Doctor Details"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
         child: Column(
           children: [
-            /// 👨‍⚕️ DOCTOR HEADER
-            Container(
-              padding: const EdgeInsets.all(16),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 35,
-                    backgroundImage: NetworkImage(
-                      "https://i.pravatar.cc/150?img=3",
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Dr. Arun",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text("MBBS"),
-                      SizedBox(height: 4),
-                      Text(
-                        "Child Specialist • 3+ Years",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            /// 🔹 TABS
-            Container(
-              height: 45,
-              color: Colors.white,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: tabs.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = selectedTab == index;
-
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() => selectedTab = index);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      margin: const EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: isSelected
-                                ? Colors.orange
-                                : Colors.transparent,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        tabs[index],
-                        style: TextStyle(
-                          color: isSelected ? Colors.orange : Colors.grey,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const Divider(height: 1),
-
-            /// 🔥 TAB CONTENT
+            _premiumHeader(),
+            _premiumTabs(),
+            const SizedBox(height: 10),
             Expanded(child: _buildTabContent()),
-
-            /// 🔥 BOOK BUTTON
-            Container(
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.button,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  onPressed: () {
-                    context.push(AppRoutes.clinicalSchedule);
-                  },
-                  child: const Text(
-                    "Book Appointment",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ),
-            ),
+            _bottomCTA(context),
           ],
         ),
       ),
@@ -154,64 +57,269 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
     }
   }
 
-  /// 🔹 INFO TAB UI
-  Widget _infoTab() {
-    return SingleChildScrollView(
+  /// Header
+  Widget _premiumHeader() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
         children: [
-          const Text(
-            "Dr. Arun is a board-certified specialist with 3+ years of experience providing quality healthcare.",
-            style: TextStyle(color: Colors.grey),
+          /// IMAGE
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.primary.withOpacity(0.3),
+                width: 2,
+              ),
+            ),
+            child: const CircleAvatar(
+              radius: 32,
+              backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+            ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(width: 14),
 
-          const Text(
-            "Mogappair-East - Chennai",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          /// DETAILS
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Dr. Arun",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+
+                /// DEGREE CHIP
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Text("MBBS", style: TextStyle(fontSize: 11)),
+                ),
+
+                const SizedBox(height: 6),
+
+                Text(
+                  "Child Specialist • 3+ Years",
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                ),
+              ],
+            ),
           ),
 
-          const SizedBox(height: 6),
-
-          const Text(
-            "No: 82, Justice Rathnavel Pandian Road, Golden George Nagar, Chennai - 600107",
-            style: TextStyle(color: Colors.grey),
+          /// STATUS BADGE
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Text(
+              "Available",
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.green,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-
-          const SizedBox(height: 16),
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: () {},
-            child: const Text("View Map"),
-          ),
-
-          const SizedBox(height: 20),
-
-          /// TIMINGS
-          _timingCard("Mon - Sat", "5:00 PM - 9:00 PM"),
-          const SizedBox(height: 10),
-          _timingCard("Sun", "8:00 PM - 9:00 PM"),
         ],
       ),
     );
   }
 
-  Widget _timingCard(String day, String time) {
+  /// 🔥 TAB CONTENT SWITCH
+  Widget _premiumTabs() {
+    return SizedBox(
+      height: 42,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: tabs.length,
+        itemBuilder: (context, index) {
+          final isSelected = selectedTab == index;
+
+          return GestureDetector(
+            onTap: () => setState(() => selectedTab = index),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              margin: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.primary : Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : Colors.grey,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                tabs[index],
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? AppColors.white : Colors.grey.shade600,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// 🔹 INFO TAB UI
+  Widget _infoTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        children: [
+          /// ABOUT CARD
+          _sectionCard(
+            title: "About Doctor",
+            child: Text(
+              "Dr. Arun is a board-certified specialist with 3+ years of experience providing quality healthcare.",
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ),
+
+          /// LOCATION CARD
+          _sectionCard(
+            title: "Clinic Location",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Mogappair-East - Chennai",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "No: 82, Justice Rathnavel Pandian Road, Golden George Nagar",
+                  style: TextStyle(color: Colors.grey.shade600),
+                ),
+                const SizedBox(height: 10),
+
+                OutlinedButton(onPressed: () {}, child: const Text("View Map")),
+              ],
+            ),
+          ),
+
+          /// TIMINGS CARD
+          _sectionCard(
+            title: "Available Timings",
+            child: Column(
+              children: [
+                _timingRow("Mon - Sat", "5:00 PM - 9:00 PM"),
+                const SizedBox(height: 8),
+                _timingRow("Sun", "8:00 PM - 9:00 PM"),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionCard({required String title, required Widget child}) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(10),
+
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: AppColors.primary,
+            ),
+          ),
+          const SizedBox(height: 10),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _timingRow(String day, String time) {
+    return Row(
+      children: [
+        const Icon(Icons.schedule, size: 16, color: Colors.orange),
+        const SizedBox(width: 8),
+        Text("$day • $time", style: const TextStyle(fontSize: 13)),
+      ],
+    );
+  }
+
+  Widget _bottomCTA(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 10),
+        ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.calendar_today, color: Colors.orange),
-          const SizedBox(width: 10),
-          Text("$day - $time"),
+          /// PRICE
+          Expanded(
+            child: Text(
+              "Consultation Fee\n₹550",
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          /// BUTTON
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+              onPressed: () {
+                context.push(AppRoutes.clinicalSchedule);
+              },
+              child: const Text("Book Appointment"),
+            ),
+          ),
         ],
       ),
     );

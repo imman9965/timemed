@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/filter/controller/video_filter_controller.dart';
 import 'package:timesmed_project/modules/patient/patient_appointment/video_consultation/waiting/view/video_waiting_page.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
+import 'package:timesmed_project/core/constants/app_colors.dart';
+import '../../../../../doctor/schedule_appointment/schedule_appointment.dart'
+    hide AppColors;
 
 class VideoConsultationFilterPage extends StatefulWidget {
   VideoConsultationFilterPage({super.key});
@@ -23,7 +27,7 @@ class _VideoConsultationFilterPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Video Consultation")),
+      appBar: CommonAppBar(title: "Video Consultation"),
       body: Column(
         children: [
           Expanded(
@@ -43,7 +47,7 @@ class _VideoConsultationFilterPageState
                     ),
                     const SizedBox(height: 10),
 
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "doctor",
                       title: "Doctor",
                       value: controller.selectedDoctor,
@@ -69,7 +73,7 @@ class _VideoConsultationFilterPageState
                     ),
                     const SizedBox(height: 10),
 
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "speciality",
                       title: "Speciality",
                       value: controller.selectedSpeciality,
@@ -78,7 +82,7 @@ class _VideoConsultationFilterPageState
                       icon: Icons.medical_services,
                     ),
 
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "symptoms",
                       title: "Symptoms",
                       value: controller.selectedSymptoms,
@@ -87,7 +91,7 @@ class _VideoConsultationFilterPageState
                       icon: Icons.sick,
                     ),
 
-                    _buildExpandableTile(
+                    _buildModernDropdown(
                       keyName: "language",
                       title: "Language",
                       value: controller.selectedLanguage,
@@ -121,12 +125,17 @@ class _VideoConsultationFilterPageState
           ),
 
           /// Bottom Buttons
-          Container(
-            padding: const EdgeInsets.all(16),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
                       if (controller.isDoctorSelected) {
                         WaitingDialog.show(
@@ -152,7 +161,13 @@ class _VideoConsultationFilterPageState
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: OutlinedButton(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
                       context.push(AppRoutes.videoSchedule);
                     },
@@ -167,8 +182,8 @@ class _VideoConsultationFilterPageState
     );
   }
 
-  /// 🔹 Reusable Tile
-  Widget _buildExpandableTile({
+  /// 🔹 REUSABLE TILE (Same Pattern)
+  Widget _buildModernDropdown({
     required String keyName,
     required String title,
     required RxString value,
@@ -177,43 +192,52 @@ class _VideoConsultationFilterPageState
     required IconData icon,
   }) {
     return Obx(() {
-      bool isExpanded = expandedSection == keyName;
+      final isOpen = expandedSection == keyName;
 
-      List<String> filteredList = list
+      final filteredList = list
           .where(
-            (item) => item.toLowerCase().contains(
-              searchController.text.toLowerCase(),
-            ),
+            (e) =>
+                e.toLowerCase().contains(searchController.text.toLowerCase()),
           )
           .toList();
 
-      return Column(
-        children: [
-          /// 🔹 Header Tile
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                if (isExpanded) {
-                  expandedSection = null;
-                  searchController.clear();
-                } else {
-                  expandedSection = keyName;
-                  searchController.clear();
-                }
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.grey.shade300),
-                color: Colors.white,
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isOpen ? Color(0xff0673de) : AppColors.black,
+            width: 1.2,
+          ),
+          color: Colors.white,
+          boxShadow: [
+            if (isOpen)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
+          ],
+        ),
+
+        child: Column(
+          children: [
+            /// 🔹 HEADER
+            InkWell(
+              onTap: () {
+                setState(() {
+                  expandedSection = isOpen ? null : keyName;
+                  searchController.clear();
+                });
+              },
               child: Row(
                 children: [
-                  Icon(icon, color: const Color(0xff0673de)),
-                  const SizedBox(width: 12),
+                  Icon(icon, color: const Color(0xff0673de), size: 20),
+                  const SizedBox(width: 10),
+
+                  /// TEXT
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,74 +245,77 @@ class _VideoConsultationFilterPageState
                         Text(
                           title,
                           style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
+                            fontSize: 14,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           value.value.isEmpty ? "Select $title" : value.value,
-                          style: const TextStyle(
-                            fontSize: 15,
+                          style: TextStyle(
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
+                            color: value.value.isEmpty
+                                ? Colors.grey
+                                : Colors.black,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(
-                    isExpanded
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
+
+                  AnimatedRotation(
+                    turns: isOpen ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],
               ),
             ),
-          ),
 
-          /// 🔥 Expandable Section
-          if (isExpanded)
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: Colors.grey.shade50,
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
+            /// 🔥 DROPDOWN CONTENT
+            AnimatedCrossFade(
+              duration: const Duration(milliseconds: 250),
+              crossFadeState: isOpen
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: const SizedBox(),
+              secondChild: Column(
                 children: [
-                  /// 🔍 Search
-                  TextField(
-                    controller: searchController,
-                    onChanged: (_) => setState(() {}),
-                    decoration: InputDecoration(
-                      hintText: "Search $title",
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  const SizedBox(height: 10),
+
+                  /// 🔍 SEARCH
+                  Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade100,
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (_) => setState(() {}),
+                      decoration: const InputDecoration(
+                        hintText: "Search...",
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.search, size: 18),
                       ),
                     ),
                   ),
 
                   const SizedBox(height: 10),
 
-                  /// 📋 List
-                  SizedBox(
-                    height: 150,
+                  /// 📋 LIST
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 180),
                     child: ListView.builder(
+                      shrinkWrap: true,
                       itemCount: filteredList.length,
                       itemBuilder: (context, index) {
                         final item = filteredList[index];
+                        final selected = value.value == item;
 
-                        return ListTile(
-                          title: Text(item),
-                          trailing: value.value == item
-                              ? const Icon(
-                                  Icons.check,
-                                  color: Color(0xff0673de),
-                                )
-                              : null,
+                        return InkWell(
                           onTap: () {
                             onSelect(item);
                             setState(() {
@@ -296,6 +323,30 @@ class _VideoConsultationFilterPageState
                               searchController.clear();
                             });
                           },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 8,
+                            ),
+                            margin: const EdgeInsets.only(bottom: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: selected
+                                  ? const Color(0xff0673de).withOpacity(0.1)
+                                  : Colors.transparent,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(child: Text(item)),
+                                if (selected)
+                                  const Icon(
+                                    Icons.check,
+                                    color: Color(0xff0673de),
+                                    size: 18,
+                                  ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -303,7 +354,8 @@ class _VideoConsultationFilterPageState
                 ],
               ),
             ),
-        ],
+          ],
+        ),
       );
     });
   }
@@ -314,7 +366,7 @@ class _VideoConsultationFilterPageState
         Expanded(child: Divider(color: Colors.grey.shade300)),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text("OR", style: TextStyle(color: Colors.grey)),
+          child: Text("OR", style: TextStyle(color: AppColors.primary)),
         ),
         Expanded(child: Divider(color: Colors.grey.shade300)),
       ],

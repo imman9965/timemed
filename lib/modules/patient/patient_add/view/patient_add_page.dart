@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
-import 'package:timesmed_project/core/widgets/common_elevate_button.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 
 class PatientAddPage extends StatefulWidget {
@@ -354,100 +353,230 @@ class _PatientAddPageState extends State<PatientAddPage> {
   void _openRelationshipDialog() {
     String tempSelection = selectedRelationship;
 
-    showDialog(
+    final relationships = [
+      {"title": "Son", "icon": Icons.boy},
+      {"title": "Daughter", "icon": Icons.girl},
+      {"title": "Wife", "icon": Icons.favorite},
+      {"title": "Brother", "icon": Icons.man},
+      {"title": "Sister", "icon": Icons.woman},
+      {"title": "Friend", "icon": Icons.people},
+    ];
+
+    showModalBottomSheet(
       context: context,
-      builder: (context) {
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) {
         return StatefulBuilder(
-          builder: (context, setStateDialog) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+          builder: (context, setDialogState) {
+            return Container(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  /// HEADER
+                  /// Handle
                   Container(
-                    width: double.infinity,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50),
-                      ),
+                    height: 5,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "SELECT RELATIONSHIP",
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    "Select Relationship",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  ...relationships.map((item) {
+                    final title = item["title"] as String;
+                    final icon = item["icon"] as IconData;
+
+                    final isSelected = tempSelection == title;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setDialogState(() {
+                          tempSelection = title;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppColors.primary.withOpacity(.08)
+                              : Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primary
+                                : Colors.grey.shade200,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 12,
+                              color: Colors.black.withOpacity(.03),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.primary.withOpacity(.12)
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: Icon(
+                                icon,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : Colors.grey,
+                              ),
+                            ),
+
+                            const SizedBox(width: 14),
+
+                            Expanded(
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              height: 24,
+                              width: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : Colors.grey,
+                                ),
+                              ),
+                              child: isSelected
+                                  ? const Icon(
+                                      Icons.check,
+                                      size: 15,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+
+                  const SizedBox(height: 12),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedRelationship = tempSelection;
+                        });
+
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                      child: const Text(
+                        "Confirm",
                         style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
 
-                  /// OPTIONS (IMPORTANT FIX HERE)
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      children: [
-                        _buildRadio("Son", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                        _buildRadio("Daughter", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                        _buildRadio("Wife", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                        _buildRadio("Brother", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                        _buildRadio("Sister", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                        _buildRadio("Friend", tempSelection, setStateDialog, (
-                          val,
-                        ) {
-                          tempSelection = val;
-                        }),
-                      ],
-                    ),
-                  ),
-
-                  /// BUTTON
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: CommonButton(
-                      borderRadius: 25,
-                      width: 180,
-                      title: "Submit",
-                      onPressed: () {
-                        setState(() {
-                          selectedRelationship = tempSelection;
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
+                  const SizedBox(height: 12),
                 ],
               ),
             );
           },
         );
       },
+    );
+  }
+
+  Widget _relationshipField() {
+    return GestureDetector(
+      onTap: _openRelationshipDialog,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(blurRadius: 18, color: Colors.black.withOpacity(.04)),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(.08),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.family_restroom,
+                color: AppColors.primary,
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            Expanded(
+              child: Text(
+                selectedRelationship.isEmpty
+                    ? "Choose Relationship"
+                    : selectedRelationship,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: selectedRelationship.isEmpty
+                      ? Colors.grey
+                      : Colors.black87,
+                ),
+              ),
+            ),
+
+            const Icon(Icons.keyboard_arrow_down),
+          ],
+        ),
+      ),
     );
   }
 

@@ -9,7 +9,7 @@ void main() async {
   AppConfig(
     baseUrl: "https://yourapi.com/api",
     appName: "TimesMed Health Care",
-    flavor: AppFlavor.superApp,
+    flavor: AppFlavor.patient,
   );
   await DoctorProfileStore.load();
   await LocalNotificationService.instance.init();

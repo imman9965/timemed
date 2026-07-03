@@ -7,6 +7,7 @@ class AppColors {
 
   /// 🌟 Primary Theme Colors
   static const Color primary = Color(0xff0673de);
+  static const Color secondaryColor= Color(0xff61c24a);
 
   static const Color primaryBackground = Color(0xffE6F1FD);
   static const Color secondary = Color(0xff2f6f7e);
@@ -22,7 +23,7 @@ class AppColors {
   static const Color success = Color(0xff2e7d32);
 
   /// ⚪ Background Colors
-  static const Color background = Color(0xfff5f7fa);
+  static const Color background = Color(0xffFFFCF5);
   static const Color scaffold = Color(0xffffffff);
   static const Color card = Color(0xfffdfdfd);
   static const Color backgroundLight = Color(0xff9e9e9e);

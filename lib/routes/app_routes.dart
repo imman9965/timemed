@@ -37,6 +37,8 @@ abstract class AppRoutes {
   static const patientProfile = '/profile';
   static const patientOrder = '/order';
   static const patientPreviousAppointments = '/appointments';
+  static const patientDashboard = '/patientDashboard';
+  static const patientServices = '/services';
 
   // ...........Appointments ............ //
 
@@ -60,18 +62,68 @@ abstract class AppRoutes {
   static const videoSchedule = '/video-schedule';
 
   // Common
+  static const specialityDoctorList = '/speciality-doctors';
   static const videoPayment = '/video-payment';
   static const videoConfirmation = '/video-confirmation';
   static const videoQueue = '/video-queue';
-
+  static const videoCall = '/video-call';
+  static const rating = "/rating";
   // .................................... //
+
   static const patientSelection = '/patientSelection';
   static const addPatient = '/addPatient';
+  // ─────────────────────────────────────────────────────────────────────────────
+  // ADD THESE ROUTE CONSTANTS to your existing AppRoutes class
+  // ─────────────────────────────────────────────────────────────────────────────
+  static const String patientMedicalRecords = '/medical-records';
+  static const String patientMedicalRecordDetail = '/medical-records-detail';
+
+  static const String patientMedicineCart = '/medicine-cart';
+
+  /// 🔹 NEW (required)
+  static const String patientAddressSelection = '/address-selection';
+  static const String patientPrescriptionPayment = '/payment';
+
+  /// 🔹 Success + Tracking
+  static const String patientPrescriptionOrderSuccess = '/order-success';
+  static const String patientPrescriptionOrderTracking = '/order-tracking';
+
+  /// 🔹 Optional (future)
+  static const String patientPrescriptionOrderStatus = '/order-status';
+  static const String patientPrescriptionOrderDetails = '/order-details';
+
+  // 🔹 Lab Test
+  static const String patientLabTestDetails = '/patient-lab-test-details';
+
+  /// Visit Lab
+  static const String patientNearbyLabsPage = '/patient-lab-nearby-lab';
+  static const String patientLabSlotSelection =
+      '/patient-lab-slot-selection';
+  static const String patientLabTestCheckout =
+      '/patient-lab-test-checkout';
+  static const String patientLabTestBookingSuccess =
+      '/patient-lab-test-booking-success';
+
+  /// 🔹 Home Collection Flow
+  static const String patientHomeCollectionSlot =
+      '/patient-home-collection-slot';
+
+  static const String patientHomeCollectionAddress =
+      '/patient-home-collection-address';
+
+  static const String patientHomeCollectionCheckout =
+      '/patient-home-collection-checkout';
+
+  static const String patientHomeCollectionSuccess =
+      '/patient-home-collection-success';
+
+  static const String patientLabTracking =
+      '/patient-lab-tracking';
+
 
   /// ================================
   /// 🔹 DOCTOR
   /// ================================
-
 
   static const doctorLogin = '/doctorLogin';
 
@@ -145,21 +197,7 @@ abstract class AppRoutes {
 
   static const calendar = doctorCalendar;
 
-
-
-
-
-
-
-
-
-
-
-
-
   // static const logout = '/basicDetails';
-
-
 
   /// ================================
   /// 🔹 PHARMACY

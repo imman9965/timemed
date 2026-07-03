@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 class ClinicalSchedulePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _ClinicalSchedulePageState extends State<ClinicalSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff5f6f8),
-      appBar: AppBar(title: const Text("Schedule Appointment")),
+      appBar: CommonAppBar(title: "Schedule Appointment"),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
@@ -35,7 +36,7 @@ class _ClinicalSchedulePageState extends State<ClinicalSchedulePage> {
             Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
               ),
 
               child: Padding(
@@ -135,8 +136,16 @@ class _ClinicalSchedulePageState extends State<ClinicalSchedulePage> {
                           ),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ), // Adjust radius as needed
+                            ),
+                          ),
                           onPressed: () {
-                            context.push(AppRoutes.videoPayment);
+                            context.push(AppRoutes.clinicalPayment);
                           },
                           child: const Text("Book Appointment"),
                         ),
@@ -152,7 +161,7 @@ class _ClinicalSchedulePageState extends State<ClinicalSchedulePage> {
               margin: const EdgeInsets.only(top: 16),
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
               ),
 
               child: Padding(
@@ -258,7 +267,9 @@ class _ClinicalSchedulePageState extends State<ClinicalSchedulePage> {
               bool available = slot["available"];
 
               return GestureDetector(
-                onTap: available ? () => context.push('/video-payment') : null,
+                onTap: available
+                    ? () => context.push(AppRoutes.clinicalPayment)
+                    : null,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 2),
                   padding: const EdgeInsets.symmetric(vertical: 6),
