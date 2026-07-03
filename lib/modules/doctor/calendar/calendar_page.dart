@@ -19,7 +19,6 @@ class AppointmentCard extends StatelessWidget {
     final badgeTxt  = isInstant ? DoctorColors.badgeBlueText : DoctorColors.badgeGreenText;
     final typeIcon  = isInstant ? '⚡' : '📅';
     final typeText  = isInstant ? 'Instant' : 'Schedule';
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -39,18 +38,37 @@ class AppointmentCard extends StatelessWidget {
           Container(
             width: 46,
             height: 46,
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: DoctorColors.primaryVivid,
+              color: DoctorColors.primarySoft,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.assignment_outlined,
-                color: Colors.white, size: 24),
+            child: Image.asset(
+              appointment.gender == 'female'
+                  ? 'assets/icons/gender/female.png'
+                  : 'assets/icons/gender/male.png',
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Date shown above the name — only for Schedule type
+                if (!isInstant) ...[
+                  Text(
+                    '${appointment.date.day.toString().padLeft(2, '0')}/'
+                    '${appointment.date.month.toString().padLeft(2, '0')}/'
+                    '${appointment.date.year}',
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: DoctorColors.primaryBrand,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                ],
                 Text(
                   appointment.name,
                   style: const TextStyle(
@@ -400,6 +418,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<Appointment> get _visibleAppointments {
     return allAppointments.where((a) {
+      // Only Schedule appointments are listed — no Instant
+      if (a.type != AppointmentType.schedule) return false;
       if (a.date.year  != _displayMonth.year)  return false;
       if (a.date.month != _displayMonth.month) return false;
       final activeRanges = _ranges;
@@ -410,8 +430,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }).toList();
   }
 
-  List<DateTime> get _appointmentDates =>
-      allAppointments.map((a) => a.date).toList();
+  List<DateTime> get _appointmentDates => allAppointments
+      .where((a) => a.type == AppointmentType.schedule)
+      .map((a) => a.date)
+      .toList();
 
   void _goToPrevMonth() {
     setState(() {

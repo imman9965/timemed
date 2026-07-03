@@ -460,7 +460,9 @@ class _UpdateCallStatusScreenState extends State<UpdateCallStatusScreen>
       width: double.infinity,
       height: 52,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: _blue,
           foregroundColor: Colors.white,

@@ -866,14 +866,13 @@ class _PatientWaitingListScreenState
                           statusText:  'Online',
                           statusColor: DoctorColors.error,
                         ),
-
                          SizedBox(height:MediaQuery.of(context).size.height/5),
 
                         // ── Add Patient button (right-aligned) ──
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: AddPatientButton(onTap: _onAddPatient),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.bottomRight,
+                        //   child: AddPatientButton(onTap: _onAddPatient),
+                        // ),
 
                         // Align(
                         //   alignment: Alignment.bottomCenter,

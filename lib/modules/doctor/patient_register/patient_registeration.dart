@@ -83,145 +83,143 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: DoctorColors.backgroundLavender,
-      body: SafeArea(
-        child: Column(
-          children: [
-            CurvedHeader(
-              title:"Patient Registration"
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTextField(
-                        controller: _registrationNumberController,
-                        hint: 'Patient Registration Number',
+      body: Column(
+        children: [
+          CurvedHeader(
+            title:"Patient Registration"
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField(
+                      controller: _registrationNumberController,
+                      hint: 'Patient Registration Number',
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _firstNameController,
+                      hint: 'First Name',
+                      validator: _requiredValidator,
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _lastNameController,
+                      hint: 'Last Name',
+                      validator: _requiredValidator,
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _ageController,
+                      hint: 'Age',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                      ],
+                      validator: _ageValidator,
+                    ),
+                    const SizedBox(height: 18),
+                    _buildSectionLabel('Gender'),
+                    const SizedBox(height: 10),
+                    _buildGenderSelector(),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: _phoneController,
+                      hint: 'Phone Number',
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(15),
+                      ],
+                      validator: _phoneValidator,
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _whatsappController,
+                      hint: 'WhatsApp Number',
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(15),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _emailController,
+                      hint: 'Mail Id',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: _emailValidator,
+                    ),
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      controller: _passwordController,
+                      hint: 'Password',
+                      obscureText: _obscurePassword,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: DoctorColors.textHintGrey,
+                        ),
+                        onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword,
+                        ),
                       ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _firstNameController,
-                        hint: 'First Name',
-                        validator: _requiredValidator,
-                      ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _lastNameController,
-                        hint: 'Last Name',
-                        validator: _requiredValidator,
-                      ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _ageController,
-                        hint: 'Age',
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(3),
-                        ],
-                        validator: _ageValidator,
-                      ),
-                      const SizedBox(height: 18),
-                      _buildSectionLabel('Gender'),
-                      const SizedBox(height: 10),
-                      _buildGenderSelector(),
-                      const SizedBox(height: 16),
-                      _buildTextField(
-                        controller: _phoneController,
-                        hint: 'Phone Number',
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(15),
-                        ],
-                        validator: _phoneValidator,
-                      ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _whatsappController,
-                        hint: 'WhatsApp Number',
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(15),
-                        ],
-                      ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _emailController,
-                        hint: 'Mail Id',
-                        keyboardType: TextInputType.emailAddress,
-                        validator: _emailValidator,
-                      ),
-                      const SizedBox(height: 14),
-                      _buildTextField(
-                        controller: _passwordController,
-                        hint: 'Password',
-                        obscureText: _obscurePassword,
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                            color: DoctorColors.textHintGrey,
-                          ),
-                          onPressed: () => setState(
-                                () => _obscurePassword = !_obscurePassword,
+                      validator: _passwordValidator,
+                    ),
+                    const SizedBox(height: 18),
+                    _buildSectionLabel('Target INR'),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildTextField(
+                            controller: _targetInrFromController,
+                            hint: 'From',
+                            keyboardType:
+                            const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d*\.?\d{0,2}'),
+                              ),
+                            ],
                           ),
                         ),
-                        validator: _passwordValidator,
-                      ),
-                      const SizedBox(height: 18),
-                      _buildSectionLabel('Target INR'),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildTextField(
-                              controller: _targetInrFromController,
-                              hint: 'From',
-                              keyboardType:
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d*\.?\d{0,2}'),
-                                ),
-                              ],
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: _buildTextField(
+                            controller: _targetInrToController,
+                            hint: 'To',
+                            keyboardType:
+                            const TextInputType.numberWithOptions(
+                              decimal: true,
                             ),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: _buildTextField(
-                              controller: _targetInrToController,
-                              hint: 'To',
-                              keyboardType:
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d*\.?\d{0,2}'),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d*\.?\d{0,2}'),
-                                ),
-                              ],
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      _buildActionButtons(),
-                      const SizedBox(height: 8),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    _buildActionButtons(),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

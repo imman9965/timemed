@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart';
 import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 
 class medicalRecordHistoryDetails extends StatelessWidget {
@@ -14,37 +12,35 @@ class medicalRecordHistoryDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea (
-      child: Scaffold(
-        backgroundColor: DoctorColors.backgroundStone,
-        body: Column(
-          children: [
-            _buildHeader(context),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildPatientCard(),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      child: Column(
-                        children: [
-                          _buildPrescriptionSection(),
-                          const SizedBox(height: 16),
-                          _buildLabTestSection(),
-                          const SizedBox(height: 16),
-                          _buildHealthRecordsSection(),
-                          const SizedBox(height: 24),
-                        ],
-                      ),
+    return Scaffold(
+      backgroundColor: DoctorColors.backgroundStone,
+      body: Column(
+        children: [
+          _buildHeader(context),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildPatientCard(),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: Column(
+                      children: [
+                        _buildPrescriptionSection(),
+                        const SizedBox(height: 16),
+                        _buildLabTestSection(),
+                        const SizedBox(height: 16),
+                        _buildHealthRecordsSection(),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

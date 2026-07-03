@@ -559,7 +559,7 @@ class AppRouter {
       /// ================================
       GoRoute(
         path: AppRoutes.doctorLogin,
-        builder: (context, state) => LoginPage(),
+        builder: (context, state) => DoctorLoginPage(),
       ),
 
       // ConsultationSummaryScreen

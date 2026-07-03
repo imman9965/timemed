@@ -105,8 +105,7 @@ class CurvedHeader extends StatelessWidget {
                           minWidth: 18,
                           minHeight: 18,
                         ),
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           shape: BoxShape.rectangle,

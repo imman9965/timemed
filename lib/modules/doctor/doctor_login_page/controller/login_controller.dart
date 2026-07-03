@@ -50,7 +50,6 @@ class LoginController extends GetxController {
   /// Email + 6-digit password validation. Returns true only if both pass.
   bool validateEmailLogin() {
     var isValid = true;
-
     final email = emailController.text.trim();
     if (email.isEmpty) {
       emailError.value = 'Please enter your email';

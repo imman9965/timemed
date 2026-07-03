@@ -7,6 +7,10 @@ import '../add_online_consultant_list/dummy_data_1.dart';
 import '../medical_records/dummy_data_7.dart';
 import '../widgets/add_online_schedule_list.dart';
 
+// Screen theme: blue primary, green secondary
+const Color kPrimaryBlue = DoctorColors.primaryVivid;
+const Color kSecondaryGreen = DoctorColors.successTeal;
+
 class HospitalListScreen extends StatefulWidget {
   const HospitalListScreen({super.key});
 
@@ -425,7 +429,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: DoctorColors.primaryVivid,
+            color: kPrimaryBlue,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: Colors.white, size: 16),
@@ -471,11 +475,11 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
         padding:
             const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: DoctorColors.primaryVivid,
+          color: kSecondaryGreen,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: DoctorColors.primaryVivid.withOpacity(0.35),
+              color: kSecondaryGreen.withOpacity(0.35),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -511,7 +515,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
             width: 46,
             height: 46,
             decoration: BoxDecoration(
-              color: DoctorColors.primaryVivid,
+              color: kPrimaryBlue,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(Icons.local_hospital_rounded,
@@ -582,7 +586,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
             width: 46,
             height: 46,
             decoration: BoxDecoration(
-              color: DoctorColors.primaryVivid,
+              color: kSecondaryGreen,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(Icons.event_available_rounded,
@@ -640,8 +644,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
             Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: 14, vertical: 10),
-              decoration:
-                  const BoxDecoration(color: DoctorColors.primaryVivid),
+              decoration: const BoxDecoration(color: kPrimaryBlue),
               child: Row(
                 children: [
                   const Icon(Icons.videocam_rounded,
@@ -890,7 +893,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
       padding:
           const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(
-        color: DoctorColors.primaryVivid,
+        color: kSecondaryGreen,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -1298,13 +1301,13 @@ class _HospitalDialogState extends State<_HospitalDialog> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: selected
-                ? DoctorColors.primary
+                ? kSecondaryGreen
                 : DoctorColors.backgroundFrost,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: selected
                   ? Colors.transparent
-                  : DoctorColors.dividerSoft,
+                  : kSecondaryGreen,
             ),
           ),
           child: Text(
@@ -1341,8 +1344,7 @@ class _HospitalDialogState extends State<_HospitalDialog> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(18),
-                decoration:
-                    const BoxDecoration(color: DoctorColors.blue700),
+                decoration: const BoxDecoration(color: kPrimaryBlue),
                 child: Row(
                   children: [
                     Container(
@@ -1540,12 +1542,12 @@ class _HospitalDialogState extends State<_HospitalDialog> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 13),
                               decoration: BoxDecoration(
-                                color: DoctorColors.blue700,
+                                color: kPrimaryBlue,
                                 borderRadius:
                                     BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: DoctorColors.blue700
+                                    color: kPrimaryBlue
                                         .withOpacity(0.35),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
@@ -1670,8 +1672,7 @@ class _ScheduleDialogState extends State<_ScheduleDialog> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(18),
-              decoration:
-                  const BoxDecoration(color: DoctorColors.primaryVivid),
+              decoration: const BoxDecoration(color: kSecondaryGreen),
               child: Row(
                 children: [
                   Container(
@@ -1770,7 +1771,7 @@ class _ScheduleDialogState extends State<_ScheduleDialog> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 13),
                             decoration: BoxDecoration(
-                              color: DoctorColors.primaryVivid,
+                              color: kSecondaryGreen,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
