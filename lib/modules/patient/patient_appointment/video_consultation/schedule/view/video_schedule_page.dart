@@ -267,7 +267,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
               bool available = slot["available"];
 
               return GestureDetector(
-                onTap: available ? () => context.push('/video-payment') : null,
+                onTap: available ? () => context.push('VideoSchedulePage') : null,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 2),
                   padding: const EdgeInsets.symmetric(vertical: 6),
