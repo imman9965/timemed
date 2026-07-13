@@ -8,10 +8,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top:false,
+    return
+      SafeArea(
+      top: false,
       bottom: true,
-      child: MaterialApp.router(
+      child:
+      MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: AppConfig.instance.appName,
         theme: AppTheme.lightTheme,
@@ -20,5 +22,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
 }

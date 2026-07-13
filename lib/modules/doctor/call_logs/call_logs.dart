@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../missed_call_page/missed_call.dart' hide AppColors;
+import '../theme/doctor_theme.dart';
+import '../../../core/widgets/common/curved_header.dart';
 import '../widgets/doctor_stamp.dart';
 import 'dummy_data_3.dart' hide NavItem;
-
-
-
-
-
 
 class FilterButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -20,7 +15,7 @@ class FilterButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: AppColors.green2,
+          color: DoctorColors.success,
           borderRadius: BorderRadius.circular(50),
         ),
         child: const Row(
@@ -28,11 +23,14 @@ class FilterButton extends StatelessWidget {
           children: [
             Icon(Icons.filter_alt, color: Colors.white, size: 15),
             SizedBox(width: 5),
-            Text('Filter',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13)),
+            Text(
+              'Filter',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 13,
+              ),
+            ),
           ],
         ),
       ),
@@ -42,7 +40,7 @@ class FilterButton extends StatelessWidget {
 
 /// Date picker input field
 class DatePickerField extends StatelessWidget {
-  final DateTime?    selectedDate;
+  final DateTime? selectedDate;
   final VoidCallback onTap;
 
   const DatePickerField({
@@ -59,29 +57,29 @@ class DatePickerField extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
         decoration: BoxDecoration(
-          color: AppColors.cardBg,
+          color: DoctorColors.cardWhite,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.divider),
+          border: Border.all(color: DoctorColors.divider),
         ),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 hasDate
-                    ? '${selectedDate!.day.toString().padLeft(2,'0')}/'
-                    '${selectedDate!.month.toString().padLeft(2,'0')}/'
-                    '${selectedDate!.year}'
+                    ? '${selectedDate!.day.toString().padLeft(2, '0')}/'
+                          '${selectedDate!.month.toString().padLeft(2, '0')}/'
+                          '${selectedDate!.year}'
                     : 'DD/MM/YYYY',
                 style: TextStyle(
                   fontSize: 14,
                   color: hasDate
-                      ? AppColors.textDark
-                      : AppColors.textSecond,
+                      ? DoctorColors.textDark
+                      : DoctorColors.textSecondary,
                 ),
               ),
             ),
-            const Icon(Icons.calendar_month,
-                color: AppColors.primary, size: 20),
+
+            Image.asset('assets/icons/img_21.png', width: 17, height: 17),
           ],
         ),
       ),
@@ -96,22 +94,27 @@ class CallLogCard extends StatelessWidget {
 
   String get _typeLabel =>
       log.type == AppointmentType.instant ? 'Instant' : 'Schedule';
-  String get _typeIcon =>
-      log.type == AppointmentType.instant ? '⚡' : '📅';
+  String get _typeIcon => log.type == AppointmentType.instant ? '⚡' : '📅';
 
   Color get _statusColor {
     switch (log.status) {
-      case CallStatus.success: return AppColors.successColor2;
-      case CallStatus.pending: return AppColors.pendingColor2;
-      case CallStatus.failed:  return AppColors.failColor2;
+      case CallStatus.success:
+        return DoctorColors.successDeep;
+      case CallStatus.pending:
+        return DoctorColors.warningPending;
+      case CallStatus.failed:
+        return DoctorColors.error;
     }
   }
 
   String get _statusLabel {
     switch (log.status) {
-      case CallStatus.success: return 'Success';
-      case CallStatus.pending: return 'Pending';
-      case CallStatus.failed:  return 'Failed';
+      case CallStatus.success:
+        return 'Success';
+      case CallStatus.pending:
+        return 'Pending';
+      case CallStatus.failed:
+        return 'Failed';
     }
   }
 
@@ -121,7 +124,7 @@ class CallLogCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.cardBg,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -134,7 +137,6 @@ class CallLogCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           // ── Row 1: Avatar + Date/Time ─────────────────────
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,38 +146,53 @@ class CallLogCard extends StatelessWidget {
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0E0E0),
+                  color: DoctorColors.dividerNeutral,
                   borderRadius: BorderRadius.circular(23),
                 ),
-                child: const Icon(Icons.person,
-                    color: Colors.white, size: 28),
+                child: const Icon(Icons.person, color: Colors.white, size: 28),
               ),
               const Spacer(),
               // Date + Time stacked
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(children: [
-                    const Icon(Icons.calendar_month,
-                        size: 13, color: AppColors.primary),
-                    const SizedBox(width: 4),
-                    Text(formatDate(log.dateTime),
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/icons/img_21.png',
+                        width: 11,
+                        height: 11,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        formatDate(log.dateTime),
                         style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textDark)),
-                  ]),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: DoctorColors.textDark,
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 4),
-                  Row(children: [
-                    const Icon(Icons.access_time,
-                        size: 13, color: AppColors.primary),
-                    const SizedBox(width: 4),
-                    Text(formatTime(log.dateTime),
+                  Row(
+                    spacing: 2,
+                    children: [
+                      Image.asset(
+                        'assets/icons/img_22.png',
+                        width: 14,
+                        height: 14,
+                      ),
+                      Text(
+                        formatTime(log.dateTime),
                         style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textDark)),
-                  ]),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: DoctorColors.textDark,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ],
@@ -189,7 +206,7 @@ class CallLogCard extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 16,
-              color: AppColors.textDark,
+              color: DoctorColors.textDark,
             ),
           ),
           const SizedBox(height: 6),
@@ -197,52 +214,79 @@ class CallLogCard extends StatelessWidget {
           // ── Row 3: Fee + Type ─────────────────────────────
           Row(
             children: [
-              Text('Fee: ',
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textSecond)),
-              Text(log.fee,
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.feeColor2)),
+              Text(
+                'Fee: ',
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: DoctorColors.textSecondary,
+                ),
+              ),
+              Text(
+                log.fee,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: DoctorColors.primaryVivid,
+                ),
+              ),
               const SizedBox(width: 24),
-              Text('Type: $_typeIcon $_typeLabel',
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textSecond)),
+              Text(
+                'Type: $_typeIcon $_typeLabel',
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: DoctorColors.textSecondary,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 4),
 
           Row(
             children: [
-              const Icon(Icons.phone, size: 13, color: AppColors.primary),
+              const Icon(
+                Icons.phone,
+                size: 13,
+                color: DoctorColors.primaryBrand,
+              ),
               const SizedBox(width: 4),
-              Text(log.phone,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textSecond)),
+              Text(
+                log.phone,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: DoctorColors.textSecondary,
+                ),
+              ),
               const SizedBox(width: 24),
-              Text('Status: ',
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textSecond)),
-              Text(_statusLabel,
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: _statusColor)),
+              Text(
+                'Status: ',
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: DoctorColors.textSecondary,
+                ),
+              ),
+              Text(
+                _statusLabel,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: _statusColor,
+                ),
+              ),
             ],
           ),
 
           const SizedBox(height: 10),
-          const Divider(color: AppColors.divider, height: 1),
+          const Divider(color: DoctorColors.divider, height: 1),
           const SizedBox(height: 10),
 
           // ── Progress note ─────────────────────────────────
           Text(
             'Progress of the call: ${log.progressNote}',
             style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textDark),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: DoctorColors.textDark,
+            ),
           ),
           const SizedBox(height: 8),
 
@@ -270,8 +314,8 @@ class CallLogCard extends StatelessWidget {
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: task.completed
-                                  ? AppColors.successColor2
-                                  : AppColors.textDark,
+                                  ? DoctorColors.successDeep
+                                  : DoctorColors.textDark,
                               decoration: task.completed
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
@@ -289,11 +333,14 @@ class CallLogCard extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                  color: DoctorColors.primaryBrand,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.videocam,
-                    color: Colors.white, size: 22),
+                child: const Icon(
+                  Icons.videocam,
+                  color: Colors.white,
+                  size: 22,
+                ),
               ),
             ],
           ),
@@ -303,20 +350,16 @@ class CallLogCard extends StatelessWidget {
   }
 }
 
-
-
-
-
 class CallLogsScreen extends StatefulWidget {
-  const CallLogsScreen({Key? key}) : super(key: key);
+  final String? title;
+  const CallLogsScreen({super.key,this.title,});
 
   @override
   State<CallLogsScreen> createState() => _CallLogsScreenState();
 }
 
 class _CallLogsScreenState extends State<CallLogsScreen> {
-
-  DateTime? _selectedDate;            // null = show all
+  DateTime? _selectedDate; // null = show all
 
   // ── Filtered list based on selected date ──────────────
   List<CallLog> get _filteredLogs {
@@ -326,21 +369,20 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
         .toList();
   }
 
-
   // ── Date picker ───────────────────────────────────────
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate ?? DateTime(2026, 1, 7),
-      firstDate:   DateTime(2020),
-      lastDate:    DateTime(2030),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary:   AppColors.primary,
+              primary: DoctorColors.primaryBrand,
               onPrimary: Colors.white,
-              onSurface: AppColors.textDark,
+              onSurface: DoctorColors.textDark,
             ),
           ),
           child: child!,
@@ -368,13 +410,16 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Filter Options',
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700)),
+            const Text(
+              'Filter Options',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 16),
             ListTile(
-              leading: const Icon(Icons.check_circle,
-                  color: AppColors.successColor2),
+              leading: const Icon(
+                Icons.check_circle,
+                color: DoctorColors.successDeep,
+              ),
               title: const Text('Success only'),
               onTap: () {
                 Navigator.pop(context);
@@ -384,8 +429,7 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.pending,
-                  color: AppColors.pendingColor2),
+              leading: Icon(Icons.pending, color: DoctorColors.warningPending),
               title: const Text('Pending only'),
               onTap: () {
                 Navigator.pop(context);
@@ -395,19 +439,18 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.cancel,
-                  color: AppColors.failColor2),
+              leading: const Icon(Icons.cancel, color: DoctorColors.error),
               title: const Text('Failed only'),
               onTap: () {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Filter: Failed')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Filter: Failed')));
               },
             ),
             if (_selectedDate != null)
               ListTile(
-                leading: const Icon(Icons.clear, color: Colors.grey),
+                leading: const Icon(Icons.clear, color: DoctorColors.textMuted),
                 title: const Text('Clear date filter'),
                 onTap: () {
                   Navigator.pop(context);
@@ -423,46 +466,52 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
   // ── Build ─────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    late String? _status = widget.title.toString();  // use it for filtering
+
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               children: [
-                const CurvedHeader(title: 'Call Logs'),
-
+                 CurvedHeader(title: widget.title??"CALL LOGS", showBackButton: false, titleStyle: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         // ── Doctor badge + Filter ────────────
                         Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DoctorBadge(doctor: "Dr.Mariappan" ),
+                            DoctorBadge(doctor: "Dr.Mariappan"),
                             FilterButton(onTap: _showFilterSheet),
                           ],
                         ),
                         const SizedBox(height: 16),
 
                         // ── Date label ───────────────────────
-                        Text('Date',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary)),
+                        Text(
+                          'Date',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: DoctorColors.primaryBrand,
+                          ),
+                        ),
                         const SizedBox(height: 8),
 
                         // ── Date picker field ────────────────
                         DatePickerField(
                           selectedDate: _selectedDate,
-                          onTap:        _pickDate,
+                          onTap: _pickDate,
                         ),
 
                         // Clear date chip
@@ -473,15 +522,17 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.close,
-                                    size: 14,
-                                    color: AppColors.textSecond),
+                                const Icon(
+                                  Icons.close,
+                                  size: 14,
+                                  color: DoctorColors.textSecondary,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   'Clear date filter',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: AppColors.textSecond
+                                    color: DoctorColors.textSecondary
                                         .withOpacity(0.8),
                                   ),
                                 ),
@@ -496,30 +547,30 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
                         if (_filteredLogs.isEmpty)
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 40),
+                              padding: const EdgeInsets.symmetric(vertical: 40),
                               child: Column(
                                 children: [
-                                  Icon(Icons.search_off,
-                                      size: 48,
-                                      color: AppColors.textSecond
-                                          .withOpacity(0.4)),
+                                  Icon(
+                                    Icons.search_off,
+                                    size: 48,
+                                    color: DoctorColors.textSecondary
+                                        .withOpacity(0.4),
+                                  ),
                                   const SizedBox(height: 12),
                                   Text(
                                     'No call logs for selected date',
                                     style: TextStyle(
-                                        color: AppColors.textSecond
-                                            .withOpacity(0.7),
-                                        fontSize: 14),
+                                      color: DoctorColors.textSecondary
+                                          .withOpacity(0.7),
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           )
                         else
-                          ..._filteredLogs.map(
-                                (log) => CallLogCard(log: log),
-                          ),
+                          ..._filteredLogs.map((log) => CallLogCard(log: log)),
                       ],
                     ),
                   ),

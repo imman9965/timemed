@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 import '../../../routes/app_routes.dart';
 
 class DoctorBadge extends StatefulWidget {
@@ -17,6 +17,7 @@ class _DoctorBadgeState extends State<DoctorBadge> {
   // Menu action values
   static const String _basicDetails = 'basic';
   static const String _hospitalList = 'hospital';
+  static const String _profile = 'profile';
   static const String _logout = 'logout';
 
   void _handleMenuSelection(String value) {
@@ -26,6 +27,9 @@ class _DoctorBadgeState extends State<DoctorBadge> {
         break;
       case _hospitalList:
         context.push(AppRoutes.hospitalList);
+        break;
+      case _profile:
+        context.push(AppRoutes.doctorProfile);
         break;
       case _logout:
         _confirmLogout();
@@ -45,10 +49,12 @@ class _DoctorBadgeState extends State<DoctorBadge> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
+            onPressed: () {
+              context.go(AppRoutes.doctorLogin);
+            },
             child: const Text(
               'Logout',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: DoctorColors.error),
             ),
           ),
         ],
@@ -56,7 +62,6 @@ class _DoctorBadgeState extends State<DoctorBadge> {
     );
 
     if (shouldLogout == true && mounted) {
-      // TODO: Clear user session / tokens here before navigating
       // context.go(AppRoutes.login);
     }
   }
@@ -93,16 +98,26 @@ class _DoctorBadgeState extends State<DoctorBadge> {
             ],
           ),
         ),
+        PopupMenuItem<String>(
+          value: _profile,
+          child: Row(
+            children: [
+              Icon(Icons.perm_identity_rounded, size: 20),
+              SizedBox(width: 10),
+              Text('Profile'),
+            ],
+          ),
+        ),
         PopupMenuDivider(),
         PopupMenuItem<String>(
           value: _logout,
           child: Row(
             children: [
-              Icon(Icons.logout, color: Colors.red, size: 20),
+              Icon(Icons.logout, color: DoctorColors.error, size: 20),
               SizedBox(width: 10),
               Text(
                 'Logout',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: DoctorColors.error),
               ),
             ],
           ),
@@ -113,7 +128,7 @@ class _DoctorBadgeState extends State<DoctorBadge> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: AppColors.green2,
+          color: DoctorColors.success,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Row(

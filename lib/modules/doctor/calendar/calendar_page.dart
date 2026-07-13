@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:get/get.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
+import '../../../routes/app_routes.dart';
+import '../notifications/notification_controller.dart';
+import 'package:go_router/go_router.dart';
 import 'dummy_data_2.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -11,16 +15,15 @@ class AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isInstant = appointment.type == AppointmentType.instant;
-    final badgeBg   = isInstant ? AppColors.blueBadge    : AppColors.greenBadge;
-    final badgeTxt  = isInstant ? AppColors.blueBadgeTxt : AppColors.greenBadgeTxt;
+    final badgeBg   = isInstant ? DoctorColors.badgeBlue    : DoctorColors.badgeGreen;
+    final badgeTxt  = isInstant ? DoctorColors.badgeBlueText : DoctorColors.badgeGreenText;
     final typeIcon  = isInstant ? '⚡' : '📅';
     final typeText  = isInstant ? 'Instant' : 'Schedule';
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.cardBg1,
+        color: DoctorColors.cardWhite,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -35,41 +38,60 @@ class AppointmentCard extends StatelessWidget {
           Container(
             width: 46,
             height: 46,
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.primary1,
+              color: DoctorColors.primarySoft,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.assignment_outlined,
-                color: Colors.white, size: 24),
+            child: Image.asset(
+              appointment.gender == 'female'
+                  ? 'assets/icons/gender/female.png'
+                  : 'assets/icons/gender/male.png',
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Date shown above the name — only for Schedule type
+                if (!isInstant) ...[
+                  Text(
+                    '${appointment.date.day.toString().padLeft(2, '0')}/'
+                    '${appointment.date.month.toString().padLeft(2, '0')}/'
+                    '${appointment.date.year}',
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: DoctorColors.primaryBrand,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                ],
                 Text(
                   appointment.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
-                    color: AppColors.textDark1,
+                    color: DoctorColors.textDark,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(Icons.access_time,
-                        size: 13, color: AppColors.primary),
+                        size: 13, color: DoctorColors.primaryBrand),
                     const SizedBox(width: 4),
                     Text(appointment.time,
                         style: const TextStyle(
-                            fontSize: 12, color: AppColors.textSecond)),
+                            fontSize: 12, color: DoctorColors.textSecondary)),
                     const SizedBox(width: 10),
                     Flexible(
                       child: Text(
                         'Type: $typeIcon $typeText',
                         style: const TextStyle(
-                            fontSize: 12, color: AppColors.textSecond),
+                            fontSize: 12, color: DoctorColors.textSecondary),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -114,7 +136,7 @@ class _WeekDayLabel extends StatelessWidget {
         style: const TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 13,
-          color: AppColors.textDark,
+          color: DoctorColors.textDark,
         ),
       ),
     );
@@ -163,7 +185,7 @@ class _DayCell extends StatelessWidget {
                 right:  (isRangeEnd   || isSingleDay) ? w * 0.08 : 0,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: DoctorColors.primaryBrand,
                     borderRadius: BorderRadius.horizontal(
                       left:  (isRangeStart || isSingleDay)
                           ? const Radius.circular(50)
@@ -184,7 +206,7 @@ class _DayCell extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: AppColors.todayBorder, width: 1.5),
+                      color: DoctorColors.primaryVivid, width: 1.5),
                 ),
               ),
 
@@ -201,8 +223,8 @@ class _DayCell extends StatelessWidget {
                     color: isInRange
                         ? Colors.white
                         : isToday
-                        ? AppColors.primary
-                        : AppColors.textDark,
+                        ? DoctorColors.primaryBrand
+                        : DoctorColors.textDark,
                   ),
                 ),
                 // Appointment dot indicator
@@ -212,7 +234,7 @@ class _DayCell extends StatelessWidget {
                     height: 4,
                     margin: const EdgeInsets.only(top: 2),
                     decoration: const BoxDecoration(
-                      color: AppColors.primary,
+                      color: DoctorColors.primaryBrand,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -294,14 +316,14 @@ class MonthCalendar extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.primary,
+                  color: DoctorColors.primaryBrand,
                 ),
               ),
             ),
             IconButton(
               onPressed: onPrevMonth,
               icon: const Icon(Icons.chevron_left_rounded,
-                  color: AppColors.primary, size: 28),
+                  color: DoctorColors.primaryBrand, size: 28),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
@@ -309,7 +331,7 @@ class MonthCalendar extends StatelessWidget {
             IconButton(
               onPressed: onNextMonth,
               icon: const Icon(Icons.chevron_right_rounded,
-                  color: AppColors.primary, size: 28),
+                  color: DoctorColors.primaryBrand, size: 28),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
@@ -392,13 +414,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     const CalendarRange(20, 21),
   ];
 
-  // Range selection state: null = no selection started
   int? _rangeStartDay;
-
-  // ── Helpers ────────────────────────────────────────────
 
   List<Appointment> get _visibleAppointments {
     return allAppointments.where((a) {
+      // Only Schedule appointments are listed — no Instant
+      if (a.type != AppointmentType.schedule) return false;
       if (a.date.year  != _displayMonth.year)  return false;
       if (a.date.month != _displayMonth.month) return false;
       final activeRanges = _ranges;
@@ -409,8 +430,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }).toList();
   }
 
-  List<DateTime> get _appointmentDates =>
-      allAppointments.map((a) => a.date).toList();
+  List<DateTime> get _appointmentDates => allAppointments
+      .where((a) => a.type == AppointmentType.schedule)
+      .map((a) => a.date)
+      .toList();
 
   void _goToPrevMonth() {
     setState(() {
@@ -449,20 +472,66 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  /// Bell tap = simulate a new local notification.
+  /// Fires a real system-tray notification (visible even if the app is
+  /// closed), bumps the badge count, appends to the history, then shows the
+  /// in-app banner which can be tapped to open the full history screen.
+  void _onBellTap(BuildContext context) {
+    NotificationController.to.simulateNotification();
+    _showNotificationPopup(context);
+  }
+
+  void _showNotificationPopup(BuildContext context) {
+    late OverlayEntry overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (ctx) => _NotificationPopup(
+        onTap: () {
+          overlayEntry.remove();
+          context.push(AppRoutes.doctorNotifications);
+        },
+        onDismiss: () {
+          overlayEntry.remove();
+        },
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
+    // Auto-dismiss after 4 seconds
+    Future.delayed(const Duration(seconds: 4), () {
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: DoctorColors.backgroundWarm,
       body: Column(
         children: [
-          const CurvedHeader(title: 'Calender'),
+          Obx(
+            () => CurvedHeader(
+              title: 'CALENDER',
+              showBackButton: false,
+              showNotification: true,
+              badgeCount: NotificationController.to.queue.length,
+              onNotificationTap: () => _onBellTap(context),
+              titleStyle: TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
-
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
@@ -498,7 +567,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         'Tap another day to complete the range…',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.primary.withOpacity(0.7),
+                          color: DoctorColors.primaryBrand.withOpacity(0.7),
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -512,7 +581,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         child: Text(
                           'No appointments in selected range',
                           style: TextStyle(
-                            color: AppColors.textSecond.withOpacity(0.7),
+                            color: DoctorColors.textSecondary.withOpacity(0.7),
                             fontSize: 14,
                           ),
                         ),
@@ -529,6 +598,159 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  IN-APP NOTIFICATION POPUP OVERLAY
+// ════════════════════════════════════════════════════════
+
+class _NotificationPopup extends StatefulWidget {
+  final VoidCallback onTap;
+  final VoidCallback onDismiss;
+
+  const _NotificationPopup({
+    required this.onTap,
+    required this.onDismiss,
+  });
+
+  @override
+  State<_NotificationPopup> createState() => _NotificationPopupState();
+}
+
+class _NotificationPopupState extends State<_NotificationPopup>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<Offset> _slideAnim;
+  late final Animation<double> _fadeAnim;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _slideAnim = Tween<Offset>(
+      begin: const Offset(0, -1.2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack));
+    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeOut),
+    );
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).padding.top + 10,
+      left: 16,
+      right: 16,
+      child: SlideTransition(
+        position: _slideAnim,
+        child: FadeTransition(
+          opacity: _fadeAnim,
+          child: Material(
+            color: Colors.transparent,
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4FC3F7).withOpacity(0.30),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2196F3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.call_rounded,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'INSTANT CALL REQUEST',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1565C0),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            'Patient Vignesh (313311) requested an instant call',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: DoctorColors.greyMedium,
+                              height: 1.3,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Tap to view  →',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF2196F3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: widget.onDismiss,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 18,
+                          color: DoctorColors.avatarGrey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

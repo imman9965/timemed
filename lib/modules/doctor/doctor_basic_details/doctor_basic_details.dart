@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../core/constants/app_colors.dart';
+import 'package:go_router/go_router.dart';
+import '../../../routes/app_routes.dart';
+import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'dummy_data_5.dart';
-
-
-
-
-
+import 'signature_pad.dart';
 
 class SectionLabel extends StatelessWidget {
   final String text;
@@ -29,7 +26,7 @@ class SelectionChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-          color: AppColors.primaryBlue3,
+          color: DoctorColors.primaryVivid,
           borderRadius: BorderRadius.circular(20)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Text(label, style: AppTextStyles.chipLabel),
@@ -63,12 +60,12 @@ class GenderButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
         decoration: BoxDecoration(
-            color: isSelected ? AppColors.primaryBlue3 : AppColors.inputBg3,
+            color: isSelected ? DoctorColors.primaryVivid : DoctorColors.inputBg,
             borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
         child: Text(label,
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : AppColors.textDark3)),
+                color: isSelected ? Colors.white : DoctorColors.textDark)),
       ),
     );
   }
@@ -174,7 +171,7 @@ class _DoctorBasicDetailsScreenState
       builder: (c, w) => Theme(
         data: Theme.of(c).copyWith(
             colorScheme: const ColorScheme.light(
-                primary: AppColors.primaryBlue3, onPrimary: Colors.white)),
+                primary: DoctorColors.primaryVivid, onPrimary: Colors.white)),
         child: w!,
       ),
     );
@@ -285,37 +282,81 @@ class _DoctorBasicDetailsScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Missing: ${errors.join(', ')}'),
-          backgroundColor: Colors.red,
+          backgroundColor: DoctorColors.error,
           duration: const Duration(seconds: 3),
         ),
       );
       return;
     }
 
+    // Push the collected details into the shared store so the prescription
+    // template shows the real doctor name / qualification / specialisation.
+    doctorSignature.updateFrom(_form);
+    DoctorProfileStore.save(); // persist to local DB
+
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Saved ✓'),
-        content: Text(
-          'Name: ${_form.firstName} ${_form.lastName}\n'
-              'DOB: ${_form.dateOfBirth!.day}/${_form.dateOfBirth!.month}/${_form.dateOfBirth!.year}\n'
-              'Gender: ${_form.gender.name}\n'
-              'Mobile: ${_form.mobile}\n'
-              'Email: ${_form.email}\n'
-              'Experience: ${_form.experience} yrs\n'
-              'Qualification: ${_form.qualification}\n'
-              'Specialisations: ${_form.specialisations.join(", ")}\n'
-              'Category: ${_form.category}\n'
-              'Languages: ${_form.languages.join(", ")}\n'
-              'Address: ${_form.address}',
-          style: const TextStyle(fontSize: 12),
+      builder: (_) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          )
-        ],
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 70,
+                width: 70,
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 50,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Profile Saved',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Doctor profile has been saved successfully.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DoctorColors.primaryVivid,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // context.push(AppRoutes.prescription);
+                  },
+                  child: const Text('OK'),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -327,7 +368,7 @@ class _DoctorBasicDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg3,
+      backgroundColor: DoctorColors.cardWhite,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -363,6 +404,8 @@ class _DoctorBasicDetailsScreenState
                     _buildLanguageSection(),
                     const SizedBox(height: AppDimens1.l),
                     _buildAddressSection(),
+                    const SizedBox(height: AppDimens1.l),
+                    _buildSignatureSection(),
                     const SizedBox(height: AppDimens1.xxl),
                     _buildSaveButton(),
                   ],
@@ -375,9 +418,6 @@ class _DoctorBasicDetailsScreenState
     );
   }
 
-  // ════════════════════════════════════════════════════
-  //  SECTION BUILDERS
-  // ════════════════════════════════════════════════════
 
   Widget _buildAvatar() {
     return Center(
@@ -385,7 +425,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           width: 90, height: 90,
           decoration: const BoxDecoration(
-              color: Color(0xFFBDBDBD), shape: BoxShape.circle),
+              color: DoctorColors.avatarGrey, shape: BoxShape.circle),
           child: const Icon(Icons.person,
               color: Colors.white, size: 56),
         ),
@@ -394,7 +434,7 @@ class _DoctorBasicDetailsScreenState
           child: Container(
             width: 26, height: 26,
             decoration: BoxDecoration(
-                color: const Color(0xFFBDBDBD),
+                color:  DoctorColors.avatarGrey,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2)),
             child: const Icon(Icons.camera_alt,
@@ -430,7 +470,7 @@ class _DoctorBasicDetailsScreenState
             child: _inputBox(
               _dobCtrl, 'DD/MM/YYYY',
               suffix: const Icon(Icons.calendar_month,
-                  color: AppColors.primaryBlue3, size: 20),
+                  color: DoctorColors.primaryVivid, size: 20),
             ),
           ),
         ),
@@ -484,7 +524,7 @@ class _DoctorBasicDetailsScreenState
                       padding: const EdgeInsets.only(top: 4, left: 4),
                       child: Text(_mobileError!,
                           style: const TextStyle(
-                              fontSize: 11, color: Colors.red)),
+                              fontSize: 11, color: DoctorColors.error)),
                     ),
                 ],
               ),
@@ -503,7 +543,7 @@ class _DoctorBasicDetailsScreenState
                       padding: const EdgeInsets.only(top: 4, left: 4),
                       child: Text(_emailError!,
                           style: const TextStyle(
-                              fontSize: 11, color: Colors.red)),
+                              fontSize: 11, color: DoctorColors.error)),
                     ),
                 ],
               ),
@@ -526,7 +566,7 @@ class _DoctorBasicDetailsScreenState
               Container(
                 height: AppDimens1.inputHeight,
                 decoration: BoxDecoration(
-                    color: AppColors.inputBg3,
+                    color: DoctorColors.inputBg,
                     borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
                 child: Row(children: [
                   Expanded(
@@ -553,12 +593,12 @@ class _DoctorBasicDetailsScreenState
                       GestureDetector(
                         onTap: _incrementExp,
                         child: const Icon(Icons.keyboard_arrow_up,
-                            color: AppColors.textMuted3, size: 18),
+                            color: DoctorColors.textMuted, size: 18),
                       ),
                       GestureDetector(
                         onTap: _decrementExp,
                         child: const Icon(Icons.keyboard_arrow_down,
-                            color: AppColors.textMuted3, size: 18),
+                            color: DoctorColors.textMuted, size: 18),
                       ),
                     ],
                   ),
@@ -603,7 +643,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors.inputBg3,
+              color: DoctorColors.inputBg,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -626,7 +666,7 @@ class _DoctorBasicDetailsScreenState
               child: const Padding(
                 padding: EdgeInsets.only(right: 12),
                 child: Icon(Icons.search,
-                    color: AppColors.primaryBlue3, size: 20),
+                    color: DoctorColors.primaryVivid, size: 20),
               ),
             ),
           ]),
@@ -636,9 +676,9 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.inputBg3,
+                color: DoctorColors.inputBg,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors.dividerColor3)),
+                border: Border.all(color: DoctorColors.divider)),
             constraints: const BoxConstraints(maxHeight: 180),
             child: ListView(
               shrinkWrap: true,
@@ -676,7 +716,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors.inputBg3,
+              color: DoctorColors.inputBg,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -699,7 +739,7 @@ class _DoctorBasicDetailsScreenState
               child: const Padding(
                 padding: EdgeInsets.only(right: 12),
                 child: Icon(Icons.search,
-                    color: AppColors.primaryBlue3, size: 20),
+                    color: DoctorColors.primaryVivid, size: 20),
               ),
             ),
           ]),
@@ -709,7 +749,7 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: AppDimens1.s),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.primaryBlue3,
+                color: DoctorColors.primaryVivid,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
             child: Column(
               children: _filteredCategory.asMap().entries.map((entry) {
@@ -811,7 +851,7 @@ class _DoctorBasicDetailsScreenState
         Container(
           height: AppDimens1.inputHeight,
           decoration: BoxDecoration(
-              color: AppColors.inputBg3,
+              color: DoctorColors.inputBg,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: Row(children: [
             Expanded(
@@ -831,7 +871,7 @@ class _DoctorBasicDetailsScreenState
             const Padding(
               padding: EdgeInsets.only(right: 12),
               child: Icon(Icons.search,
-                  color: AppColors.primaryBlue3, size: 20),
+                  color: DoctorColors.primaryVivid, size: 20),
             ),
           ]),
         ),
@@ -839,16 +879,16 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.inputBg3,
+                color: DoctorColors.inputBg,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors.dividerColor3)),
+                border: Border.all(color: DoctorColors.divider)),
             constraints: const BoxConstraints(maxHeight: 180),
             child: ListView(
               shrinkWrap: true,
               children: _filteredAddress.map((a) => ListTile(
                 dense: true,
                 leading: const Icon(Icons.location_on_outlined,
-                    color: AppColors.textMuted3, size: 18),
+                    color: DoctorColors.textMuted, size: 18),
                 title: Text(a, style: AppTextStyles.inputText),
                 onTap: () {
                   setState(() {
@@ -866,6 +906,16 @@ class _DoctorBasicDetailsScreenState
     );
   }
 
+  Widget _buildSignatureSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel(text: 'Signature'),
+        SignaturePad(data: doctorSignature),
+      ],
+    );
+  }
+
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
@@ -874,7 +924,7 @@ class _DoctorBasicDetailsScreenState
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-              color: AppColors.primaryBlue3,
+              color: DoctorColors.primaryVivid,
               borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
           child: const Text('Save',
               textAlign: TextAlign.center,
@@ -901,7 +951,7 @@ class _DoctorBasicDetailsScreenState
     return Container(
       height: AppDimens1.inputHeight,
       decoration: BoxDecoration(
-          color: AppColors.inputBg3,
+          color: DoctorColors.inputBg,
           borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
       child: TextField(
         controller: ctrl,
@@ -941,7 +991,7 @@ class _DoctorBasicDetailsScreenState
             height: AppDimens1.inputHeight,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-                color: AppColors.inputBg3,
+                color: DoctorColors.inputBg,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd)),
             child: Row(children: [
               Expanded(
@@ -954,7 +1004,7 @@ class _DoctorBasicDetailsScreenState
                   isOpen
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
-                  color: AppColors.primaryBlue3, size: 20),
+                  color: DoctorColors.primaryVivid, size: 20),
             ]),
           ),
         ),
@@ -962,9 +1012,9 @@ class _DoctorBasicDetailsScreenState
           const SizedBox(height: AppDimens1.xs),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.inputBg3,
+                color: DoctorColors.inputBg,
                 borderRadius: BorderRadius.circular(AppDimens1.radiusMd),
-                border: Border.all(color: AppColors.dividerColor3)),
+                border: Border.all(color: DoctorColors.divider)),
             child: Column(
               children: options.asMap().entries.map((entry) {
                 final isLast = entry.key == options.length - 1;
@@ -982,13 +1032,13 @@ class _DoctorBasicDetailsScreenState
                         ),
                         if (value == opt.value)
                           const Icon(Icons.check,
-                              color: AppColors.primaryBlue3, size: 16),
+                              color: DoctorColors.primaryVivid, size: 16),
                       ]),
                     ),
                   ),
                   if (!isLast)
                     const Divider(
-                        height: 1, color: AppColors.dividerColor3),
+                        height: 1, color: DoctorColors.divider),
                 ]);
               }).toList(),
             ),

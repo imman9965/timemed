@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
+import '../../../core/widgets/common/curved_header.dart';
 import '../add_online_consultant_list/add_online_consultant_schedule_list.dart';
+import '../add_online_consultant_list/dummy_data_1.dart';
 import '../medical_records/dummy_data_7.dart';
 import '../widgets/add_online_schedule_list.dart';
 
+// Screen theme: blue primary, green secondary
+const Color kPrimaryBlue = DoctorColors.primaryVivid;
+const Color kSecondaryGreen = DoctorColors.successTeal;
 
 class HospitalListScreen extends StatefulWidget {
   const HospitalListScreen({super.key});
@@ -15,44 +19,158 @@ class HospitalListScreen extends StatefulWidget {
 }
 
 class _HospitalListScreenState extends State<HospitalListScreen> {
+  // Local data — references the shared lists so added hospitals,
+  // schedules and online schedules persist across screen visits
   late final List<Hospital> _hospitals;
   late final List<HospitalSchedule> _schedules;
+  late final List<OnlineSchedule> _onlineSchedules;
 
-  // Online consultation schedule — single source of truth
-  OnlineSchedule? _onlineSchedule = OnlineSchedule(id: 'o1');
+  // Consultation details per online schedule (keyed by schedule id)
+  final Map<String, ConsultationScheduleData> _consultationData = {};
 
   @override
   void initState() {
     super.initState();
-    _hospitals = List.from(initialHospitals);
-    _schedules = List.from(initialSchedules);
+    _hospitals = initialHospitals;
+    _schedules = initialSchedules;
+    _onlineSchedules = initialOnlineSchedules;
+  }
+
+  // Day key → display label (order matters)
+  static const List<MapEntry<String, String>> _dayLabels = [
+    MapEntry('sun', 'Sun'),
+    MapEntry('mon', 'Mon'),
+    MapEntry('tue', 'Tue'),
+    MapEntry('wed', 'Wed'),
+    MapEntry('thu', 'Thu'),
+    MapEntry('fri', 'Fri'),
+    MapEntry('sat', 'Sat'),
+  ];
+
+  // ════════════════════════════════════════════════════
+  //  HELPERS
+  // ════════════════════════════════════════════════════
+
+  void _snack(String msg, Color bg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: bg,
+        behavior: SnackBarBehavior.floating,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   // ════════════════════════════════════════════════════
   //  ACTIONS
   // ════════════════════════════════════════════════════
 
+  // Adding a hospital also creates its Hospital Schedule entry and an
+  // Online Consultation schedule for that particular hospital
   void _onAddNewHospital() {
     showDialog(
       context: context,
       builder: (_) => _HospitalDialog(
-        onSave: (h) => setState(() => _hospitals.add(h)),
+        onSave: (h, fee, interval, from, to, consultation) =>
+            setState(() {
+          _hospitals.add(h);
+          _schedules.add(HospitalSchedule(
+            id: 'sch_${h.id}',
+            hospitalName: h.name,
+            fee: '₹$fee',
+            intervalMins: interval,
+          ));
+          _onlineSchedules.add(OnlineSchedule(
+            id: 'onl_${h.id}',
+            hospitalId: h.id,
+            hospitalName: h.name,
+            fromTime: from,
+            toTime: to,
+          ));
+          // Consultation details from the form → shown on the online card
+          _consultationData['onl_${h.id}'] = consultation;
+        }),
       ),
     );
   }
 
   void _onEditHospital(Hospital h) {
+    final schedIdx = _schedules.indexWhere(
+        (s) => s.id == 'sch_${h.id}' || s.hospitalName == h.name);
+    final existingSched = schedIdx >= 0 ? _schedules[schedIdx] : null;
+    final onlineIdx =
+        _onlineSchedules.indexWhere((o) => o.hospitalId == h.id);
+    final existingOnline =
+        onlineIdx >= 0 ? _onlineSchedules[onlineIdx] : null;
     showDialog(
       context: context,
       builder: (_) => _HospitalDialog(
         existing: h,
-        onSave: (updated) {
+        existingFee: existingSched?.fee.replaceAll('₹', ''),
+        existingInterval: existingSched?.intervalMins,
+        existingFrom: existingOnline?.fromTime,
+        existingTo: existingOnline?.toTime,
+        existingConsultation: existingOnline != null
+            ? _consultationData[existingOnline.id]
+            : null,
+        onSave: (updated, fee, interval, from, to, consultation) {
           setState(() {
             final idx = _hospitals.indexWhere((x) => x.id == h.id);
             if (idx >= 0) _hospitals[idx] = updated;
+            if (schedIdx >= 0) {
+              _schedules[schedIdx]
+                ..hospitalName = updated.name
+                ..fee = '₹$fee'
+                ..intervalMins = interval;
+            } else {
+              _schedules.add(HospitalSchedule(
+                id: 'sch_${updated.id}',
+                hospitalName: updated.name,
+                fee: '₹$fee',
+                intervalMins: interval,
+              ));
+            }
+            // Update (or recreate) the linked online schedule
+            if (existingOnline != null) {
+              existingOnline
+                ..hospitalName = updated.name
+                ..fromTime = from
+                ..toTime = to;
+              _consultationData[existingOnline.id] = consultation;
+            } else {
+              _onlineSchedules.add(OnlineSchedule(
+                id: 'onl_${updated.id}',
+                hospitalId: updated.id,
+                hospitalName: updated.name,
+                fromTime: from,
+                toTime: to,
+              ));
+              _consultationData['onl_${updated.id}'] = consultation;
+            }
           });
         },
       ),
+    );
+  }
+
+  // Delete hospital + its schedule + its online schedule together
+  void _onDeleteHospital(Hospital h) {
+    _confirmDelete(
+      message: 'This will remove ${h.name}, its hospital schedule '
+          'and its online consultation schedule.',
+      onConfirm: () => setState(() {
+        _hospitals.removeWhere((x) => x.id == h.id);
+        _schedules.removeWhere(
+            (s) => s.id == 'sch_${h.id}' || s.hospitalName == h.name);
+        for (final o
+            in _onlineSchedules.where((o) => o.hospitalId == h.id)) {
+          _consultationData.remove(o.id);
+        }
+        _onlineSchedules.removeWhere((o) => o.hospitalId == h.id);
+      }),
     );
   }
 
@@ -71,71 +189,159 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
     );
   }
 
-  // ✅ Fixed — opens dialog with current online schedule pre-filled,
-  // and correctly saves the result back into state
-  Future<void> _onEditOnlineSchedule() async {
+  void _onDeleteSchedule(HospitalSchedule s) {
+    _confirmDelete(
+      message:
+          'This will remove the hospital schedule for ${s.hospitalName}.',
+      onConfirm: () =>
+          setState(() => _schedules.removeWhere((x) => x.id == s.id)),
+    );
+  }
+
+  // Directly pick From/To time for an online schedule (tap on time chip)
+  Future<void> _pickOnlineTime(OnlineSchedule os, bool isFrom) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime:
+          (isFrom ? os.fromTime : os.toTime) ?? TimeOfDay.now(),
+      builder: (ctx, child) => Theme(
+        data: Theme.of(ctx).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: DoctorColors.primaryBrand,
+            onPrimary: Colors.white,
+            onSurface: DoctorColors.textDark,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked == null || !mounted) return;
+
+    // Validate: From must be earlier than To
+    final other = isFrom ? os.toTime : os.fromTime;
+    if (other != null) {
+      final pickedMins = picked.hour * 60 + picked.minute;
+      final otherMins = other.hour * 60 + other.minute;
+      final valid =
+          isFrom ? pickedMins < otherMins : pickedMins > otherMins;
+      if (!valid) {
+        _snack('From time must be earlier than To time',
+            DoctorColors.error);
+        return;
+      }
+    }
+
+    setState(() {
+      if (isFrom) {
+        os.fromTime = picked;
+      } else {
+        os.toTime = picked;
+      }
+    });
+  }
+
+  // Opens dialog pre-filled with the given hospital's online schedule
+  // (available days + times) and saves the result back into state
+  Future<void> _onEditOnlineSchedule(OnlineSchedule os) async {
     final result = await AddOnlineConsultationDialog.show(
       context,
-      initialData: _onlineSchedule,
+      initialData: os,
     );
 
-    if (result != null) {
+    if (result != null && mounted) {
       setState(() {
-        _onlineSchedule = result;
+        final idx = _onlineSchedules.indexWhere((x) => x.id == os.id);
+        if (idx >= 0) _onlineSchedules[idx] = result;
       });
 
-      if (mounted &&
-          _onlineSchedule?.fromTime != null &&
-          _onlineSchedule?.toTime != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Schedule saved: ${_onlineSchedule!.fromTime!.format(context)} → '
-                  '${_onlineSchedule!.toTime!.format(context)}',
-            ),
-            backgroundColor: AppColors.feeGreen4,
-            duration: const Duration(seconds: 2),
-          ),
+      if (result.fromTime != null && result.toTime != null) {
+        _snack(
+          '${os.hospitalName ?? 'Schedule'} saved: '
+          '${result.fromTime!.format(context)} → '
+          '${result.toTime!.format(context)}',
+          DoctorColors.successDeep,
         );
       }
     }
   }
 
-  Future<void> _upadteData() async {
-    final result = await AddOnlineConsultationScheduleDialog.show(
-      context,
-    );
+  Future<void> _updateData(OnlineSchedule os) async {
+    final result = await AddOnlineConsultationScheduleDialog.show(context);
 
+    if (result != null && mounted) {
+      setState(() => _consultationData[os.id] = result);
+      _snack(
+        'Updated: ${result.typeLabel} — Text ₹${result.textFee}, '
+        'Video ₹${result.videoFee}, Interval ${result.callInterval} mins',
+        DoctorColors.successDeep,
+      );
+    }
   }
 
+  void _onDeleteOnlineSchedule(OnlineSchedule os) {
+    _confirmDelete(
+      message: 'This will remove the online consultation schedule'
+          '${os.hospitalName != null ? ' for ${os.hospitalName}' : ''}.',
+      onConfirm: () => setState(() {
+        _onlineSchedules.removeWhere((x) => x.id == os.id);
+        _consultationData.remove(os.id);
+      }),
+    );
+  }
 
-  void _onDeleteOnlineSchedule() {
+  // Shared delete confirmation
+  void _confirmDelete({
+    required String message,
+    required VoidCallback onConfirm,
+  }) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text('Delete schedule?'),
-        content: const Text(
-            'This will remove the online consultation schedule.'),
+        backgroundColor: Colors.white,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: DoctorColors.errorSoftBg,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.delete_outline,
+                  color: DoctorColors.error, size: 20),
+            ),
+            const SizedBox(width: 10),
+            const Text('Delete?',
+                style:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          ],
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(
+              fontSize: 14, color: DoctorColors.textSecondary, height: 1.4),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text('Cancel',
+                style: TextStyle(color: DoctorColors.textSecondary)),
           ),
-          TextButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: DoctorColors.error,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
             onPressed: () {
-              setState(() => _onlineSchedule = null);
+              onConfirm();
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Deleted'),
-                  backgroundColor: AppColors.redDelete4,
-                  duration: const Duration(seconds: 1),
-                ),
-              );
+              _snack('Deleted', DoctorColors.error);
             },
-            child: Text('Delete',
-                style: TextStyle(color: AppColors.redDelete4)),
+            child: const Text('Delete',
+                style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -149,30 +355,59 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg4,
+      backgroundColor: DoctorColors.backgroundCream,
       body: Column(
         children: [
-          _buildHeader(),
+          CurvedHeader(title: "HOSPITAL LIST - BASED ON DOCTOR"),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHospitalListCard(),
-                  const SizedBox(height: 22),
-                  _buildSectionPill('Hospital Schedule List'),
-                  const SizedBox(height: 14),
-                  ..._schedules.map(_buildScheduleCard),
-                  const SizedBox(height: 14),
-                  _buildSectionPill('Online Consultation Schedule List'),
-                  const SizedBox(height: 14),
-                  // ✅ Only show card if schedule exists; otherwise show "Add" prompt
-                  if (_onlineSchedule != null)
-                    _buildOnlineScheduleCard()
+                  // ── Hospitals ─────────────────────────
+                  _sectionHeader(
+                    icon: Icons.local_hospital_rounded,
+                    title: 'Hospitals',
+                    count: _hospitals.length,
+                    trailing: _addNewButton(),
+                  ),
+                  const SizedBox(height: 12),
+                  if (_hospitals.isEmpty)
+                    _emptyState('No hospitals yet',
+                        'Tap "Add New" to add your first hospital')
                   else
-                    _buildAddOnlineSchedulePlaceholder(),
-                  const SizedBox(height: 20),
+                    ..._hospitals.map(_hospitalCard),
+
+                  const SizedBox(height: 24),
+
+                  // ── Hospital Schedules ────────────────
+                  _sectionHeader(
+                    icon: Icons.event_note_rounded,
+                    title: 'Hospital Schedule List',
+                    count: _schedules.length,
+                  ),
+                  const SizedBox(height: 12),
+                  if (_schedules.isEmpty)
+                    _emptyState('No schedules',
+                        'Schedules appear when you add a hospital')
+                  else
+                    ..._schedules.map(_scheduleCard),
+
+                  const SizedBox(height: 24),
+
+                  // ── Online Consultation ───────────────
+                  _sectionHeader(
+                    icon: Icons.videocam_rounded,
+                    title: 'Online Consultation Schedule List',
+                    count: _onlineSchedules.length,
+                  ),
+                  const SizedBox(height: 12),
+                  if (_onlineSchedules.isEmpty)
+                    _emptyState('No online schedules',
+                        'Online schedules appear when you add a hospital')
+                  else
+                    ..._onlineSchedules.map(_onlineScheduleCard),
                 ],
               ),
             ),
@@ -182,111 +417,83 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
     );
   }
 
-  // ── Header ────────────────────────────────────────────
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.primaryBlue4,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
-        ),
-      ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 16,
-        bottom: 22,
-      ),
-      child: const Text(
-        'HOSPITAL LIST -\nBASED ON DOCTOR',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 22,
-          height: 1.3,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
-
-  // ── Hospital List Card ────────────────────────────────
-  Widget _buildHospitalListCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.cardBg4,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Hospital List',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textDark4)),
-              _buildAddNewButton(),
-            ],
+  // ── Section header — accent bar + title + count chip ──
+  Widget _sectionHeader({
+    required IconData icon,
+    required String title,
+    required int count,
+    Widget? trailing,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: kPrimaryBlue,
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(height: 10),
-          const Divider(height: 1, color: AppColors.dividerColor4),
-          const SizedBox(height: 12),
-          ..._hospitals.asMap().entries.map((entry) {
-            final isLast = entry.key == _hospitals.length - 1;
-            return Column(children: [
-              _buildHospitalRow(entry.value),
-              if (!isLast)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child:
-                  Divider(height: 1, color: AppColors.dividerColor4),
-                ),
-            ]);
-          }),
-        ],
-      ),
+          child: Icon(icon, color: Colors.white, size: 16),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15.5,
+              fontWeight: FontWeight.w800,
+              color: DoctorColors.textPrimary,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(right: 8),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+          decoration: BoxDecoration(
+            color: DoctorColors.primarySoft,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            '$count',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              color: DoctorColors.primaryBrand,
+            ),
+          ),
+        ),
+        if (trailing != null) trailing,
+      ],
     );
   }
 
-  Widget _buildAddNewButton() {
+  Widget _addNewButton() {
     return GestureDetector(
       onTap: _onAddNewHospital,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.primaryBlue4,
-          borderRadius: BorderRadius.circular(50),
+          color: kSecondaryGreen,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: kSecondaryGreen.withOpacity(0.35),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 14,
-              height: 14,
-              decoration: const BoxDecoration(
-                color: AppColors.orangeBadge4,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.add,
-                  color: Colors.white, size: 11),
-            ),
-            const SizedBox(width: 6),
-            const Text('Add New',
+            Icon(Icons.add_rounded, color: Colors.white, size: 16),
+            SizedBox(width: 4),
+            Text('Add New',
                 style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
                     fontSize: 13)),
           ],
         ),
@@ -294,410 +501,514 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
     );
   }
 
-  Widget _buildHospitalRow(Hospital h) {
-    return Row(
-      children: [
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: AppColors.primaryBlue4,
-            borderRadius: BorderRadius.circular(8),
+  // ── Hospital card ─────────────────────────────────────
+  Widget _hospitalCard(Hospital h) {
+    final isOwn = h.type == 'Own';
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: _cardDecoration(),
+      child: Row(
+        children: [
+          // Gradient avatar
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: kPrimaryBlue,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(Icons.local_hospital_rounded,
+                color: Colors.white, size: 24),
           ),
-          child: const Icon(Icons.local_hospital,
-              color: Colors.white, size: 22),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(h.name,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: AppColors.textDark4)),
-              const SizedBox(height: 3),
-              Row(children: [
-                const Icon(Icons.phone,
-                    size: 12, color: AppColors.primaryBlue4),
-                const SizedBox(width: 4),
-                Text(h.phone,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(h.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecond4,
-                        fontWeight: FontWeight.w500)),
-              ]),
-            ],
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14.5,
+                        color: DoctorColors.textPrimary)),
+                const SizedBox(height: 4),
+                Row(children: [
+                  const Icon(Icons.phone_rounded,
+                      size: 12, color: DoctorColors.primaryBrand),
+                  const SizedBox(width: 4),
+                  Text(h.phone,
+                      style: const TextStyle(
+                          fontSize: 12.5,
+                          color: DoctorColors.textSecondary,
+                          fontWeight: FontWeight.w500)),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: DoctorColors.badgeIndigo,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      h.type,
+                      style: const TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w800,
+                        color: DoctorColors.textDark,
+                      ),
+                    ),
+                  ),
+                ]),
+              ],
+            ),
           ),
-        ),
-        Container(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppColors.typeBadgeBg4,
-            borderRadius: BorderRadius.circular(6),
+          _iconAction(Icons.edit_rounded, DoctorColors.primaryBrand,
+              DoctorColors.primarySoft, () => _onEditHospital(h)),
+          const SizedBox(width: 6),
+          _iconAction(Icons.delete_rounded, DoctorColors.error,
+              DoctorColors.errorSoftBg, () => _onDeleteHospital(h)),
+        ],
+      ),
+    );
+  }
+
+  // ── Hospital schedule card ────────────────────────────
+  Widget _scheduleCard(HospitalSchedule s) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: _cardDecoration(),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: kSecondaryGreen,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(Icons.event_available_rounded,
+                color: Colors.white, size: 24),
           ),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            const Text('Type: ',
-                style: TextStyle(
-                    fontSize: 11, color: AppColors.textSecond4)),
-            Text(h.type,
-                style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textDark4)),
-          ]),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(s.hospitalName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14.5,
+                        color: DoctorColors.textPrimary)),
+                const SizedBox(height: 6),
+                Row(children: [
+                  _miniChip(Icons.currency_rupee_rounded,
+                      'Fee: ${s.fee.replaceAll('₹', '')}',
+                      DoctorColors.badgeGreen,
+                      DoctorColors.badgeGreenText),
+                  const SizedBox(width: 6),
+                  _miniChip(Icons.timer_outlined,
+                      'Interval: ${s.intervalMins} mins',
+                      DoctorColors.badgeBlue,
+                      DoctorColors.badgeBlueText),
+                ]),
+              ],
+            ),
+          ),
+          _iconAction(Icons.edit_rounded, DoctorColors.primaryBrand,
+              DoctorColors.primarySoft, () => _onEditSchedule(s)),
+          const SizedBox(width: 6),
+          _iconAction(Icons.delete_rounded, DoctorColors.error,
+              DoctorColors.errorSoftBg, () => _onDeleteSchedule(s)),
+        ],
+      ),
+    );
+  }
+
+  // ── Online consultation card ──────────────────────────
+  Widget _onlineScheduleCard(OnlineSchedule os) {
+    final details = _consultationData[os.id];
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: _cardDecoration(radius: 18),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Gradient header strip — hospital name + actions
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 14, vertical: 10),
+              decoration: const BoxDecoration(color: kPrimaryBlue),
+              child: Row(
+                children: [
+                  const Icon(Icons.videocam_rounded,
+                      color: Colors.white, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      os.hospitalName ?? 'Online Consultation',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  // Edit available days + times (full schedule dialog)
+                  _headerIcon(Icons.edit_calendar_rounded,
+                      () => _onEditOnlineSchedule(os)),
+                  const SizedBox(width: 6),
+                  _headerIcon(Icons.delete_rounded,
+                      () => _onDeleteOnlineSchedule(os)),
+                ],
+              ),
+            ),
+
+            // Available days — set from the schedule dialog, tap to edit
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+              child: GestureDetector(
+                onTap: () => _onEditOnlineSchedule(os),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Icon(Icons.calendar_today_rounded,
+                          size: 14, color: DoctorColors.primaryBrand),
+                    ),
+                    const SizedBox(width: 8),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 3),
+                      child: Text('Days:',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: DoctorColors.textSecondary)),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: os.selectedDays.contains('all')
+                            ? [_dayPill('All Days')]
+                            : _dayLabels
+                                .where((d) =>
+                                    os.selectedDays.contains(d.key))
+                                .map((d) => _dayPill(d.value))
+                                .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // From → To time chips
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
+              child: Row(
+                children: [
+                  // Tap opens the time picker directly
+                  Expanded(
+                      child: _timeChip('From', os.fromTime,
+                          () => _pickOnlineTime(os, true))),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Icon(Icons.arrow_forward_rounded,
+                        size: 18, color: DoctorColors.primaryBrand),
+                  ),
+                  Expanded(
+                      child: _timeChip('To', os.toTime,
+                          () => _pickOnlineTime(os, false))),
+                ],
+              ),
+            ),
+
+            // Consultation details (all info from the Edit dialog)
+            if (details != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: DoctorColors.backgroundFrost,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: DoctorColors.dividerSoft),
+                  ),
+                  child: Column(
+                    children:
+                        summaryItems.asMap().entries.map((entry) {
+                      final isLast =
+                          entry.key == summaryItems.length - 1;
+                      final item = entry.value;
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 7),
+                            child: Row(
+                              children: [
+                                Icon(item.icon,
+                                    size: 15,
+                                    color: DoctorColors.primaryBrand),
+                                const SizedBox(width: 8),
+                                Text(
+                                  item.label,
+                                  style: const TextStyle(
+                                    color: DoctorColors.textSecondary,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11.5,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    item.valueGetter(details),
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      fontSize: 11.5,
+                                      color: DoctorColors.textPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (!isLast)
+                            const Divider(
+                                height: 1,
+                                color: DoctorColors.dividerSoft),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+
+            // Always available — set or edit the consultation details
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+            //   child: GestureDetector(
+            //     onTap: () => _updateData(os),
+            //     child: Container(
+            //       width: double.infinity,
+            //       padding: const EdgeInsets.symmetric(vertical: 12),
+            //       decoration: BoxDecoration(
+            //         color: DoctorColors.primarySoft,
+            //         borderRadius: BorderRadius.circular(12),
+            //         border: Border.all(
+            //             color: DoctorColors.dividerSoft, width: 1.2),
+            //       ),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           const Icon(Icons.tune_rounded,
+            //               size: 16, color: DoctorColors.primaryBrand),
+            //           const SizedBox(width: 6),
+            //           Text(
+            //             details == null
+            //                 ? 'Set Consultation Details'
+            //                 : 'Edit Consultation Details',
+            //             style: const TextStyle(
+            //               fontSize: 12.5,
+            //               fontWeight: FontWeight.w800,
+            //               color: DoctorColors.primaryBrand,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
+            const SizedBox(height: 14),
+          ],
         ),
-        const SizedBox(width: 8),
-        _buildEditButton(() => _onEditHospital(h)),
+      ),
+    );
+  }
+
+  // ── Small building blocks ─────────────────────────────
+
+  BoxDecoration _cardDecoration({double radius = 16}) {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(color: DoctorColors.dividerCool),
+      boxShadow: [
+        BoxShadow(
+          color: DoctorColors.primaryBrand.withOpacity(0.06),
+          blurRadius: 14,
+          offset: const Offset(0, 4),
+        ),
       ],
     );
   }
 
-  // ── Section Pill ─────────────────────────────────────
-  Widget _buildSectionPill(String label) {
-    return Align(
-      alignment: Alignment.centerLeft,
+  Widget _iconAction(
+      IconData icon, Color color, Color bg, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        width: 34,
+        height: 34,
         decoration: BoxDecoration(
-          color: AppColors.primaryBlue4,
-          borderRadius: BorderRadius.circular(50),
+          color: bg,
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Text(label,
-            style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 14)),
+        child: Icon(icon, size: 17, color: color),
       ),
     );
   }
 
-  // ── Schedule Card ────────────────────────────────────
-  Widget _buildScheduleCard(HospitalSchedule s) {
+  Widget _headerIcon(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Icon(icon, size: 15, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _dayPill(String label) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.cardBg4,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          )
-        ],
+        color: kSecondaryGreen,
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _miniChip(
+      IconData icon, String label, Color bg, Color fg) {
+    return Container(
+      padding:
+          const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(s.hospitalName,
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textDark4)),
-              _buildEditButton(() => _onEditSchedule(s)),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(children: [
-            Text('Fee: ',
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textDark4)),
-            Text(s.fee,
-                style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.feeGreen4)),
-          ]),
-          const SizedBox(height: 10),
-          const Divider(height: 1, color: AppColors.dividerColor4),
-          const SizedBox(height: 10),
-          Row(children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: const BoxDecoration(
-                color: AppColors.primaryBlue4,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.access_time,
-                  color: Colors.white, size: 12),
-            ),
-            const SizedBox(width: 6),
-            Text('Interval In Mins: ',
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textDark4)),
-            Text('${s.intervalMins}',
-                style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryBlue4)),
-          ]),
+          Icon(icon, size: 11, color: fg),
+          const SizedBox(width: 3),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: fg)),
         ],
       ),
     );
   }
 
-  // ── Online Schedule Card (design unchanged) ──────────
-  Widget _buildOnlineScheduleCard() {
-    return Center(
+  Widget _timeChip(String label, TimeOfDay? time, VoidCallback onTap) {
+    final hasTime = time != null;
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          color: hasTime
+              ? DoctorColors.backgroundFrost
+              : DoctorColors.inputBgSoft,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: hasTime
+                ? DoctorColors.primaryAccent
+                : DoctorColors.dividerNeutral,
+            width: 1.2,
+          ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
           children: [
-            const SizedBox(height: 14),
-
-            // 🔥 Inner Card with blue border
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.symmetric(
-                  vertical: 16, horizontal: 18),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F8FF),
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-                border: Border.all(
-                  color: const Color(0xFFD6E4FF),
-                  width: 1.5,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // FROM
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "From",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // ✅ reads from _onlineSchedule, tapping opens edit dialog
-                      _timeBox(_onlineSchedule?.fromTime,
-                          _onEditOnlineSchedule),
-                    ],
-                  ),
-
-                  // ARROW
-                  const Padding(
-                    padding:
-                    EdgeInsets.only(top: 24, left: 8, right: 8),
-                    child: Icon(Icons.arrow_forward,
-                        size: 22, color: Colors.black),
-                  ),
-
-                  // TO
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "To",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      _timeBox(_onlineSchedule?.toTime,
-                          _onEditOnlineSchedule),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 14),
-
-            // 🔥 Buttons Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Icon(Icons.access_time_rounded,
+                size: 15,
+                color: hasTime
+                    ? DoctorColors.primaryBrand
+                    : DoctorColors.textMuted),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // EDIT — ✅ now opens the correct dialog with pre-filled data
-                GestureDetector(
-                  onTap: _upadteData,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 7),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.12),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.edit,
-                            size: 14, color: Color(0xFF1A73FF)),
-                        SizedBox(width: 4),
-                        Text(
-                          "Edit",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 12),
-
-                // DELETE
-                GestureDetector(
-                  onTap: _onDeleteOnlineSchedule,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 7),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF1744),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      "Delete",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                Text(label,
+                    style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: DoctorColors.textSecondary)),
+                Text(
+                  hasTime ? time.format(context) : 'Set time',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: hasTime
+                        ? DoctorColors.textPrimary
+                        : DoctorColors.textMuted,
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 16),
           ],
         ),
       ),
     );
   }
 
-  // Shown when schedule was deleted — tap to add a new one
-  Widget _buildAddOnlineSchedulePlaceholder() {
-    return Center(
-      child: GestureDetector(
-        onTap: () async {
-          final result =
-          await AddOnlineConsultationDialog.show(context);
-          if (result != null) {
-            setState(() => _onlineSchedule = result);
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 24, vertical: 14),
-          decoration: BoxDecoration(
-            color: AppColors.primaryBlue4,
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.add, color: Colors.white, size: 18),
-              SizedBox(width: 6),
-              Text('Add Online Schedule',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14)),
-            ],
-          ),
-        ),
+  Widget _emptyState(String title, String subtitle) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 26),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: DoctorColors.dividerCool),
       ),
-    );
-  }
-
-  Widget _timeBox(TimeOfDay? time, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 90,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-              color: const Color(0xFF1A73FF), width: 1.5),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          time != null ? time.format(context) : "Time",
-          style: TextStyle(
-            // ✅ darker when a value exists, muted placeholder otherwise
-            color: time != null
-                ? AppColors.textDark4
-                : Colors.grey.shade400,
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ── Shared Edit button ────────────────────────────────
-  Widget _buildEditButton(VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppColors.inputBg4,
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: AppColors.dividerColor4),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.edit_outlined,
-                size: 14, color: AppColors.primaryBlue4),
-            const SizedBox(width: 4),
-            Text('Edit',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textDark4)),
-          ],
-        ),
+      child: Column(
+        children: [
+          const Icon(Icons.inbox_rounded,
+              size: 34, color: DoctorColors.avatarGrey),
+          const SizedBox(height: 8),
+          Text(title,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: DoctorColors.textPrimary)),
+          const SizedBox(height: 3),
+          Text(subtitle,
+              style: const TextStyle(
+                  fontSize: 12,
+                  color: DoctorColors.textSecondary)),
+        ],
       ),
     );
   }
@@ -705,14 +1016,36 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
 
 // ════════════════════════════════════════════════════════
 //  ADD / EDIT HOSPITAL DIALOG
+//  Collects hospital info + schedule fee/interval + online
+//  consultation From/To times — everything in one form
 // ════════════════════════════════════════════════════════
 
 class _HospitalDialog extends StatefulWidget {
   final Hospital? existing;
-  final void Function(Hospital) onSave;
+  final String? existingFee;
+  final int? existingInterval;
+  final TimeOfDay? existingFrom;
+  final TimeOfDay? existingTo;
+  final ConsultationScheduleData? existingConsultation;
+
+  /// Returns the hospital plus its schedule info (fee + interval),
+  /// online consultation times AND consultation details (type + text/video
+  /// charges) so the caller can create/update everything at the same time
+  final void Function(
+      Hospital,
+      String fee,
+      int intervalMins,
+      TimeOfDay? from,
+      TimeOfDay? to,
+      ConsultationScheduleData consultation) onSave;
 
   const _HospitalDialog({
     this.existing,
+    this.existingFee,
+    this.existingInterval,
+    this.existingFrom,
+    this.existingTo,
+    this.existingConsultation,
     required this.onSave,
   });
 
@@ -723,7 +1056,14 @@ class _HospitalDialog extends StatefulWidget {
 class _HospitalDialogState extends State<_HospitalDialog> {
   late final TextEditingController _nameCtrl;
   late final TextEditingController _phoneCtrl;
+  late final TextEditingController _feeCtrl;
+  late final TextEditingController _intervalCtrl;
+  late final TextEditingController _textFeeCtrl;
+  late final TextEditingController _videoFeeCtrl;
   String _type = 'Own';
+  TimeOfDay? _fromTime;
+  TimeOfDay? _toTime;
+  ConsultationType _consultType = ConsultationType.both;
 
   @override
   void initState() {
@@ -731,22 +1071,66 @@ class _HospitalDialogState extends State<_HospitalDialog> {
     _nameCtrl = TextEditingController(text: widget.existing?.name ?? '');
     _phoneCtrl =
         TextEditingController(text: widget.existing?.phone ?? '');
+    _feeCtrl = TextEditingController(text: widget.existingFee ?? '');
+    _intervalCtrl = TextEditingController(
+        text: widget.existingInterval?.toString() ?? '');
+    _textFeeCtrl = TextEditingController(
+        text: widget.existingConsultation?.textFee.toString() ?? '');
+    _videoFeeCtrl = TextEditingController(
+        text: widget.existingConsultation?.videoFee.toString() ?? '');
     _type = widget.existing?.type ?? 'Own';
+    _fromTime = widget.existingFrom;
+    _toTime = widget.existingTo;
+    _consultType =
+        widget.existingConsultation?.type ?? ConsultationType.both;
   }
 
   @override
   void dispose() {
     _nameCtrl.dispose();
     _phoneCtrl.dispose();
+    _feeCtrl.dispose();
+    _intervalCtrl.dispose();
+    _textFeeCtrl.dispose();
+    _videoFeeCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickTime(bool isFrom) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: (isFrom ? _fromTime : _toTime) ?? TimeOfDay.now(),
+      builder: (ctx, child) => Theme(
+        data: Theme.of(ctx).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: DoctorColors.primaryBrand,
+            onPrimary: Colors.white,
+            onSurface: DoctorColors.textDark,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isFrom) {
+          _fromTime = picked;
+        } else {
+          _toTime = picked;
+        }
+      });
+    }
   }
 
   void _save() {
     if (_nameCtrl.text.trim().isEmpty ||
-        _phoneCtrl.text.trim().isEmpty) {
+        _phoneCtrl.text.trim().isEmpty ||
+        _feeCtrl.text.trim().isEmpty ||
+        _intervalCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Please fill all fields'),
+            behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 1)),
       );
       return;
@@ -758,67 +1142,441 @@ class _HospitalDialogState extends State<_HospitalDialog> {
       phone: _phoneCtrl.text.trim(),
       type: _type,
     );
-    widget.onSave(h);
+    widget.onSave(
+      h,
+      _feeCtrl.text.trim(),
+      int.tryParse(_intervalCtrl.text.trim()) ?? 0,
+      _fromTime,
+      _toTime,
+      ConsultationScheduleData(
+        type: _consultType,
+        // Only the charges relevant to the selected type are saved
+        textFee: _consultType == ConsultationType.videoOnly
+            ? 0
+            : int.tryParse(_textFeeCtrl.text.trim()) ?? 0,
+        videoFee: _consultType == ConsultationType.textOnly
+            ? 0
+            : int.tryParse(_videoFeeCtrl.text.trim()) ?? 0,
+        callInterval: int.tryParse(_intervalCtrl.text.trim()) ?? 0,
+      ),
+    );
     Navigator.pop(context);
+  }
+
+  // Radio row for consultation type (Text / Video / Both)
+  Widget _consultTypeRow(ConsultationOption opt) {
+    final selected = _consultType == opt.type;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => setState(() => _consultType = opt.type),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected
+                    ? DoctorColors.success
+                    : DoctorColors.avatarGrey,
+                width: 1.5,
+              ),
+              color:
+                  selected ? DoctorColors.success : Colors.transparent,
+            ),
+            child: selected
+                ? const Center(
+                    child: Icon(Icons.circle,
+                        color: Colors.white, size: 6))
+                : null,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              opt.label,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: DoctorColors.textDark,
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  InputDecoration _fieldDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(
+          color: DoctorColors.textSecondary, fontSize: 13.5),
+      prefixIcon:
+          Icon(icon, size: 18, color: DoctorColors.primaryBrand),
+      filled: true,
+      fillColor: DoctorColors.backgroundFrost,
+      isDense: true,
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: DoctorColors.dividerSoft),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: DoctorColors.primaryBrand, width: 1.4),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    );
+  }
+
+  Widget _sectionLabel(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 11.5,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.6,
+            color: DoctorColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _formTimeBox(String label, TimeOfDay? time, bool isFrom) {
+    final hasTime = time != null;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _pickTime(isFrom),
+        child: Container(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          decoration: BoxDecoration(
+            color: DoctorColors.backgroundFrost,
+            border: Border.all(
+              color: hasTime
+                  ? DoctorColors.primaryAccent
+                  : DoctorColors.dividerSoft,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.access_time_rounded,
+                  size: 16,
+                  color: hasTime
+                      ? DoctorColors.primaryBrand
+                      : DoctorColors.textMuted),
+              const SizedBox(width: 8),
+              Text(
+                hasTime ? time.format(context) : label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight:
+                      hasTime ? FontWeight.w700 : FontWeight.w500,
+                  color: hasTime
+                      ? DoctorColors.textPrimary
+                      : DoctorColors.textMuted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _typeChip(String value) {
+    final selected = _type == value;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _type = value),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: selected
+                ? kSecondaryGreen
+                : DoctorColors.backgroundFrost,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected
+                  ? Colors.transparent
+                  : kSecondaryGreen,
+            ),
+          ),
+          child: Text(
+            value,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+              color:
+                  selected ? Colors.white : DoctorColors.textSecondary,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.existing != null;
-    return AlertDialog(
+    return Dialog(
+      backgroundColor: Colors.white,
+      insetPadding:
+          const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)),
-      title: Text(isEdit ? 'Edit Hospital' : 'Add New Hospital'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _nameCtrl,
-            decoration: const InputDecoration(
-                labelText: 'Hospital name',
-                border: OutlineInputBorder()),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _phoneCtrl,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(10),
+          borderRadius: BorderRadius.circular(22)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ── Gradient header ──────────────────────
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: const BoxDecoration(color: kPrimaryBlue),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                          isEdit
+                              ? Icons.edit_rounded
+                              : Icons.add_business_rounded,
+                          color: Colors.white,
+                          size: 18),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        isEdit ? 'Edit Hospital' : 'Add New Hospital',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.close_rounded,
+                          color: Colors.white, size: 20),
+                    ),
+                  ],
+                ),
+              ),
+
+              // ── Body ─────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  children: [
+                    _sectionLabel('HOSPITAL DETAILS'),
+                    TextField(
+                      controller: _nameCtrl,
+                      decoration: _fieldDecoration('Hospital name',
+                          Icons.local_hospital_rounded),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _phoneCtrl,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
+                      ],
+                      decoration: _fieldDecoration(
+                          'Phone', Icons.phone_rounded),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(children: [
+                      _typeChip('Own'),
+                      const SizedBox(width: 10),
+                      _typeChip('Partner'),
+                    ]),
+
+                    const SizedBox(height: 18),
+                    _sectionLabel('HOSPITAL SCHEDULE'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _feeCtrl,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(6),
+                            ],
+                            decoration: _fieldDecoration('Fee (₹)',
+                                Icons.currency_rupee_rounded),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: _intervalCtrl,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                            ],
+                            decoration: _fieldDecoration(
+                                'Interval', Icons.timer_outlined),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+                    _sectionLabel('ONLINE CONSULTATION'),
+                    Row(
+                      children: [
+                        _formTimeBox('From Time', _fromTime, true),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8),
+                          child: Icon(Icons.arrow_forward_rounded,
+                              size: 16,
+                              color: DoctorColors.primaryBrand),
+                        ),
+                        _formTimeBox('To Time', _toTime, false),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+                    _sectionLabel('CONSULTATION'),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: DoctorColors.backgroundFrost,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: DoctorColors.dividerSoft),
+                      ),
+                      child: Column(
+                        children: consultationOptions
+                            .map(_consultTypeRow)
+                            .toList(),
+                      ),
+                    ),
+                    // Charge fields follow the selected consultation type:
+                    // Text only → text charge, Video only → video charge,
+                    // Both → both fields. Digits only.
+                    if (_consultType == ConsultationType.textOnly ||
+                        _consultType == ConsultationType.both) ...[
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _textFeeCtrl,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        decoration: _fieldDecoration(
+                            'Text Consultation Charge (₹)',
+                            Icons.chat_bubble_outline_rounded),
+                      ),
+                    ],
+                    if (_consultType == ConsultationType.videoOnly ||
+                        _consultType == ConsultationType.both) ...[
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _videoFeeCtrl,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        decoration: _fieldDecoration(
+                            'Video Consultation Charge (₹)',
+                            Icons.videocam_outlined),
+                      ),
+                    ],
+
+                    const SizedBox(height: 22),
+
+                    // ── Actions ─────────────────────────
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 13),
+                              side: const BorderSide(
+                                  color: DoctorColors.dividerCool),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(12)),
+                            ),
+                            child: const Text('Cancel',
+                                style: TextStyle(
+                                    color:
+                                        DoctorColors.textSecondary,
+                                    fontWeight: FontWeight.w700)),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: _save,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 13),
+                              decoration: BoxDecoration(
+                                color: kPrimaryBlue,
+                                borderRadius:
+                                    BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: kPrimaryBlue
+                                        .withOpacity(0.35),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                isEdit
+                                    ? 'Update Hospital'
+                                    : 'Add Hospital',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
-            decoration: const InputDecoration(
-                labelText: 'Phone', border: OutlineInputBorder()),
           ),
-          const SizedBox(height: 12),
-          Row(children: [
-            const Text('Type: '),
-            const SizedBox(width: 8),
-            ChoiceChip(
-              label: const Text('Own'),
-              selected: _type == 'Own',
-              onSelected: (_) => setState(() => _type = 'Own'),
-            ),
-            const SizedBox(width: 8),
-            ChoiceChip(
-              label: const Text('Partner'),
-              selected: _type == 'Partner',
-              onSelected: (_) => setState(() => _type = 'Partner'),
-            ),
-          ]),
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
-        ElevatedButton(
-          onPressed: _save,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBlue4),
-          child: Text(isEdit ? 'Update' : 'Add',
-              style: const TextStyle(color: Colors.white)),
         ),
-      ],
+      ),
     );
   }
 }
@@ -875,52 +1633,167 @@ class _ScheduleDialogState extends State<_ScheduleDialog> {
     Navigator.pop(context);
   }
 
+  InputDecoration _fieldDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(
+          color: DoctorColors.textSecondary, fontSize: 13.5),
+      prefixIcon:
+          Icon(icon, size: 18, color: DoctorColors.primaryBrand),
+      filled: true,
+      fillColor: DoctorColors.backgroundFrost,
+      isDense: true,
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: DoctorColors.dividerSoft),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: DoctorColors.primaryBrand, width: 1.4),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Dialog(
+      backgroundColor: Colors.white,
+      insetPadding:
+          const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)),
-      title: const Text('Edit Schedule'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _nameCtrl,
-            decoration: const InputDecoration(
-                labelText: 'Hospital name',
-                border: OutlineInputBorder()),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _feeCtrl,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-                labelText: 'Fee (₹)', border: OutlineInputBorder()),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _intervalCtrl,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-                labelText: 'Interval (mins)',
-                border: OutlineInputBorder()),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
-        ElevatedButton(
-          onPressed: _save,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBlue4),
-          child: const Text('Update',
-              style: TextStyle(color: Colors.white)),
+          borderRadius: BorderRadius.circular(22)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Gradient header
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(18),
+              decoration: const BoxDecoration(color: kSecondaryGreen),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.event_note_rounded,
+                        color: Colors.white, size: 18),
+                  ),
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Text(
+                      'Edit Schedule',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(Icons.close_rounded,
+                        color: Colors.white, size: 20),
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _nameCtrl,
+                    decoration: _fieldDecoration('Hospital name',
+                        Icons.local_hospital_rounded),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _feeCtrl,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: _fieldDecoration(
+                              'Fee (₹)', Icons.currency_rupee_rounded),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: _intervalCtrl,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: _fieldDecoration(
+                              'Interval', Icons.timer_outlined),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 13),
+                            side: const BorderSide(
+                                color: DoctorColors.dividerCool),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(12)),
+                          ),
+                          child: const Text('Cancel',
+                              style: TextStyle(
+                                  color: DoctorColors.textSecondary,
+                                  fontWeight: FontWeight.w700)),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 2,
+                        child: GestureDetector(
+                          onTap: _save,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 13),
+                            decoration: BoxDecoration(
+                              color: kSecondaryGreen,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'Update',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

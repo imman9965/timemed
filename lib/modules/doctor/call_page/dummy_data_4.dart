@@ -1,11 +1,9 @@
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:timesmed_project/routes/app_pages.dart';
-
 import '../../../routes/app_routes.dart';
+
+
 class MenuItem {
-  final IconData icon;
+  final String icon;
   final String label;
   final String route;
 
@@ -16,49 +14,49 @@ class MenuItem {
   });
 }
 
-final menuItems = [
+// ── Doctor input menu: lab test, prescription, history ──────────────────────
+final doctorMenuItems = [
   MenuItem(
-    icon: Icons.biotech_outlined,
+    icon: "assets/icons/img.png",
     label: 'Lab Test',
     route: AppRoutes.labTest, // ✅ use constant
   ),
   MenuItem(
-    icon: Icons.groups_outlined,
-    label: 'Move to Queue',
-    route: AppRoutes.queue,
-  ),
-  MenuItem(
-    icon: Icons.assignment_outlined,
+    icon: "assets/icons/img_10.png",
     label: 'Prescription',
     route: AppRoutes.prescription,
   ),
   MenuItem(
-    icon: Icons.history_outlined,
+    icon: "assets/icons/img_5.png",
     label: 'History',
-    route: AppRoutes.history,
+    route: AppRoutes.medicalRecordHistory,
   ),
+];
+
+// ── Patient menu: notes, medical records ────────────────────────────────────
+final patientMenuItems = [
   MenuItem(
-    icon: Icons.note_add_outlined,
+    icon: "assets/icons/img_7.png",
     label: 'Notes',
     route: AppRoutes.notes,
   ),
   MenuItem(
-    icon: Icons.folder_shared_outlined,
+    icon: "assets/icons/img_9.png",
     label: 'Medical Records',
     route: AppRoutes.medicalRecords, // ✅ match router
   ),
 ];
 
 final callControls = [
-  CallControl(icon: Icons.flip_camera_ios_outlined, isRed: false),
-   CallControl(icon: Icons.videocam_outlined, isRed: false),
-   CallControl(icon: Icons.call_end_rounded, isRed: true),
-   CallControl(icon: Icons.mic_outlined, isRed: false),
-   CallControl(icon: Icons.volume_up_outlined, isRed: false),
+   CallControl(icon:"assets/icons/img_12.png" ,isRed: false),
+   CallControl(icon: "assets/icons/img_13.png", isRed: false),
+   CallControl(icon:"assets/icons/img_17.png", isRed: true),
+   CallControl(icon: "assets/icons/img_14.png", isRed: false),
+   CallControl(icon: "assets/icons/img_15.png", isRed: false),
 ];
 
 class CallControl {
-  final IconData icon;
+  final String icon;
   final bool isRed;
    CallControl({required this.icon, required this.isRed});
 }

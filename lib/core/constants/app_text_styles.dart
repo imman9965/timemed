@@ -10,7 +10,7 @@ class AppTextStyles {
 
   // Headers (white text over blue header banner)
   static const TextStyle headerTitle = TextStyle(
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: FontWeight.w700,
     color: Colors.white,
     height: 1.2,
@@ -24,7 +24,6 @@ class AppTextStyles {
     height: 1.2,
   );
 
-  // Section labels (typically blue)
   static const TextStyle sectionTitle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
@@ -38,6 +37,18 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle titleBody = TextStyle(
+    fontSize: 11.8,
+    fontWeight: FontWeight.bold,
+    color: AppColors.blackPrimary,
+  );
+
+
+  static const TextStyle titleBodyblue = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primary,
+  );
   static const TextStyle body = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,

@@ -8,17 +8,18 @@ import 'package:timesmed_project/core/widgets/sapce.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
+import '../../../../core/constants/app_text_styles.dart';
 import '../controller/login_controller.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class DoctorLoginPage extends StatefulWidget {
+  const DoctorLoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<DoctorLoginPage> createState() => _DoctorLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final LoginControllerctr = Get.put(LoginController());
+class _DoctorLoginPageState extends State<DoctorLoginPage> {
+  final loginController = Get.put(LoginController());
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -64,21 +65,13 @@ class _LoginPageState extends State<LoginPage> {
                               children: [
                                 const Text(
                                   "Login",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.white,
-                                  ),
+                                  style: AppTextStyles.headerTitle,
                                 ),
 
                                 const Space(height: 25),
                                 const Text(
                                   "Please sign in to continue",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.white,
-                                  ),
+                                  style: AppTextStyles.headerTitleSmall,
                                 ),
                                 const Space(height: 25),
 
@@ -104,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                                   TitleTextFormField(
                                     borderRadius: 25,
                                     controller:
-                                        LoginControllerctr.mobileController,
+                                        loginController.mobileController,
                                     filled: true,
                                     fillColor: AppColors.white,
                                     hintText: "Enter Mobile Number",
@@ -121,14 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                                 ] else ...[
                                   TitleTextFormField(
                                     controller:
-                                        LoginControllerctr.emailController,
+                                        loginController.emailController,
                                     hintText: "Enter Email",
                                     prefixIcon: Icon(Icons.email),
                                     filled: true,
                                     fillColor: AppColors.white,
                                     borderRadius: 25,
                                     validator: (value) {
-                                      if (LoginControllerctr
+                                      if (loginController
                                           .emailController
                                           .text
                                           .isEmpty) {
@@ -141,8 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 15),
 
                                   TitleTextFormField(
-                                    controller: LoginControllerctr
-                                        .passwordController,
+                                    controller:
+                                        loginController.passwordController,
                                     hintText: "Enter Password",
                                     prefixIcon: Icon(Icons.lock),
                                     obscureText: obscurePassword,
@@ -162,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     validator: (value) {
-                                      if (LoginControllerctr
+                                      if (loginController
                                           .passwordController
                                           .text
                                           .isEmpty) {
@@ -179,21 +172,21 @@ class _LoginPageState extends State<LoginPage> {
                                 CommonButton(
                                   title: isOtpLogin ? "Send OTP" : "LOGIN",
                                   width: 150,
-                                  borderRadius: 12,
+                                  borderRadius: 30,
                                   onPressed: () {
                                     if (isOtpLogin) {
                                       if (formKey.currentState!.validate()) {
-                                        LoginControllerctr.sendOtp();
+                                        loginController.sendOtp();
                                       }
-                                      LoginControllerctr.mobileController
+                                      loginController.mobileController
                                           .clear();
                                     } else {
                                       if (formKey.currentState!.validate()) {
-                                        LoginControllerctr.loginWithEmail();
+                                        loginController.loginWithEmail();
                                       }
-                                      LoginControllerctr.emailController
+                                      loginController.emailController
                                           .clear();
-                                      LoginControllerctr.passwordController
+                                      loginController.passwordController
                                           .clear();
                                     }
                                   },
@@ -252,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   /// LOADING OVERLAY
                   Obx(() {
-                    if (!LoginControllerctr.isLoading.value) {
+                    if (!loginController.isLoading.value) {
                       return const SizedBox();
                     }
                     return const Center(
@@ -268,7 +261,9 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.aiChat, extra: 'doctor');
+                  },
 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -286,11 +281,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Text(
                           "How can i help you ?",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(25),
@@ -315,10 +310,11 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             isOtpLogin = value;
             formKey.currentState?.reset();
-            LoginControllerctr.mobileController.clear();
-            LoginControllerctr.emailController.clear();
-            LoginControllerctr.passwordController.clear();
+            loginController.mobileController.clear();
+            loginController.emailController.clear();
+            loginController.passwordController.clear();
           });
+          loginController.clearErrors();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),

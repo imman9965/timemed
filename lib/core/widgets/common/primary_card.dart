@@ -25,17 +25,17 @@ class PrimaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin,
+      // margin: margin,
       padding: padding,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(radius),
         border: border,
-        boxShadow: const [
+        boxShadow:  [
           BoxShadow(
-            color: Color(0x0F000000),
+            color: Colors.grey.shade400,
             blurRadius: 10,
-            offset: Offset(0, 2),
+            offset: Offset(0, 3),
           ),
         ],
       ),

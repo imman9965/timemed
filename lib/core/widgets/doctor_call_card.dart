@@ -1,33 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../modules/doctor/schedule_appointment/schedule_appointment.dart';
+import '../../modules/doctor/widgets/theme.dart';
+
 class DoctorCallCard extends StatelessWidget {
   const DoctorCallCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1976D2), // blue background
-        borderRadius: BorderRadius.circular(20),
+      decoration: const BoxDecoration(
+        color: AppColors.primary,
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
       child: Row(
         children: [
-          /// 🔹 Doctor Name
           const Expanded(
             child: Text(
-              "Dr.Mariappan",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
+              "DR.MARIAPPAN",
+              style:   TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
             ),
           ),
-
-          /// 🔹 Call Info Section
           Row(
             children: [
               const Icon(CupertinoIcons.phone_arrow_down_left, color: Colors.white, size: 22),
@@ -46,13 +44,11 @@ class DoctorCallCard extends StatelessWidget {
                   SizedBox(height: 4),
                   Row(
                     children: [
-                      /// 🔴 Red Dot
                       CircleAvatar(
                         radius: 4,
                         backgroundColor: Colors.red,
                       ),
                       SizedBox(width: 6),
-
                       /// ⏱ Time
                       Text(
                         "02:39",

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
-import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/core/widgets/title_Text_form_field.dart';
 
 class AIChatPage extends StatefulWidget {

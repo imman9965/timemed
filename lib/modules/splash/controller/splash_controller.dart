@@ -10,6 +10,11 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _navigateAfterSplash();
+  }
+
+  Future<void> _navigateAfterSplash() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
     _checkLogin();
   }
 

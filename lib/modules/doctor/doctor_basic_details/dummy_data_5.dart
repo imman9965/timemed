@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../theme/doctor_theme.dart';
 
 
 
@@ -26,11 +28,11 @@ class AppDimens1 {
 
 class AppTextStyles {
   static final sectionLabel = TextStyle(
-      fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textDark3);
+      fontSize: 16, fontWeight: FontWeight.w700, color: DoctorColors.textDark);
   static final inputHint = TextStyle(
-      fontSize: 14, color: AppColors.textMuted3);
+      fontSize: 14, color: DoctorColors.textMuted);
   static final inputText = TextStyle(
-      fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textDark3);
+      fontSize: 14, fontWeight: FontWeight.w500, color: DoctorColors.textDark);
   static final chipLabel = TextStyle(
       fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white);
 }
@@ -61,6 +63,147 @@ class DoctorFormData {
   List<String> languages      = ['Tamil'];
   String       address        = '';
 }
+
+// ════════════════════════════════════════════════════════
+//  DOCTOR SIGNATURE (shared across basic-details & prescription)
+// ════════════════════════════════════════════════════════
+
+/// Holds the doctor's hand-drawn signature (as freehand strokes) together with
+/// the printed name / qualification shown beneath it. A single shared instance
+/// ([doctorSignature]) is captured on the Basic Details screen and read back on
+/// the Prescription screen and its template detail view.
+class DoctorSignatureData {
+  /// Each entry is one continuous pen stroke (a list of points).
+  List<List<Offset>> strokes;
+  String doctorName;
+  String qualification;
+  String specialisation;
+  String clinic;
+  String regNo;
+  String city;
+
+  DoctorSignatureData({
+    List<List<Offset>>? strokes,
+    required this.doctorName,
+    required this.qualification,
+    this.specialisation = '',
+    this.clinic = 'TimesMed Hospital',
+    this.regNo = '',
+    this.city = '',
+  }) : strokes = strokes ?? <List<Offset>>[];
+
+  /// True once the doctor has actually drawn something.
+  bool get hasDrawing => strokes.any((s) => s.isNotEmpty);
+
+  void clear() => strokes = <List<Offset>>[];
+
+  /// Copy the saved Basic-Details form into this shared store so the
+  /// prescription template shows the real doctor details.
+  void updateFrom(DoctorFormData form) {
+    final name = '${form.firstName} ${form.lastName}'.trim();
+    if (name.isNotEmpty) doctorName = name;
+    final qual = form.qualification == null
+        ? ''
+        : qualificationOptions
+            .firstWhere((o) => o.value == form.qualification,
+                orElse: () => DropdownOption(
+                    value: form.qualification!, label: form.qualification!))
+            .label;
+    if (qual.isNotEmpty) qualification = qual;
+    specialisation = form.specialisations.join(', ');
+    if (form.address.trim().isNotEmpty) city = form.address.trim();
+  }
+
+  Map<String, dynamic> toJson() => {
+        'doctorName': doctorName,
+        'qualification': qualification,
+        'specialisation': specialisation,
+        'clinic': clinic,
+        'regNo': regNo,
+        'city': city,
+        'strokes': strokes
+            .map((s) => s.map((p) => [p.dx, p.dy]).toList())
+            .toList(),
+      };
+
+  void applyJson(Map<String, dynamic> j) {
+    doctorName = (j['doctorName'] as String?) ?? doctorName;
+    qualification = (j['qualification'] as String?) ?? qualification;
+    specialisation = (j['specialisation'] as String?) ?? specialisation;
+    clinic = (j['clinic'] as String?) ?? clinic;
+    regNo = (j['regNo'] as String?) ?? regNo;
+    city = (j['city'] as String?) ?? city;
+    final st = j['strokes'];
+    if (st is List) {
+      strokes = st
+          .map<List<Offset>>((s) => (s as List)
+              .map<Offset>((p) => Offset(
+                  (p[0] as num).toDouble(), (p[1] as num).toDouble()))
+              .toList())
+          .toList();
+    }
+  }
+}
+
+/// Tiny local-DB layer: persists the doctor profile to secure on-device
+/// storage so the prescription letterhead keeps the saved details across
+/// app restarts.
+class DoctorProfileStore {
+  DoctorProfileStore._();
+  static const _key = 'doctor_profile';
+  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+
+  static Future<void> save() async {
+    await _storage.write(key: _key, value: jsonEncode(doctorSignature.toJson()));
+  }
+
+  static Future<void> load() async {
+    final raw = await _storage.read(key: _key);
+    if (raw == null || raw.isEmpty) return;
+    try {
+      doctorSignature.applyJson(jsonDecode(raw) as Map<String, dynamic>);
+    } catch (_) {
+      // Corrupt/old payload — ignore and keep defaults.
+    }
+  }
+}
+
+/// Shared, dummy-seeded signature. Name + qualification are pre-filled so the
+/// prescription always has details to show; once the doctor saves the Basic
+/// Details form these are overwritten with the real values via [updateFrom].
+final DoctorSignatureData doctorSignature = DoctorSignatureData(
+  doctorName: 'Mariappan',
+  qualification: 'MBBS, MD (General Medicine)',
+  specialisation: 'General Medicine',
+  clinic: 'TimesMed Hospital',
+  regNo: 'TNMC 12345',
+  city: 'Chennai',
+);
+
+// ════════════════════════════════════════════════════════
+//  DUMMY PATIENT + ADVICE (prescription template)
+// ════════════════════════════════════════════════════════
+class PatientInfo {
+  final String name;
+  final String age;
+  final String gender;
+  const PatientInfo({
+    required this.name,
+    required this.age,
+    required this.gender,
+  });
+}
+
+const PatientInfo dummyPatient = PatientInfo(
+  name: 'Kumar',
+  age: '32',
+  gender: 'Male',
+);
+
+const List<String> prescriptionAdvice = [
+  'Drink plenty of water',
+  'Take complete medication',
+];
 
 // ════════════════════════════════════════════════════════
 //  STATIC DATA

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/widgets/doctor_call_card.dart';
+import '../../../routes/app_routes.dart';
 import 'dummy_data_4.dart';
-
 
 class VideoCallScreen extends StatefulWidget {
   const VideoCallScreen({Key? key}) : super(key: key);
@@ -12,86 +11,142 @@ class VideoCallScreen extends StatefulWidget {
 }
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
-  bool _menuExpanded = true;
+  bool _doctorMenuExpanded = true;
+  bool _patientMenuExpanded = false;
 
-  static const _blue = Color(0xFF1A6BF5);
-  static const _darkBg = Color(0xFF1C1C1E);
+  // Floating menu colours — glass style based on the dark background
+  static final Color _menuBg = Colors.black.withOpacity(0.55);
+  static final Color _menuToggleBg = Colors.black.withOpacity(0.55);
+  static const Color _menuBorder = Colors.white24;
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint(_test);
     return Scaffold(
-      backgroundColor: _darkBg,
       body: Stack(
         children: [
-          // ── Full-screen doctor "video" background ──────────────────────
-          Positioned.fill(
-            child: Container(
-              color: const Color(0xFFD6DCE5),
-              child: const Center(
-                child: Icon(Icons.person, size: 220, color: Color(0xFFB0BAC8)),
+          /// 🔴 PATIENT VIDEO (Background)
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/video_call/patient_video_call.jpg", // 👤 patient image
+                ),
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
-          // ── Top status bar ─────────────────────────────────────────────
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: DoctorCallCard(key: const ValueKey('doctor_call_card')),
-          ),
+          /// 🌑 DARK OVERLAY (for readability)
+          Container(color: Colors.black.withOpacity(0.3)),
 
-          // ── Slide panel + chevron ──────────────────────────────────────
+          /// 🟢 TOP INFO BAR
           Positioned(
-            bottom: 110,
-            right: 0,
+            top: 50,
+            left: 20,
+            right: 20,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Chevron toggle button
-                GestureDetector(
-                  onTap: () => setState(() => _menuExpanded = !_menuExpanded),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
-                          blurRadius: 8,
-                          offset: const Offset(-2, 0),
-                        ),
-                      ],
+                /// Patient Name
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "John Doe",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Icon(
-                      _menuExpanded ? Icons.chevron_right : Icons.chevron_left,
-                      color: _blue,
-                      size: 26,
-                    ),
-                  ),
+                    SizedBox(height: 4),
+                    Text("00:12:45", style: TextStyle(color: Colors.white70)),
+                  ],
                 ),
 
-                // Side menu panel
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeInOut,
-                  child: _menuExpanded
-                      ? _buildSideMenu(context)
-                      : const SizedBox(width: 0),
+                /// Call Status
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    "LIVE",
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
                 ),
               ],
             ),
           ),
 
-          // ── Bottom call controls bar ───────────────────────────────────
+          /// 🟡 DOCTOR PREVIEW (Floating)
           Positioned(
-            bottom: 24,
-            left: 16,
+            top: 120,
             right: 16,
+            child: Container(
+              height: 140,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white, width: 2),
+                image: const DecorationImage(
+                  image: AssetImage(
+                    "assets/images/video_call/doctor_video_call.jpg", // 👨‍⚕️ doctor image
+                  ),
+                  fit: BoxFit.cover,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          /// ── Floating side menus (unchanged options) ──
+          Positioned(
+            bottom: 148,
+            right: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ── Doctor menu: Lab Test, Prescription, History ──────────
+                _buildMenuRow(
+                  context: context,
+                  expanded: _doctorMenuExpanded,
+                  collapsedIcon: Icons.medical_services,
+                  items: doctorMenuItems,
+                  onToggle: () => setState(
+                    () => _doctorMenuExpanded = !_doctorMenuExpanded,
+                  ),
+                ),
+                const SizedBox(height: 35),
+                // ── Patient menu: Notes, Medical Records ──────────────────
+                _buildMenuRow(
+                  context: context,
+                  expanded: _patientMenuExpanded,
+                  collapsedIcon: Icons.person_outline,
+                  items: patientMenuItems,
+                  onToggle: () => setState(
+                    () => _patientMenuExpanded = !_patientMenuExpanded,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          /// 🔵 BOTTOM CONTROLS (GLASS STYLE — same options)
+          Positioned(
+            bottom: 40,
+            left: 20,
+            right: 20,
             child: _buildCallControls(),
           ),
         ],
@@ -101,16 +156,65 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
   // ─── Side Menu ────────────────────────────────────────────────────────────
 
-  Widget _buildSideMenu(BuildContext context) {
+  /// One toggle button + its slide-out menu.
+  Widget _buildMenuRow({
+    required BuildContext context,
+    required bool expanded,
+    required IconData collapsedIcon,
+    required List<MenuItem> items,
+    required VoidCallback onToggle,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Toggle button — group icon when closed, chevron when open
+        GestureDetector(
+          onTap: onToggle,
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: _menuToggleBg,
+              shape: BoxShape.circle,
+              border: Border.all(color: _menuBorder),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 8,
+                  offset: const Offset(-2, 0),
+                ),
+              ],
+            ),
+            child: Icon(
+              expanded ? Icons.chevron_right : collapsedIcon,
+              color: Colors.white,
+              size: 26,
+            ),
+          ),
+        ),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          child: expanded
+              ? _buildSideMenu(context, items)
+              : const SizedBox(width: 0),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSideMenu(BuildContext context, List<MenuItem> items) {
     return Container(
       width: 200,
       margin: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A6BF5),
+        color: _menuBg,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18),
           bottomLeft: Radius.circular(18),
         ),
+        border: Border.all(color: _menuBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.25),
@@ -121,22 +225,26 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: menuItems.asMap().entries.map((entry) {
+        children: items.asMap().entries.map((entry) {
           final index = entry.key;
           final item = entry.value;
-          final isLast = index == menuItems.length - 1;
+          final isLast = index == items.length - 1;
 
           return Column(
             children: [
               InkWell(
                 onTap: () {
                   if (item.route.isNotEmpty) {
-                    context.push(item.route); // ✅ push so back button works
+                    context.push(item.route);
                   }
                 },
                 borderRadius: BorderRadius.only(
                   topLeft: index == 0 ? const Radius.circular(18) : Radius.zero,
+                  topRight: index == 0
+                      ? const Radius.circular(18)
+                      : Radius.zero,
                   bottomLeft: isLast ? const Radius.circular(18) : Radius.zero,
+                  bottomRight: isLast ? const Radius.circular(18) : Radius.zero,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -145,13 +253,16 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        item.icon,
+                      Image.asset(
+                        item.icon.toString(),
+                        width: 22,
+                        height: 22,
                         color: Colors.white,
-                        size: 22,
                       ),
+
                       const SizedBox(width: 12),
-                      Expanded( // ✅ prevents overflow
+
+                      Expanded(
                         child: Text(
                           item.label,
                           style: const TextStyle(
@@ -160,6 +271,12 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                             fontSize: 14.5,
                           ),
                         ),
+                      ),
+
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white70,
+                        size: 16,
                       ),
                     ],
                   ),
@@ -184,36 +301,35 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
   Widget _buildCallControls() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A6BF5),
-        borderRadius: BorderRadius.circular(50),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(40),
+        border: Border.all(color: Colors.white24),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: callControls.map((ctrl) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.push(AppRoutes.consultationSummaryScreen);
+            },
             child: Container(
-              width: 48,
-              height: 48,
+              width: ctrl.isRed ? 60 : 48,
+              height: ctrl.isRed ? 60 : 48,
               decoration: BoxDecoration(
                 color: ctrl.isRed
-                    ? const Color(0xFFE53935)
-                    : const Color(0xFF2C2C2E),
+                    ? Colors.red
+                    : Colors.black.withOpacity(0.6),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                ctrl.icon,
-                color: Colors.white,
-                size: ctrl.isRed ? 22 : 20,
+              child: Center(
+                child: Image.asset(
+                  ctrl.icon,
+                  width: ctrl.isRed ? 25 : 20,
+                  height: ctrl.isRed ? 25 : 20,
+                  color: Colors.white,
+                ),
               ),
             ),
           );

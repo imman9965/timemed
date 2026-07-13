@@ -52,7 +52,21 @@ final List<CallLog> allCallLogs = [
     fee:          '₹550',
     type:         AppointmentType.instant,
     status:       CallStatus.success,
-    dateTime:     DateTime(2026, 1, 7, 12, 20),
+    dateTime:     DateTime(2026, 01, 7, 12, 20),
+    progressNote: 'Call pending',
+    tasks: const [
+      CallLogTask(label: 'PRESCRIPTION',  completed: false),
+      CallLogTask(label: 'LAB TEST',      completed: false),
+      CallLogTask(label: 'CLINICAL NOTES',completed: false),
+    ],
+  ),
+  CallLog(
+    patientName:  'Mr. Andrew',
+    phone:        '805XXXXXX4',
+    fee:          '₹550',
+    type:         AppointmentType.instant,
+    status:       CallStatus.pending,
+    dateTime:     DateTime(2026, 01, 7, 12, 20),
     progressNote: 'Call pending',
     tasks: const [
       CallLogTask(label: 'PRESCRIPTION',  completed: false),
@@ -61,48 +75,48 @@ final List<CallLog> allCallLogs = [
     ],
   ),
 
-  CallLog(
-    patientName:  'Ms. Priya',
-    phone:        '901XXXXXX2',
-    fee:          '₹300',
-    type:         AppointmentType.schedule,
-    status:       CallStatus.pending,
-    dateTime:     DateTime(2026, 1, 7, 14, 0),
-    progressNote: 'Call scheduled',
-    tasks: const [
-      CallLogTask(label: 'PRESCRIPTION',  completed: true),
-      CallLogTask(label: 'LAB TEST',      completed: false),
-      CallLogTask(label: 'CLINICAL NOTES',completed: false),
-    ],
-  ),
-  CallLog(
-    patientName:  'Mr. Raj Kumar',
-    phone:        '700XXXXXX9',
-    fee:          '₹450',
-    type:         AppointmentType.instant,
-    status:       CallStatus.failed,
-    dateTime:     DateTime(2026, 1, 15, 10, 30),
-    progressNote: 'Call failed – retry',
-    tasks: const [
-      CallLogTask(label: 'PRESCRIPTION',  completed: false),
-      CallLogTask(label: 'LAB TEST',      completed: false),
-      CallLogTask(label: 'CLINICAL NOTES',completed: false),
-    ],
-  ),
-  CallLog(
-    patientName:  'Dr. Sunita',
-    phone:        '800XXXXXX1',
-    fee:          '₹700',
-    type:         AppointmentType.schedule,
-    status:       CallStatus.success,
-    dateTime:     DateTime(2026, 2, 3, 9, 0),
-    progressNote: 'Completed successfully',
-    tasks: const [
-      CallLogTask(label: 'PRESCRIPTION',  completed: true),
-      CallLogTask(label: 'LAB TEST',      completed: true),
-      CallLogTask(label: 'CLINICAL NOTES',completed: true),
-    ],
-  ),
+  // CallLog(
+  //   patientName:  'Ms. Priya',
+  //   phone:        '901XXXXXX2',
+  //   fee:          '₹300',
+  //   type:         AppointmentType.schedule,
+  //   status:       CallStatus.pending,
+  //   dateTime:     DateTime(2026, 1, 7, 14, 0),
+  //   progressNote: 'Call scheduled',
+  //   tasks: const [
+  //     CallLogTask(label: 'PRESCRIPTION',  completed: true),
+  //     CallLogTask(label: 'LAB TEST',      completed: false),
+  //     CallLogTask(label: 'CLINICAL NOTES',completed: false),
+  //   ],
+  // ),
+  // CallLog(
+  //   patientName:  'Mr. Raj Kumar',
+  //   phone:        '700XXXXXX9',
+  //   fee:          '₹450',
+  //   type:         AppointmentType.instant,
+  //   status:       CallStatus.failed,
+  //   dateTime:     DateTime(2026, 1, 15, 10, 30),
+  //   progressNote: 'Call failed – retry',
+  //   tasks: const [
+  //     CallLogTask(label: 'PRESCRIPTION',  completed: false),
+  //     CallLogTask(label: 'LAB TEST',      completed: false),
+  //     CallLogTask(label: 'CLINICAL NOTES',completed: false),
+  //   ],
+  // ),
+  // CallLog(
+  //   patientName:  'Dr. Sunita',
+  //   phone:        '800XXXXXX1',
+  //   fee:          '₹700',
+  //   type:         AppointmentType.schedule,
+  //   status:       CallStatus.success,
+  //   dateTime:     DateTime(2026, 02, 3, 9, 0),
+  //   progressNote: 'Completed successfully',
+  //   tasks: const [
+  //     CallLogTask(label: 'PRESCRIPTION',  completed: true),
+  //     CallLogTask(label: 'LAB TEST',      completed: true),
+  //     CallLogTask(label: 'CLINICAL NOTES',completed: true),
+  //   ],
+  // ),
 ];
 
 const List<NavItem> navItems = [
@@ -113,9 +127,6 @@ const List<NavItem> navItems = [
   NavItem(icon: Icons.grid_view_rounded),
 ];
 
-// ════════════════════════════════════════════════════════
-//  HELPERS
-// ════════════════════════════════════════════════════════
 
 String formatDate(DateTime dt) =>
     '${dt.day}/${dt.month}/${dt.year}';
