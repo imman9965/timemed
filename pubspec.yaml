@@ -94,6 +94,7 @@ flutter:
     - assets/images/video_call/
     - assets/images/track_order/
     - assets/icons/speciality/
+    - assets/icons/speciality2/
     - assets/bottom_nav_icon/
     - assets/icons/gender/category/man/
     - assets/icons/gender/category/woman/

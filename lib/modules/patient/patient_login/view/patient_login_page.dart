@@ -284,7 +284,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                         ),
                         child: Text(
                           "How can i help you ?",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                       Container(

@@ -53,7 +53,7 @@ class PatientOtpPage extends StatelessWidget {
                 /// 🔹 TITLE
                 const Text(
                   "OTP Verification",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
 
                 const SizedBox(height: 8),
@@ -62,7 +62,7 @@ class PatientOtpPage extends StatelessWidget {
                 Text(
                   "Enter the 6-digit code sent to your mobile number",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                 ),
 
                 const SizedBox(height: 30),
@@ -95,7 +95,7 @@ class PatientOtpPage extends StatelessWidget {
                           height: 56,
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.grey.shade100,
@@ -109,7 +109,7 @@ class PatientOtpPage extends StatelessWidget {
                           height: 56,
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.primary),

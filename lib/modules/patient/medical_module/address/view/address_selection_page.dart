@@ -241,7 +241,7 @@ class _AddressSelectionPageState extends State<AddressSelectionPage> {
                           ? "Add Shipping Address"
                           : "Add Billing Address",
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -399,7 +399,7 @@ class _AddressSelectionPageState extends State<AddressSelectionPage> {
                     child: const Text(
                       "Save Address",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -562,7 +562,7 @@ class _AddressSelectionPageState extends State<AddressSelectionPage> {
           const SizedBox(width: 8),
           Text(
             title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ],
       ),

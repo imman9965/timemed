@@ -63,14 +63,14 @@ class PatientPrescriptionOrderSuccessPage extends StatelessWidget {
                   /// 🔹 TITLE
                   const Text(
                     "Payment Successful",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
 
                   const SizedBox(height: 6),
 
                   const Text(
                     "Your order has been placed successfully",
-                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
 
                   const SizedBox(height: 20),
@@ -95,7 +95,7 @@ class PatientPrescriptionOrderSuccessPage extends StatelessWidget {
                         Text(
                           "₹$amount",
                           style: const TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: AppColors.primary,
                           ),

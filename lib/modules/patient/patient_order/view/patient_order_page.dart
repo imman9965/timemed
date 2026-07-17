@@ -21,7 +21,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
       backgroundColor: const Color(0xffF8FAFD),
       body: Obx(
         () => ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 98),
           itemCount: controller.orders.length,
           itemBuilder: (context, index) {
             final order = controller.orders[index];
@@ -52,6 +52,10 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Colors.grey.shade300, // Border color
+          width: 1.0,                  // Border width
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -80,7 +84,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
                       order["orderId"],
                       style: const TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 16,
+                        fontSize: 14,
                         letterSpacing: -0.5,
                         color: Color(0xff1A1C1E),
                       ),
@@ -166,7 +170,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
                           child: Text(
                             med["name"],
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff2C3E50),
                             ),
@@ -176,7 +180,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
                           "x${med["qty"]}",
                           style: const TextStyle(
                             fontWeight: FontWeight.w800,
-                            fontSize: 14,
+                            fontSize: 13,
                             color: Color(0xff1A1C1E),
                           ),
                         ),
@@ -200,13 +204,13 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
                       children: [
                         const Text(
                           "TOTAL AMOUNT",
-                          style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: Colors.grey),
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.grey),
                         ),
                         Text(
                           order["total"],
                           style: const TextStyle(
                             fontWeight: FontWeight.w900,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: AppColors.primary,
                           ),
                         ),
@@ -275,7 +279,7 @@ class _PatientOrderPageState extends State<PatientOrderPage> {
         ),
         child: Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12),
         ),
       ),
     );

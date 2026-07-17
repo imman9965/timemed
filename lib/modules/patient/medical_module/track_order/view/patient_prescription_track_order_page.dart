@@ -105,7 +105,7 @@ class PatientPrescriptionTrackOrderPage extends StatelessWidget {
                     const Text(
                       "On the way",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

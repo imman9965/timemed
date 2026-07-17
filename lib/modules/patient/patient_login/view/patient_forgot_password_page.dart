@@ -204,7 +204,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               const Text(
                 "Enter Your Phone Number",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
@@ -213,7 +213,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               Text(
                 "We'll send an OTP to reset your password",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -277,7 +277,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               const Text(
                 "Enter OTP",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
@@ -286,7 +286,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               Text(
                 "We sent a 6-digit code to ${phoneController.text}",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -314,7 +314,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
                   Text(
                     "Didn't receive code? ",
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       color: AppColors.textSecondary,
                     ),
                   ),
@@ -325,7 +325,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
                     child: const Text(
                       "Resend",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: Color(0xff0673de),
                         fontWeight: FontWeight.bold,
                       ),
@@ -379,7 +379,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               const Text(
                 "Create New Password",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
@@ -388,7 +388,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
               Text(
                 "Your new password must be different from previous",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -480,7 +480,7 @@ class _PatientForgotPasswordPageState extends State<PatientForgotPasswordPage> {
       color: AppColors.primary,
       borderRadius: 12,
       textStyle: const TextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
         color: Colors.white,
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common/appointment_slot_grid.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
@@ -14,6 +15,7 @@ class VideoSchedulePage extends StatefulWidget {
 class _VideoSchedulePageState extends State<VideoSchedulePage> {
   DateTime selectedDate = DateTime(2026, 2, 16);
   int selectedDay = 1; // Mon
+  String? selectedTime;
 
   final days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -63,7 +65,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
                                 "Mr. Mariappan",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               Text("MBBS"),
@@ -131,7 +133,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
                         const Text(
                           "₹550",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -205,7 +207,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
                                 days[index],
                                 style: TextStyle(
                                   color: isSelected
-                                      ? Colors.green
+                                      ? AppColors.primary
                                       : Colors.black,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -215,7 +217,7 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
                                 Container(
                                   height: 2,
                                   width: 20,
-                                  color: Colors.green,
+                                  color: AppColors.primary,
                                 ),
                             ],
                           ),
@@ -225,15 +227,19 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
 
                     const SizedBox(height: 16),
 
-                    /// 🔥 TIME GRID (ROW STYLE)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _timeColumn("Morning", Icons.wb_sunny, _morning()),
-                        _timeColumn("Afternoon", Icons.sunny, _afternoon()),
-                        _timeColumn("Evening", Icons.wb_twilight, _evening()),
-                        _timeColumn("Night", Icons.nightlight, _night()),
-                      ],
+                    /// 🔥 TIME GRID (SESSION COLUMN STYLE)
+                    AppointmentSlotGrid(
+                      selectedTime: selectedTime,
+                      onSlotTap: (time) {
+                        setState(() => selectedTime = time);
+                        context.push('/video-payment');
+                      },
+                      columns: buildDefaultSlotColumns(
+                        morning: _morning(),
+                        afternoon: _afternoon(),
+                        evening: _evening(),
+                        night: _night(),
+                      ),
                     ),
                   ],
                 ),
@@ -245,72 +251,26 @@ class _VideoSchedulePageState extends State<VideoSchedulePage> {
     );
   }
 
-  /// 🔥 COLUMN UI
-  Widget _timeColumn(String title, IconData icon, List<Map> slots) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, color: Colors.orange),
-            const SizedBox(height: 4),
-            Text(title, style: const TextStyle(fontSize: 12)),
-
-            const SizedBox(height: 8),
-
-            ...slots.map((slot) {
-              bool available = slot["available"];
-
-              return GestureDetector(
-                onTap: available ? () => context.push('/video-payment') : null,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: available
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.grey.shade200,
-                  ),
-                  child: Center(
-                    child: Text(
-                      slot["time"],
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: available ? Colors.green : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
   /// 🔥 SLOT DATA
-  List<Map> _morning() =>
+  List<AppointmentSlot> _morning() =>
       _gen(["09:00 AM", "09:15 AM", "09:30 AM", "09:45 AM", "10:00 AM"]);
 
-  List<Map> _afternoon() =>
+  List<AppointmentSlot> _afternoon() =>
       _gen(["12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM"]);
 
-  List<Map> _evening() =>
+  List<AppointmentSlot> _evening() =>
       _gen(["04:15 PM", "04:30 PM", "04:45 PM", "05:00 PM"]);
 
-  List<Map> _night() => _gen(["08:30 PM", "08:45 PM", "09:00 PM", "09:15 PM"]);
+  List<AppointmentSlot> _night() =>
+      _gen(["08:30 PM", "08:45 PM", "09:00 PM", "09:15 PM"]);
 
-  List<Map> _gen(List<String> times) {
+  List<AppointmentSlot> _gen(List<String> times) {
     return times
         .map(
-          (t) => {"time": t, "available": DateTime.now().millisecond % 2 == 0},
+          (t) => AppointmentSlot(
+            t,
+            available: DateTime.now().millisecond % 2 == 0,
+          ),
         )
         .toList();
   }

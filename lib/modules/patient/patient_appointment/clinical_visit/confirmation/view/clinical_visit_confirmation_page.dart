@@ -77,7 +77,7 @@ class ClinicalVisitConfirmationPage extends StatelessWidget {
             children: const [
               Text(
                 "Dr. Mariappan",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               SizedBox(height: 4),
               Text("MBBS", style: TextStyle(color: Colors.grey)),
@@ -95,7 +95,7 @@ class ClinicalVisitConfirmationPage extends StatelessWidget {
         Text(
           "THANK YOU",
           style: TextStyle(
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.orange,
             letterSpacing: 1.2,

@@ -134,7 +134,7 @@ class ClinicalDoctorListPage extends StatelessWidget {
                       doc["name"],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -162,7 +162,7 @@ class ClinicalDoctorListPage extends StatelessWidget {
                 child: Text(
                   doc["fee"],
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),
@@ -293,7 +293,7 @@ class ClinicalDoctorListPage extends StatelessWidget {
                     controller.searchDoctor(value);
                     setState(() {});
                   },
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 13),
                   decoration: const InputDecoration(
                     hintText: "Search doctor, speciality...",
                     border: InputBorder.none,

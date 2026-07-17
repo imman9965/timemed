@@ -38,7 +38,7 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                     const Text(
                       "Find Doctors Near You",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -171,7 +171,7 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                         Text(
                           title,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,
                           ),
@@ -180,7 +180,7 @@ class _ClinicalFilterPageState extends State<ClinicalFilterPage> {
                         Text(
                           value.value.isEmpty ? "Select $title" : value.value,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: value.value.isEmpty
                                 ? Colors.grey

@@ -76,7 +76,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
               children: [
                 Text(
                   "Patient Name",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 //
                 Row(
@@ -203,7 +203,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
                   onPressed: () {},
                   child: const Text(
                     "Register",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -285,7 +285,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
       alignment: Alignment.centerLeft,
       child: Text(
         title,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -392,7 +392,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
 
                   const Text(
                     "Select Relationship",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
 
                   const SizedBox(height: 20),
@@ -456,7 +456,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
                                 title,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 15,
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -514,7 +514,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
                         "Confirm",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.white,
                         ),
                       ),

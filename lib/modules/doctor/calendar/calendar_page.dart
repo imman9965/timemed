@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
+import '../widgets/doctor_stamp.dart';
 import '../../../routes/app_routes.dart';
 import '../notifications/notification_controller.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,28 @@ class AppointmentCard extends StatelessWidget {
     final badgeTxt  = isInstant ? DoctorColors.badgeBlueText : DoctorColors.badgeGreenText;
     final typeIcon  = isInstant ? '⚡' : '📅';
     final typeText  = isInstant ? 'Instant' : 'Schedule';
+
+    // Avatar + gender badge (same approach as the patient-select list).
+    final gender = appointment.gender.toLowerCase();
+    final avatarPath = gender == 'female'
+        ? 'assets/icons/gender/category/woman/adult_woman.png'
+        : 'assets/icons/gender/category/man/adult_man.png';
+    late final String genderIcon;
+    late final Color genderColor;
+    switch (gender) {
+      case 'female':
+        genderIcon = 'assets/icons/gender/female_gender.png';
+        genderColor = Colors.pink;
+        break;
+      case 'male':
+        genderIcon = 'assets/icons/gender/male_gender.png';
+        genderColor = Colors.blue;
+        break;
+      default:
+        genderIcon = 'assets/icons/gender/other_gender.png';
+        genderColor = Colors.purple;
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -35,20 +58,45 @@ class AppointmentCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 46,
-            height: 46,
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: DoctorColors.primarySoft,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Image.asset(
-              appointment.gender == 'female'
-                  ? 'assets/icons/gender/female.png'
-                  : 'assets/icons/gender/male.png',
-              fit: BoxFit.contain,
-            ),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              CircleAvatar(
+                radius: 26,
+                backgroundColor: DoctorColors.primary.withOpacity(0.1),
+                backgroundImage:
+                    avatarPath.isNotEmpty ? AssetImage(avatarPath) : null,
+                child: avatarPath.isEmpty
+                    ? Text(
+                        appointment.name.isNotEmpty ? appointment.name[0] : '?',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: DoctorColors.primary,
+                        ),
+                      )
+                    : null,
+              ),
+
+              /// 🔹 GENDER BADGE (SECONDARY)
+              Positioned(
+                right: -2,
+                bottom: -2,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: genderColor.withOpacity(0.8),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(
+                    genderIcon,
+                    width: 14,
+                    height: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -516,6 +564,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             () => CurvedHeader(
               title: 'CALENDER',
               showBackButton: false,
+              leading: const DoctorBadge(doctor: "Dr.Mariappan"),
               showNotification: true,
               badgeCount: NotificationController.to.queue.length,
               onNotificationTap: () => _onBellTap(context),

@@ -139,7 +139,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
                     "Gender",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 14,
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -197,7 +197,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
                     "Marital Status",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 14,
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -308,7 +308,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
                           const Text(
                             "Create Account",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               letterSpacing: 0.5,
@@ -343,7 +343,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
                     Text(
                       "Already have an account? ",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w500,
                       ),
@@ -355,7 +355,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
                       child: const Text(
                         "Login Now",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: Color(0xff0673de),
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
@@ -395,7 +395,7 @@ class _PatientSignupPageState extends State<PatientSignupPage>
           Text(
             label,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),

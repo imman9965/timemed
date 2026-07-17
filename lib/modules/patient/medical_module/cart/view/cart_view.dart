@@ -163,7 +163,7 @@ class MedicineCartPage extends StatelessWidget {
                               "₹${item.price * item.quantity}",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -209,14 +209,14 @@ class MedicineCartPage extends StatelessWidget {
                           "Total Amount",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                         Text(
                           "₹${controller.totalAmount + 40}",
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                       ],
@@ -243,7 +243,7 @@ class MedicineCartPage extends StatelessWidget {
                       child: const Text(
                         "Proceed to Checkout",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

@@ -92,7 +92,7 @@ class _ClinicalVisitPaymentPageState extends State<ClinicalVisitPaymentPage> {
                         Text(
                           "Dr. Priya",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -106,7 +106,7 @@ class _ClinicalVisitPaymentPageState extends State<ClinicalVisitPaymentPage> {
                   ),
                   const Text(
                     "₹500",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

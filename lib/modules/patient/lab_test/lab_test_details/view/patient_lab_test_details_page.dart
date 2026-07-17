@@ -76,7 +76,7 @@ class _PatientLabTestDetailsPageState
               child: const Text(
                 "Continue",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -161,7 +161,7 @@ class _PatientLabTestDetailsPageState
                         lab.testName,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -172,7 +172,7 @@ class _PatientLabTestDetailsPageState
                         lab.instructions,
                         style: const TextStyle(
                           color: Colors.white70,
-                          fontSize: 13,
+                          fontSize: 12,
                           height: 1.5,
                         ),
                       ),
@@ -215,7 +215,7 @@ class _PatientLabTestDetailsPageState
                 const Text(
                   "Choose Collection Type",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -316,7 +316,7 @@ class _PatientLabTestDetailsPageState
                     title,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 14,
                     ),
                   ),
 

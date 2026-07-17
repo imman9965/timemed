@@ -22,7 +22,7 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
 
 
@@ -101,8 +101,8 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
                 dividerColor: Colors.transparent,
                 indicatorSize: TabBarIndicatorSize.tab,
                 padding: const EdgeInsets.all(4),
-                labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
-                unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
                 tabs: const [
                   Tab(text: "Orders"),
                   Tab(text: "Lab Track"),
@@ -145,7 +145,7 @@ class _PatientServicesPageState extends State<PatientServicesPage> {
                 indicatorSize: TabBarIndicatorSize.tab,
                 labelStyle: const TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontSize: 13,
                 ),
                 tabs: const [
                   Tab(
@@ -219,7 +219,7 @@ class PremiumServiceCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

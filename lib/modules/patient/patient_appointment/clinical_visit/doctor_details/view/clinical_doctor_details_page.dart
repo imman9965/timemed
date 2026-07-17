@@ -100,7 +100,7 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
               children: [
                 const Text(
                   "Dr. Arun",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
 
@@ -121,7 +121,7 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
 
                 Text(
                   "Child Specialist • 3+ Years",
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                 ),
               ],
             ),
@@ -259,7 +259,7 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
             title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 14,
               color: AppColors.primary,
             ),
           ),
@@ -275,7 +275,7 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
       children: [
         const Icon(Icons.schedule, size: 16, color: Colors.orange),
         const SizedBox(width: 8),
-        Text("$day • $time", style: const TextStyle(fontSize: 13)),
+        Text("$day • $time", style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -297,7 +297,7 @@ class _ClinicalDoctorDetailsPageState extends State<ClinicalDoctorDetailsPage> {
             child: Text(
               "Consultation Fee\n₹550",
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),

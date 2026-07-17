@@ -358,7 +358,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
       backgroundColor: DoctorColors.backgroundCream,
       body: Column(
         children: [
-          CurvedHeader(title: "HOSPITAL LIST - BASED ON DOCTOR"),
+          CurvedHeader(title: "HOSPITAL LIST"),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
@@ -378,10 +378,7 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
                         'Tap "Add New" to add your first hospital')
                   else
                     ..._hospitals.map(_hospitalCard),
-
                   const SizedBox(height: 24),
-
-                  // ── Hospital Schedules ────────────────
                   _sectionHeader(
                     icon: Icons.event_note_rounded,
                     title: 'Hospital Schedule List',

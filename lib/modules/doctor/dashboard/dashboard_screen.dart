@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
+import 'package:timesmed_project/modules/doctor/widgets/doctor_stamp.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -98,6 +99,7 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
           CurvedHeader(
             title: "DOCTOR DASHBOARD",
             showBackButton: false,
+            leading: const DoctorBadge(doctor: "Dr.Mariappan"),
             titleStyle: TextStyle(
               fontSize: 15,
               color: Colors.white,
@@ -146,10 +148,10 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'Scheduled',
                           icon: Icons.event_available_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.callLogsScreenDash,
-                              extra: 'Scheduled Appointment List',
-                            );
+                            // context.push(
+                            //   AppRoutes.callLogsScreenDash,
+                            //   extra: 'Scheduled Appointment List',
+                            // );
                           },
                         ),
                       ),
@@ -161,10 +163,10 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'Waiting',
                           icon: Icons.pending_actions_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.callLogsScreenDash,
-                              extra: 'WAITING LIST',
-                            );
+                            // context.push(
+                            //   AppRoutes.doctorWaitingList,
+                            //   extra: 'WAITING LIST',
+                            // );
                           },
                         ),
                       ),
@@ -180,10 +182,10 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'Check Out',
                           icon: Icons.task_alt_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.scheduleAppointment,
-                              extra: 'Check Out',
-                            );
+                            // context.push(
+                            //   AppRoutes.scheduleAppointment,
+                            //   extra: 'Check Out',
+                            // );
                           },
                         ),
                       ),
@@ -195,17 +197,16 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'Cancel',
                           icon: Icons.event_busy_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.scheduleAppointment,
-                              extra: 'Cancelled Appointments',
-                            );
+                            // context.push(
+                            //   AppRoutes.scheduleAppointment,
+                            //   extra: 'Cancelled Appointments',
+                            // );
                           },
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
-
                   // ── Row 3: Online Consultation (full width) ───────
                   _StatCard(
                     color: _navy,
@@ -214,10 +215,8 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                     icon: Icons.calendar_month_rounded,
                     fullWidth: true,
                     onTap: () {
-                      context.push(AppRoutes.doctorWaitingList);
-
-                      // context.push(AppRoutes.scheduleAppointment, extra: 'Online Consultation');
-                    },
+                      // context.push(AppRoutes.doctorWaitingList);
+                      },
                   ),
                   const SizedBox(height: 10),
 
@@ -250,8 +249,6 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                     ],
                   ),
                   const SizedBox(height: 10),
-
-                  // ── Row 5: Missed + For Confirmation ──────────────
                   Row(
                     children: [
                       Expanded(
@@ -261,10 +258,10 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'Missed',
                           icon: Icons.phone_missed_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.scheduleAppointment,
-                              extra: 'Missed Appointments',
-                            );
+                            // context.push(
+                            //   AppRoutes.doctorMissedCalls,
+                            //   extra: 'Missed Appointments',
+                            // );
                           },
                         ),
                       ),
@@ -276,26 +273,24 @@ class _AppointmentDashboardState extends State<AppointmentDashboard> {
                           label: 'For Confirmation',
                           icon: Icons.verified_user_rounded,
                           onTap: () {
-                            context.push(
-                              AppRoutes.scheduleAppointment,
-                              extra: 'For Confirmation',
-                            );
+                            // context.push(
+                            //   AppRoutes.scheduleAppointment,
+                            //   extra: 'For Confirmation',
+                            // );
                           },
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  // ── Hospital Appointment bar ──────────────────────
                   _HospitalBar(
                     label: 'Hospital Appointment',
                     color: _navy,
                     onTap: () {
-                      context.push(
-                        AppRoutes.scheduleAppointment,
-                        extra: 'Hospital Appointment',
-                      );
+                      // context.push(
+                      //   AppRoutes.scheduleAppointment,
+                      //   extra: 'Hospital Appointment',
+                      // );
                     },
                   ),
                 ],

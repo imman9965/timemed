@@ -23,6 +23,7 @@ class PatientMainPage extends StatelessWidget {
         extendBody: true, // 🔥 allows body behind bottom nav
         body: Stack(
           children: [
+
             child, // 👈 your current page
             /// 🔥 AI FLOATING BUTTON (GLOBAL)
             Positioned(
@@ -55,11 +56,21 @@ class PatientMainPage extends StatelessWidget {
             ),
           ],
         ), // 👈 VERY IMPORTANT
-        bottomNavigationBar: SizedBox(
+        bottomNavigationBar: Container(
           height: 100,
+          color: Colors.white,
           child: FloatingBottomNavigationBar(
             currentIndex: currentIndex,
             label: const ['Home','Appointments','Dashboard','Services','Profile'],
+            // PNG icons where available (doctor-module approach); the `icons`
+            // list below is the fallback for tabs without a PNG asset.
+            iconPaths: const [
+              '', // Home — no PNG, uses fallback icon
+              'assets/bottom_nav_icon/calendar.png', // Appointments
+              'assets/bottom_nav_icon/dashboard.png', // Dashboard
+              '', // Services — no PNG, uses fallback icon
+              'assets/bottom_nav_icon/person.png', // Profile
+            ],
             icons: const [
               Icons.home,
               Icons.date_range,

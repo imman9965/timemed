@@ -80,7 +80,7 @@ class WaitingDialog {
                       const Text(
                         "Connecting to Doctor",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -90,7 +90,7 @@ class WaitingDialog {
                       const Text(
                         "Please wait while doctor accepts your request",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
 
                       const SizedBox(height: 20),
@@ -116,7 +116,7 @@ class WaitingDialog {
                               Text(
                                 formatTime(),
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

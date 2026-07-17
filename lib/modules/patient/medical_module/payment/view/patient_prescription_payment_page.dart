@@ -88,7 +88,7 @@ class _PatientPrescriptionPaymentPageState
                 const Text(
                   "Delivery Address",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),
@@ -115,7 +115,7 @@ class _PatientPrescriptionPaymentPageState
                               "Mr. Vignesh",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                           ),
@@ -151,7 +151,7 @@ class _PatientPrescriptionPaymentPageState
                 const Text(
                   "Order Summary",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),
@@ -183,7 +183,7 @@ class _PatientPrescriptionPaymentPageState
                 const Text(
                   "Payment Method",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/modules/doctor/schedule_appointment/schedule_appointment.dart' hide CurvedHeader;
 import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
+import '../widgets/doctor_stamp.dart';
 import '../../../routes/app_routes.dart';
 
 class PatientScreenBlue extends StatelessWidget {
@@ -13,7 +14,9 @@ class PatientScreenBlue extends StatelessWidget {
       backgroundColor: DoctorColors.backgroundWarm,
       body: Column(
         children: [
-          const CurvedHeader(title: "PATIENT LIST SCREEN", showBackButton: false, titleStyle: TextStyle(
+          const CurvedHeader(title: "PATIENT LIST SCREEN", showBackButton: false,
+            leading: DoctorBadge(doctor: "Dr.Mariappan"),
+            titleStyle: TextStyle(
             fontSize: 15,
             color: Colors.white,
             fontWeight: FontWeight.bold,

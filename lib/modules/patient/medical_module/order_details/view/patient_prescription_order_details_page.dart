@@ -31,7 +31,7 @@ class PatientPrescriptionOrderDetailsPage extends StatelessWidget {
                       Text(
                         _safe(order["orderId"]),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

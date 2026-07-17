@@ -20,26 +20,22 @@ class _CalendarBottomNavState extends State<CalendarBottomNav> {
   late final ScrollController _scrollController;
 
 
+
   static const List<NavItem> _navItems = [
     NavItem(iconPath: 'assets/bottom_nav_icon/dashboard.png', label: 'Dashboard'),
     NavItem(iconPath: 'assets/bottom_nav_icon/calendar.png', label: 'Calendar'),
     NavItem(iconPath: 'assets/bottom_nav_icon/person.png', label: 'Waiting'),
     NavItem(iconPath: 'assets/bottom_nav_icon/call_logs.png', label: 'Calls'),
     NavItem(iconPath: 'assets/bottom_nav_icon/call_direct.png', label: 'Missed'),
-    NavItem(iconPath: '', label: 'Patient List'),
   ];
 
   // Icons for items without PNG assets
   static const List<IconData?> _fallbackIcons = [
+    null, // Dashboard — has PNG
     null, // Calendar — has PNG
-    null,
+    null, // Waiting — has PNG
     null, // Calls — has PNG
     null, // Missed — has PNG
-    null, // Dashboard — has PNG
-    Icons.person_add_alt_sharp,       // Prescription
-    // Icons.note_alt_rounded,         // Clinical Notes
-    // Icons.event_note_rounded,       // Appointments
-    // Icons.notifications_rounded,    // Notifications
   ];
 
   @override

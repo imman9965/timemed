@@ -94,7 +94,7 @@ class DoctorNotificationsScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color:  DoctorColors.primary,
+        color:  Colors.green,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -352,7 +352,7 @@ class DoctorNotificationsScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: const BoxDecoration(
-              color:  DoctorColors.primary,
+              color:  Colors.green,
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Row(

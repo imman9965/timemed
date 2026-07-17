@@ -127,7 +127,7 @@ class _PatientNearbyLabsPageState
                             : "${labTests.length} Tests Selected",
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 17,
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -336,7 +336,7 @@ class _PatientNearbyLabsPageState
                                 TextOverflow.ellipsis,
                                 style:
                                 const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   fontWeight:
                                   FontWeight.w700,
                                 ),
@@ -470,7 +470,7 @@ class _PatientNearbyLabsPageState
               const Text(
                 "Select Location",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
               ),

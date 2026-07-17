@@ -383,7 +383,9 @@ class _MissedCallPatientListScreenState
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               children: [
-                const CurvedHeader(title: 'MISSED CALL PATIENT LIST', showBackButton: false, titleStyle: TextStyle(
+                CurvedHeader(title: 'MISSED CALL PATIENT LIST', showBackButton: false,
+                  leading: DoctorBadge(doctor: doctor),
+                  titleStyle: const TextStyle(
                   fontSize: 15,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -396,9 +398,6 @@ class _MissedCallPatientListScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        // Doctor badge
-                        DoctorBadge(doctor: doctor),
-                        const SizedBox(height: 14),
                         ListTabBar(
                           label:    'Missed Call Patient List',
                           onFilter: _showFilterSheet,

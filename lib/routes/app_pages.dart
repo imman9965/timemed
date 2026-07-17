@@ -280,6 +280,7 @@ class AppRouter {
 
         ),
       ),
+
       // ...........Appointments ............ //
 
       // 🔹 Clinical Visit
@@ -299,7 +300,6 @@ class AppRouter {
         path: AppRoutes.clinicalSchedule,
         builder: (context, state) => ClinicalSchedulePage(),
       ),
-
       GoRoute(
         path: AppRoutes.clinicalPayment,
         builder: (context, state) => ClinicalVisitPaymentPage(),
@@ -308,28 +308,6 @@ class AppRouter {
         path: AppRoutes.clinicalConfirmation,
         builder: (context, state) => ClinicalVisitConfirmationPage(),
       ),
-      /*
-
-
-
-
-
-
-
-
-
-
-      GoRoute(
-        path: AppRoutes.clinicalPayment,
-        builder: (context, state) => ClinicalPaymentPage(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.clinicalConfirmation,
-        builder: (context, state) => ClinicalConfirmationPage(),
-      ),*/
-
-      // 🔹 Video Consultation
       GoRoute(
         path: AppRoutes.videoFilter,
         builder: (context, state) {
@@ -378,12 +356,12 @@ class AppRouter {
         path: AppRoutes.videoCall,
         builder: (context, state) => VideoCallPage(),
       ),
-
       // 🔹 Medical Record
       GoRoute(
         path: AppRoutes.patientMedicalRecords,
         builder: (context, state) {
-          final initialRecord = state.extra as MedicalRecordModel?;
+          final initialRecord =
+              state.extra is MedicalRecordModel ? state.extra as MedicalRecordModel : null;
           MedicalRecordsBinding().dependencies();
           return MedicalRecordsPage(initialRecord: initialRecord);
         },
@@ -391,7 +369,8 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.patientMedicalRecordDetail,
         builder: (context, state) {
-          final record = state.extra as MedicalRecordModel?;
+          final record =
+              state.extra is MedicalRecordModel ? state.extra as MedicalRecordModel : null;
           MedicalRecordsDetailsBinding().dependencies();
           final controller = Get.find<MedicalRecordsDetailsController>();
           if (record != null) {
@@ -400,7 +379,6 @@ class AppRouter {
           return MedicalRecordDetailsPage();
         },
       ),
-
       GoRoute(
         path: AppRoutes.patientMedicineCart,
         builder: (context, state) {

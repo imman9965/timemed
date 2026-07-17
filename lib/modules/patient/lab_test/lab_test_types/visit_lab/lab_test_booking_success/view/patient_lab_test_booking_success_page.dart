@@ -54,7 +54,7 @@ class PatientLabTestBookingSuccessPage extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
             ),
@@ -89,7 +89,7 @@ class PatientLabTestBookingSuccessPage extends StatelessWidget {
               "Lab Test Booked Successfully",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -101,7 +101,7 @@ class PatientLabTestBookingSuccessPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade700,
-                fontSize: 14,
+                fontSize: 13,
               ),
             ),
 
@@ -235,7 +235,7 @@ class PatientLabTestBookingSuccessPage extends StatelessWidget {
               title,
               style: TextStyle(
                 color: Colors.grey.shade600,
-                fontSize: 13,
+                fontSize: 12,
               ),
             ),
           ),
@@ -249,7 +249,7 @@ class PatientLabTestBookingSuccessPage extends StatelessWidget {
               textAlign: TextAlign.end,
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
-                fontSize: 14,
+                fontSize: 13,
               ),
             ),
           ),

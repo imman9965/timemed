@@ -118,7 +118,7 @@ class _PatientHomeCollectionCheckoutPageState
                   const Text(
                     "Total Amount",
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       color: Colors.grey,
                     ),
                   ),
@@ -129,7 +129,7 @@ class _PatientHomeCollectionCheckoutPageState
                     "₹${total.toStringAsFixed(0)}",
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
                 ],
@@ -164,7 +164,7 @@ class _PatientHomeCollectionCheckoutPageState
                   child: const Text(
                     "Pay Now",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -225,7 +225,7 @@ class _PatientHomeCollectionCheckoutPageState
                                   : "${tests.length} Tests Selected",
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight:
                                 FontWeight.w700,
                               ),
@@ -381,7 +381,7 @@ class _PatientHomeCollectionCheckoutPageState
             title,
             style: const TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
 

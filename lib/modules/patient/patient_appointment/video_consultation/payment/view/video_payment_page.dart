@@ -91,7 +91,7 @@ class _VideoPaymentPageState extends State<VideoPaymentPage> {
                         Text(
                           "Dr. Priya",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -105,7 +105,7 @@ class _VideoPaymentPageState extends State<VideoPaymentPage> {
                   ),
                   const Text(
                     "₹500",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

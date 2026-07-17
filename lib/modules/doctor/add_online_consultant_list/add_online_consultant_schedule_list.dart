@@ -24,10 +24,7 @@ class AddOnlineConsultationScheduleDialog extends StatefulWidget {
 class _AddOnlineConsultationScheduleDialogState
     extends State<AddOnlineConsultationScheduleDialog> {
 
-  // ── Persistent data ───────────────────────────────────
 
-
-  // ── Controllers ───────────────────────────────────────
   late final TextEditingController textFeeCtrl;
   late final TextEditingController videoFeeCtrl;
   late final TextEditingController intervalCtrl;

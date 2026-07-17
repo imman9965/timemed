@@ -57,7 +57,7 @@ class _SpecialityDoctorsListPageState extends State<SpecialityDoctorsListPage> {
                       const SizedBox(height: 10),
                       const Text(
                         "No doctors found",
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 13),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -123,7 +123,7 @@ class _SpecialityDoctorsListPageState extends State<SpecialityDoctorsListPage> {
                       doc["name"],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -151,7 +151,7 @@ class _SpecialityDoctorsListPageState extends State<SpecialityDoctorsListPage> {
                 child: Text(
                   doc["fee"],
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),

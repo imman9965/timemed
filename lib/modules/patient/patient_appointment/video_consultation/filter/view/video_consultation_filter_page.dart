@@ -41,7 +41,7 @@ class _VideoConsultationFilterPageState
                     const Text(
                       "Search by Doctor",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -67,7 +67,7 @@ class _VideoConsultationFilterPageState
                     const Text(
                       "Filter by Details",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -111,7 +111,7 @@ class _VideoConsultationFilterPageState
                     const Text(
                       "Post Your Query",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -245,7 +245,7 @@ class _VideoConsultationFilterPageState
                         Text(
                           title,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,
                           ),
@@ -254,7 +254,7 @@ class _VideoConsultationFilterPageState
                         Text(
                           value.value.isEmpty ? "Select $title" : value.value,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: value.value.isEmpty
                                 ? Colors.grey
@@ -386,7 +386,7 @@ class _VideoConsultationFilterPageState
         children: [
           const Text(
             "Describe your problem",
-            style: TextStyle(fontSize: 13, color: Colors.grey),
+            style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
           const SizedBox(height: 6),
 

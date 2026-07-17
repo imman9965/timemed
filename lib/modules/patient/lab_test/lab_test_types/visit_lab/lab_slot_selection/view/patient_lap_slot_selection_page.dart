@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/constants/app_colors.dart';
+import 'package:timesmed_project/core/widgets/common/appointment_slot_grid.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/modules/patient/medical_module/records/model/medical_record_model.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
@@ -92,7 +93,7 @@ class _PatientLabSlotSelectionPageState
                     ? "Select Slot"
                     : "Continue • $selectedTime",
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
@@ -144,7 +145,7 @@ class _PatientLabSlotSelectionPageState
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
 
@@ -216,7 +217,7 @@ class _PatientLabSlotSelectionPageState
                                 style: const TextStyle(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 15,
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -253,7 +254,7 @@ class _PatientLabSlotSelectionPageState
                         "${_month(selectedDate.month)} ${selectedDate.day}, ${selectedDate.year}",
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
-                          fontSize: 15,
+                          fontSize: 14,
                         ),
                       ),
 
@@ -317,119 +318,18 @@ class _PatientLabSlotSelectionPageState
             const SizedBox(height: 20),
 
             /// 🔹 SLOT SECTION
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _timeColumn(
-                  "Morning",
-                  Icons.wb_sunny_outlined,
-                  _morning(),
-                ),
-
-                _timeColumn(
-                  "Afternoon",
-                  Icons.sunny,
-                  _afternoon(),
-                ),
-
-                _timeColumn(
-                  "Evening",
-                  Icons.wb_twilight_outlined,
-                  _evening(),
-                ),
-
-                _timeColumn(
-                  "Night",
-                  Icons.nightlight_round,
-                  _night(),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 🔹 TIME COLUMN
-  Widget _timeColumn(
-      String title,
-      IconData icon,
-      List<Map<String, dynamic>> slots,
-      ) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 22,
-            ),
-
-            const SizedBox(height: 6),
-
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+            AppointmentSlotGrid(
+              selectedTime: selectedTime,
+              onSlotTap: (time) {
+                setState(() => selectedTime = time);
+              },
+              columns: buildDefaultSlotColumns(
+                morning: _morning(),
+                afternoon: _afternoon(),
+                evening: _evening(),
+                night: _night(),
               ),
             ),
-
-            const SizedBox(height: 10),
-
-            ...slots.map((slot) {
-              bool available = slot["available"];
-              bool isSelected =
-                  selectedTime == slot["time"];
-
-              return GestureDetector(
-                onTap: available
-                    ? () {
-                  setState(() {
-                    selectedTime = slot["time"];
-                  });
-                }
-                    : null,
-                child: AnimatedContainer(
-                  duration:
-                  const Duration(milliseconds: 250),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: !available
-                        ? Colors.grey.shade100
-                        : isSelected
-                        ? AppColors.primary
-                        : AppColors.primary.withOpacity(.08),
-                  ),
-                  child: Center(
-                    child: Text(
-                      slot["time"],
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: !available
-                            ? Colors.grey
-                            : isSelected
-                            ? Colors.white
-                            : AppColors.primary,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
           ],
         ),
       ),
@@ -437,43 +337,42 @@ class _PatientLabSlotSelectionPageState
   }
 
   /// 🔹 SLOT DATA
-  List<Map<String, dynamic>> _morning() => _gen([
+  List<AppointmentSlot> _morning() => _gen([
     "09:00 AM",
     "09:30 AM",
     "10:00 AM",
     "10:30 AM",
   ]);
 
-  List<Map<String, dynamic>> _afternoon() => _gen([
+  List<AppointmentSlot> _afternoon() => _gen([
     "12:00 PM",
     "12:30 PM",
     "01:00 PM",
     "01:30 PM",
   ]);
 
-  List<Map<String, dynamic>> _evening() => _gen([
+  List<AppointmentSlot> _evening() => _gen([
     "04:00 PM",
     "04:30 PM",
     "05:00 PM",
     "05:30 PM",
   ]);
 
-  List<Map<String, dynamic>> _night() => _gen([
+  List<AppointmentSlot> _night() => _gen([
     "07:00 PM",
     "07:30 PM",
     "08:00 PM",
     "08:30 PM",
   ]);
 
-  List<Map<String, dynamic>> _gen(List<String> times) {
+  List<AppointmentSlot> _gen(List<String> times) {
     return times
         .map(
-          (e) => {
-        "time": e,
-        "available":
-        DateTime.now().millisecond % 3 != 0,
-      },
-    )
+          (e) => AppointmentSlot(
+            e,
+            available: DateTime.now().millisecond % 3 != 0,
+          ),
+        )
         .toList();
   }
 

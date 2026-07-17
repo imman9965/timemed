@@ -25,7 +25,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: ListView(
           children: [
             _buildPremiumHeader(),
@@ -115,7 +115,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: AppColors.white,
                               fontWeight: FontWeight.w700,
                             ),
@@ -178,7 +178,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
               const SizedBox(width: 6),
               const Text(
                 "Personal Info",
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600,color: Colors.white),
               ),
             ],
           ),
@@ -261,7 +261,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 10),
+                style: TextStyle(fontSize: 10,color: Colors.white),
               ),
               Text(
                 value,
@@ -269,6 +269,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -306,7 +307,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       children: [
         const Text(
           "Book Appointment",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         const SizedBox(height: 10),
         Row(
@@ -320,7 +321,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 },
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
               child: CommonButton(
                 title: "Video Consultation",
@@ -338,22 +339,22 @@ class _PatientHomePageState extends State<PatientHomePage> {
   final List<Map<String, dynamic>> specialities = [
     {"id": 1, "name": "General Physician", "image": "General Physician.png"},
     {"id": 2, "name": "Gynecology", "image": "Gynecology.png"},
-    {"id": 3, "name": "Obstetrics", "image": "Obstetrics.png"},
+    {"id": 3, "name": "Obstetrics", "image": "obstretrics.png"},
     {"id": 4, "name": "Pediatrics", "image": "Pediatrics.png"},
-    {"id": 5, "name": "Cardiology", "image": "Cardiology.png"},
-    {"id": 6, "name": "Diabetology", "image": "Diabetology.png"},
+    {"id": 5, "name": "Cardiology", "image": "cardialogy.png"},
+    {"id": 6, "name": "Diabetology", "image": "diabetalogy.png"},
     {"id": 7, "name": "Endocrinology", "image": "Endocrinology.png"},
     {"id": 8, "name": "Neurology", "image": "Neurology.png"},
-    {"id": 9, "name": "Psychiatry", "image": "Psychiatry.png"},
-    {"id": 10, "name": "Pulmonology", "image": "Pulmonology.png"},
+    {"id": 9, "name": "Psychiatry", "image": "psychiatry.png"},
+    {"id": 10, "name": "Pulmonology", "image": "pulmonology.png"},
     {"id": 11, "name": "Gastroenterology", "image": "Gastroenterology.png"},
-    {"id": 12, "name": "Orthopedics", "image": "Orthopedics.png"},
-    {"id": 13, "name": "Dermatology", "image": "Dermatology.png"},
-    {"id": 14, "name": "Ophthalmology", "image": "Ophthalmology.png"},
+    {"id": 12, "name": "Orthopedics", "image": "orthopedics.png"},
+    {"id": 13, "name": "Dermatology", "image": "dermatology.png"},
+    {"id": 14, "name": "Ophthalmology", "image": "opthamoloagy.png"},
     {"id": 15, "name": "ENT (Ear, Nose, Throat)", "image": "ENT.png"},
     {"id": 16, "name": "Urology", "image": "Urology.png"},
     {"id": 17, "name": "Oncology", "image": "Oncology.png"},
-    {"id": 18, "name": "Physiotherapy", "image": "Physiotherapy.png"},
+    {"id": 18, "name": "Physiotherapy", "image": "physiotheraphy.png"},
     {"id": 19, "name": "Nephrology", "image": "Nephrology.png"},
     {"id": 20, "name": "General Surgery", "image": "General Surgery.png"},
   ];
@@ -376,7 +377,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       children: [
         const Text(
           "Specialities",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         const SizedBox(height: 10),
 
@@ -388,7 +389,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
             crossAxisCount: 4,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            childAspectRatio: 1.1,
+            mainAxisExtent: 84,
           ),
           itemBuilder: (context, index) {
             final item = displayList[index];
@@ -424,9 +425,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           ? AppColors.primary.withOpacity(0.1)
                           : Colors.grey.shade100,
                     ),
-                    // child: Icon(item["icon"], color: AppColors.primary),
                     child: Image.asset(
-                      "assets/icons/speciality/${item["image"]}",
+                      "assets/icons/speciality2/${item["image"]}",
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -458,21 +458,64 @@ class _PatientHomePageState extends State<PatientHomePage> {
       children: [
         const Text(
           "UpComing Appointment",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         const SizedBox(height: 10),
-        Container(
+        _upcomingAppointmentCard(
+          networkimage:"https://manage.healu360.com/uploads/2024/09/5a4d97684d10837be6911fab06257c86.jpg",
+          doctor: "Dr. Mariappan",
+          specialty: "Cardiologist • Apollo Clinic",
+          date: "15 Sep",
+          time: "10:30 AM",
+          status: "Confirmed",
+          consultationType: 'clinic',
+          isInstant: false,
+          clinicAddress: "New No. 72, Old No. 54, Nelson Manickam Road, Aminjikarai, Chennai, Tamil Nadu 600029",
+        ),
+        const SizedBox(height: 12),
+        _upcomingAppointmentCard(
+          networkimage:"https://images.pexels.com/photos/8376306/pexels-photo-8376306.jpeg?_gl=1*1xqp9o6*_ga*MjAyNDY2Nzg4OS4xNzg0MTAwNzI0*_ga_8JE65Q40S6*czE3ODQxMDA3MjQkbzEkZzEkdDE3ODQxMDEyNjgkajU2JGwwJGgw",
+          doctor: "Dr. Anitha",
+          specialty: "Dermatologist • HealU Online",
+          date: "18 Sep",
+          time: "04:00 PM",
+          status: "Confirmed",
+          consultationType: 'video',
+          isInstant: false,
+          clinicAddress: "",
+        ),
+      ],
+    );
+  }
+
+  Widget _upcomingAppointmentCard({
+    required String doctor,
+    required String specialty,
+    required String date,
+    required String time,
+    required String status,
+    required String consultationType, // 'video' | 'clinic'
+    required bool isInstant,
+    required String clinicAddress, required String networkimage,
+  }) {
+    final bool isClinic = consultationType == 'clinic';
+
+    return Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
+            border: Border.all(
+              color: Colors.grey.shade300, // Border color
+              width: 1.0,                  // Border width
+            ),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black.withOpacity(0.08),
+            //     blurRadius: 10,
+            //     offset: const Offset(0, 8),
+            //   ),
+            // ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,10 +523,10 @@ class _PatientHomePageState extends State<PatientHomePage> {
               /// 🔹 TOP ROW (Doctor + Status)
               Row(
                 children: [
-                  const CircleAvatar(
+                   CircleAvatar(
                     radius: 24,
                     backgroundImage: NetworkImage(
-                      "https://manage.healu360.com/uploads/2024/09/5a4d97684d10837be6911fab06257c86.jpg",
+                      networkimage.toString(),
                     ),
                   ),
 
@@ -494,15 +537,15 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Dr. Mariappan",
-                          style: TextStyle(
+                        Text(
+                          doctor,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 14,
                           ),
                         ),
                         Text(
-                          "Cardiologist • Apollo Clinic",
+                          specialty,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey.shade600,
@@ -522,9 +565,9 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       color: Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text(
-                      "Confirmed",
-                      style: TextStyle(
+                    child: Text(
+                      status,
+                      style: const TextStyle(
                         fontSize: 11,
                         color: Colors.green,
                         fontWeight: FontWeight.w600,
@@ -537,36 +580,37 @@ class _PatientHomePageState extends State<PatientHomePage> {
               const SizedBox(height: 14),
 
               /// 🔹 APPOINTMENT DETAILS
-              Row(
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
                 children: [
-                  _detailBlock(Icons.calendar_today, "15 Sep"),
-                  const SizedBox(width: 14),
-                  _detailBlock(Icons.access_time, "10:30 AM"),
-                  const SizedBox(width: 14),
-                  _detailBlock(Icons.video_call, "Video"),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              /// 🔹 LOCATION / NOTE
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on,
-                    size: 14,
-                    color: Colors.grey.shade500,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _detailBlock(Icons.calendar_today, date),
+                      _detailBlock(Icons.access_time, time),
+                    ],
                   ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      "Chennai - Apollo Hospital, T Nagar",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _detailBlock(
+                        isInstant ? Icons.flash_on : Icons.event_available,
+                        isInstant ? "Instant" : "Schedule",
                       ),
-                    ),
+                      _detailBlock(
+                        isClinic ? Icons.local_hospital : Icons.video_call,
+                        isClinic ? "Clinic Visit" : "Video Consultation",
+                      ),
+                    ],
                   ),
+
+
+                  /// Instant vs Schedule indicator
+
+                  /// Consultation type
+
                 ],
               ),
 
@@ -595,16 +639,309 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () {},
-                      child: const Text("Join Now"),
+                      onPressed: () {
+                        if (isClinic) {
+                          _showAppointmentDetailsDialog(
+                            doctor: doctor,
+                            specialty: specialty,
+                            date: date,
+                            time: time,
+                            status: status,
+                            address: clinicAddress,
+                          );
+                        }
+                      },
+                      child: Text(isClinic ? "View Details" : "Join Now"),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-        ),
-      ],
+        );
+  }
+
+  /// 🔹 Stunning appointment-details dialog (clinic address, etc.)
+  void _showAppointmentDetailsDialog({
+    required String doctor,
+    required String specialty,
+    required String date,
+    required String time,
+    required String status,
+    required String address,
+  }) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Appointment",
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 260),
+      pageBuilder: (_, __, ___) => const SizedBox.shrink(),
+      transitionBuilder: (context, anim, __, child) {
+        final curved =
+            CurvedAnimation(parent: anim, curve: Curves.easeOutBack);
+        return Transform.scale(
+          scale: 0.85 + (0.15 * curved.value),
+          child: Opacity(
+            opacity: anim.value.clamp(0.0, 1.0),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.22),
+                          blurRadius: 30,
+                          offset: const Offset(0, 16),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        /// GRADIENT HEADER
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.primary,
+                                AppColors.primary.withOpacity(0.75),
+                              ],
+                            ),
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(28),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(2.5),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const CircleAvatar(
+                                  radius: 26,
+                                  backgroundImage: NetworkImage(
+                                    "https://manage.healu360.com/uploads/2024/09/5a4d97684d10837be6911fab06257c86.jpg",
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      doctor,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      specialty,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.9),
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        /// BODY
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _dialogInfoTile(
+                                      Icons.calendar_today_rounded,
+                                      "Date",
+                                      date,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: _dialogInfoTile(
+                                      Icons.access_time_rounded,
+                                      "Time",
+                                      time,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+
+                              /// ADDRESS CARD
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: AppColors.primary.withOpacity(0.12),
+                                  ),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Icon(
+                                        Icons.location_on_rounded,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Clinic Address",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.primary,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            address,
+                                            style: TextStyle(
+                                              fontSize: 12.5,
+                                              height: 1.4,
+                                              color: Colors.grey.shade800,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+
+                              /// ACTIONS
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text("Close"),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      icon: const Icon(Icons.directions_rounded,
+                                          size: 18, color: Colors.white),
+                                      label: const Text(
+                                        "Directions",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _dialogInfoTile(IconData icon, String label, String value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xffF8FAFC),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: AppColors.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey.shade500,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -773,7 +1110,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           Text(
                             "Switch Patient",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -883,7 +1220,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
               children: [
                 const Text(
                   "John Doe",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
                 ),
 
                 const SizedBox(height: 4),

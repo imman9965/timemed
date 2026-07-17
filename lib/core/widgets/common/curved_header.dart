@@ -9,6 +9,7 @@ class CurvedHeader extends StatelessWidget {
     super.key,
     required this.title,
     this.trailing,
+    this.leading,
     this.height,
     this.titleStyle,
     this.titleAlignment = TextAlign.center,
@@ -21,6 +22,10 @@ class CurvedHeader extends StatelessWidget {
 
   final String title;
   final Widget? trailing;
+
+  /// Optional widget shown at the top-left of the header (e.g. a menu / profile
+  /// badge). When provided, it takes the place of the back button.
+  final Widget? leading;
   final double? height;
   final TextStyle? titleStyle;
   final TextAlign titleAlignment;
@@ -43,7 +48,13 @@ class CurvedHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenHPadding),
       child: Stack(
         children: [
-          if (showBackButton && context.canPop())
+          if (leading != null)
+            Positioned(
+              left: 0,
+              top: 36,
+              child: leading!,
+            )
+          else if (showBackButton && context.canPop())
             Positioned(
               left: 0,
               top: 41,

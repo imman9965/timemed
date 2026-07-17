@@ -149,7 +149,7 @@ class _PatientLabTestCheckoutPageState
               child: Text(
                 "Pay ₹$totalAmount",
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
@@ -200,7 +200,7 @@ class _PatientLabTestCheckoutPageState
                         : "${tests.length} Tests Selected",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -294,7 +294,7 @@ class _PatientLabTestCheckoutPageState
                       Text(
                         "${tests.length} Lab Test Charge${tests.length > 1 ? 's' : ''}",
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                         ),
                       ),
 
@@ -322,7 +322,7 @@ class _PatientLabTestCheckoutPageState
                       const Text(
                         "Total Amount",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight:
                           FontWeight.w700,
                         ),
@@ -331,7 +331,7 @@ class _PatientLabTestCheckoutPageState
                       Text(
                         "₹$totalAmount",
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: AppColors.primary,
                           fontWeight:
                           FontWeight.w800,
@@ -366,7 +366,7 @@ class _PatientLabTestCheckoutPageState
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w700,
             ),
           ),

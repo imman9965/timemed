@@ -64,42 +64,9 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                           "Add Prescription",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          final labTests = controller.selectedRecord.value?.labTests;
-                          if (labTests != null && labTests.isNotEmpty) {
-                            context.push(
-                              AppRoutes.patientLabTestDetails,
-                              extra: labTests,
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          "Book Lab Test",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -149,7 +116,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                             Text(
                               record.patientName,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xff2C3E50),
                               ),
@@ -157,7 +124,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                             Text(
                               "${record.doctorName} | ${record.speciality}",
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 12,
                                 color: Colors.grey.shade600,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -218,11 +185,11 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                   dividerColor: Colors.transparent,
                   indicatorSize: TabBarIndicatorSize.tab,
                   padding: const EdgeInsets.all(4),
-                  labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
-                  unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                  labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                  unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
                   tabs: const [
                     Tab(text: "Prescription"),
-                    Tab(text: "Lab Tests"),
+                    // Tab(text: "Lab Tests"),
                     Tab(text: "Remarks"),
                   ],
                 ),
@@ -265,35 +232,35 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                     ),
 
                     /// TAB 2: LAB TESTS
-                    SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _sectionLabel("Clinical Lab Tests"),
-                              if (record.labTests.isNotEmpty)
-                                _actionChip(
-                                  "View Report",
-                                  Icons.article_outlined,
-                                  () async {
-                                    final bytes = await MedicalPdfHelper.generateLabReportPdf(record);
-                                    await MedicalPdfHelper.saveAndOpenPdf(bytes, "Lab_Report_${record.visitId}");
-                                  },
-                                  Colors.teal,
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          if (record.labTests.isEmpty)
-                            _emptyState("No lab investigations", Icons.science_outlined)
-                          else
-                            _labTestTable(record.labTests),
-                        ],
-                      ),
-                    ),
+                    // SingleChildScrollView(
+                    //   padding: const EdgeInsets.all(16),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           _sectionLabel("Clinical Lab Tests"),
+                    //           if (record.labTests.isNotEmpty)
+                    //             _actionChip(
+                    //               "View Report",
+                    //               Icons.article_outlined,
+                    //               () async {
+                    //                 final bytes = await MedicalPdfHelper.generateLabReportPdf(record);
+                    //                 await MedicalPdfHelper.saveAndOpenPdf(bytes, "Lab_Report_${record.visitId}");
+                    //               },
+                    //               Colors.teal,
+                    //             ),
+                    //         ],
+                    //       ),
+                    //       const SizedBox(height: 16),
+                    //       if (record.labTests.isEmpty)
+                    //         _emptyState("No lab investigations", Icons.science_outlined)
+                    //       else
+                    //         _labTestTable(record.labTests),
+                    //     ],
+                    //   ),
+                    // ),
 
                     /// TAB 3: REMARKS
                     SingleChildScrollView(
@@ -315,7 +282,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                               child: Text(
                                 record.notes,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 13,
                                   color: Colors.grey.shade800,
                                   height: 1.4,
                                 ),
@@ -340,7 +307,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w800,
         color: Color(0xff34495E),
         letterSpacing: 0.5,
@@ -385,7 +352,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                           Text(
                             p.medicineName,
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff2C3E50),
                             ),
@@ -450,7 +417,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
                           Text(
                             lab.testName,
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff2C3E50),
                             ),
@@ -499,7 +466,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
       child: Text(
         value,
         style: const TextStyle(
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: FontWeight.w600,
           color: Color(0xff34495E),
         ),
@@ -523,7 +490,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
             const SizedBox(width: 6),
             Text(
               label,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: color),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: color),
             ),
           ],
         ),
@@ -560,7 +527,7 @@ class MedicalRecordDetailsPage extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             message,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 15, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.grey.shade500, fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ],
       ),

@@ -98,7 +98,7 @@ class _PatientHomeCollectionAddressPageState
               child: const Text(
                 "Continue To Payment",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
@@ -155,7 +155,7 @@ class _PatientHomeCollectionAddressPageState
                                   : "${tests.length} Tests Selected",
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -228,7 +228,7 @@ class _PatientHomeCollectionAddressPageState
                     "Patient Details",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
 
@@ -255,7 +255,7 @@ class _PatientHomeCollectionAddressPageState
                     "Collection Address",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
 
@@ -291,7 +291,7 @@ class _PatientHomeCollectionAddressPageState
                     "Address Type",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 14,
                     ),
                   ),
 

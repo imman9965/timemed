@@ -75,12 +75,12 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
         children: [
           const Text(
             "Who is this appointment for?",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
             "Select a patient or add a new one",
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+            style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
           ),
         ],
       ),
@@ -212,7 +212,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
       onTap: () => setState(() => selectedPatient = patient),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        margin: const EdgeInsets.only(bottom: 14),
+        margin: const EdgeInsets.only(bottom: 6),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -247,7 +247,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                           patient.name[0],
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: AppColors.primary,
                           ),
                         )
@@ -281,7 +281,7 @@ class _PatientSelectionPageState extends State<PatientSelectionPage> {
                     patient.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 15,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 4),

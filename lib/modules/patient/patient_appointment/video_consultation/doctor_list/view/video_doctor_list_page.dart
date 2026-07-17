@@ -81,14 +81,14 @@ class _VideoDoctorListPageState extends State<VideoDoctorListPage> {
                       doc["name"],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       doc["speciality"],
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 12,
                         color: Colors.grey.shade600,
                       ),
                     ),
@@ -176,7 +176,7 @@ class _VideoDoctorListPageState extends State<VideoDoctorListPage> {
               },
               child: const Text(
                 "Book Consultation",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
               ),
             ),
           ),

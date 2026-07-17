@@ -111,7 +111,7 @@ class MedicalPdfHelper {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text(title, style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
+            pw.Text(title, style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
             pw.Text("TimesMed Healthcare", style: pw.TextStyle(color: PdfColors.grey)),
           ],
         ),
@@ -129,7 +129,7 @@ class MedicalPdfHelper {
   static pw.Widget _buildSectionTitle(String title) {
     return pw.Padding(
       padding: const pw.EdgeInsets.symmetric(vertical: 8),
-      child: pw.Text(title, style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold, decoration: pw.TextDecoration.underline)),
+      child: pw.Text(title, style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold, decoration: pw.TextDecoration.underline)),
     );
   }
 

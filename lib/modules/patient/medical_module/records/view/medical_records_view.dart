@@ -121,7 +121,7 @@ class _MedicalRecordsPageState extends State<MedicalRecordsPage> {
                               record.patientName,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                             Text(

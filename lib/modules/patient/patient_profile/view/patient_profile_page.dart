@@ -86,7 +86,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
 
-                border: Border.all(color: AppColors.primary.withOpacity(0.08)),
+                border: Border.all(color: Colors.grey.shade300),
 
                 boxShadow: [
                   BoxShadow(
@@ -113,7 +113,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                         Text(
                           nameController.text,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.3,
                           ),
@@ -217,7 +217,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
 
-                border: Border.all(color: Colors.grey.withOpacity(0.08)),
+                border: Border.all(color: Colors.grey.shade300),
 
                 boxShadow: [
                   BoxShadow(
@@ -255,9 +255,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                     fillColor: const Color(0xffF8FAFC),
                     filled: true,
                   ),
-
                   const SizedBox(height: 16),
-
                   TitleTextFormField(
                     title: "Email",
                     hintText: "Enter email",
@@ -269,9 +267,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                     fillColor: const Color(0xffF8FAFC),
                     filled: true,
                   ),
-
                   const SizedBox(height: 16),
-
                   TitleTextFormField(
                     title: "Password",
                     hintText: "Enter password",
@@ -302,7 +298,7 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                       onPressed: () {
                         context.push(AppRoutes.addPatient);
                       },
-                      child: const Text("Edit Profile"),
+                      child: const Text("Edit Profile",style: TextStyle(fontSize: 12)),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -317,12 +313,13 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                       onPressed: () {
                         context.push(AppRoutes.patientForgotPassword);
                       },
-                      child: const Text("Change Password"),
+                      child: const Text("Change Password",style: TextStyle(color: Colors.white,fontSize: 12),),
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 90),
           ],
         ),
       ),

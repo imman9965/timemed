@@ -90,7 +90,7 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
                     const Text(
                       "You are in Queue",
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -158,7 +158,7 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
                                 formatTime(), // show full mm:ss
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -202,7 +202,7 @@ class _VideoQueuePageState extends State<VideoQueuePage> {
                       "Appointment Details",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
 

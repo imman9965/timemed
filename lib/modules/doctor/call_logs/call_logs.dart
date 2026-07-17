@@ -476,7 +476,9 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               children: [
-                 CurvedHeader(title: widget.title??"CALL LOGS", showBackButton: false, titleStyle: TextStyle(
+                 CurvedHeader(title: widget.title??"CALL LOGS", showBackButton: false,
+                  leading: const DoctorBadge(doctor: "Dr.Mariappan"),
+                  titleStyle: TextStyle(
                   fontSize: 15,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -487,11 +489,10 @@ class _CallLogsScreenState extends State<CallLogsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ── Doctor badge + Filter ────────────
+                        // ── Filter ───────────────────────────
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            DoctorBadge(doctor: "Dr.Mariappan"),
                             FilterButton(onTap: _showFilterSheet),
                           ],
                         ),

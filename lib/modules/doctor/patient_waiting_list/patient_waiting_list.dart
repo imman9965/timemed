@@ -809,6 +809,7 @@ class _PatientWaitingListScreenState
                     onNotificationTap: () => _onBellTap(context),
                     title: 'PATIENT WAITING LIST',
                     showBackButton: false,
+                    leading: DoctorBadge(doctor: doctor),
                     titleStyle: const TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -823,11 +824,6 @@ class _PatientWaitingListScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-                        // ── Doctor badge ───────────────────────
-                        DoctorBadge(doctor: doctor),
-                        const SizedBox(height: 14),
-
                         // ── Online patients section ────────────
                         const SectionHeader(
                           label:       'Patients Available',
@@ -837,24 +833,6 @@ class _PatientWaitingListScreenState
 
                         const SizedBox(height: 12),
 
-                        // Iterated from _onlinePatients
-                        // ..._onlinePatients.map(
-                        //       (p) => PatientWaitingCard(patient: p),
-                        // ),
-
-                        // const SizedBox(height: 8),
-
-                        // ── In-person patients section ─────────
-                        // const SectionHeader(
-                        //   label:       'Patients in',
-                        //   statusText:  'Online',
-                        //   statusColor: Colors.orange,
-                        // ),
-                        // const SizedBox(height: 12),
-
-                        // Iterated from _inPersonPatients.
-                        // The very first card plays a one-time swipe demo
-                        // so users discover the hidden video-call action.
                         ...inPersonPatients.asMap().entries.map(
                               (e) => PatientWaitingCard(
                                 patient: e.value,

@@ -37,7 +37,7 @@ class _PatientPreviousAppointmentPageState
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 20, 16,98 ),
           itemCount: appointments.length,
           itemBuilder: (context, index) {
             return _previousAppointmentCard(appointments[index]);
@@ -55,6 +55,10 @@ class _PatientPreviousAppointmentPageState
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
+        border: Border.all(
+          color: Colors.grey.shade300, // Border color
+          width: 1.0,                  // Border width
+        ),
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -110,7 +114,7 @@ class _PatientPreviousAppointmentPageState
                       record.doctorName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 14,
                         color: AppColors.primary,
                       ),
                     ),
@@ -127,7 +131,7 @@ class _PatientPreviousAppointmentPageState
                       record.patientName,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                        fontSize: 12,
                       ),
                     ),
                   ],
@@ -159,12 +163,12 @@ class _PatientPreviousAppointmentPageState
 
           const SizedBox(height: 14),
 
-          Row(
+          Wrap(
+            spacing: 10,
+            runSpacing: 8,
             children: [
               _detailBlock(Icons.calendar_today, DateTimeHelper.formatToLongDate(record.date)),
-              const SizedBox(width: 14),
               _detailBlock(Icons.access_time, record.time),
-              const SizedBox(width: 14),
               _detailBlock(Icons.fingerprint, "#${record.visitId}"),
             ],
           ),
@@ -191,20 +195,20 @@ class _PatientPreviousAppointmentPageState
 
           const SizedBox(height: 12),
 
-          Row(
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
             children: [
               _dataIndicator(
                 Icons.medication_outlined,
                 record.prescriptions.isNotEmpty,
                 "Prescription",
               ),
-              const SizedBox(width: 8),
               _dataIndicator(
                 Icons.science_outlined,
                 record.labTests.isNotEmpty,
                 "Lab Test",
               ),
-              const SizedBox(width: 8),
               _dataIndicator(
                 Icons.note_alt_outlined,
                 record.notes.isNotEmpty,

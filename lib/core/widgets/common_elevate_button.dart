@@ -40,7 +40,7 @@ class CommonButton extends StatelessWidget {
               child: Text(
                 title,
                 style: textStyle ??
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               ),
             )
           : ElevatedButton(
@@ -54,7 +54,7 @@ class CommonButton extends StatelessWidget {
               child: Text(
                 title,
                 style: textStyle ??
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               ),
             ),
     );
