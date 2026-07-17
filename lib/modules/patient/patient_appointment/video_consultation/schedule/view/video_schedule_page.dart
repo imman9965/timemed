@@ -4,6 +4,8 @@ import 'package:timesmed_project/core/constants/app_colors.dart';
 import 'package:timesmed_project/core/widgets/common_app_bar.dart';
 import 'package:timesmed_project/routes/app_routes.dart';
 
+import '../../../../../../core/widgets/common/appointment_slot_grid.dart';
+
 class VideoSchedulePage extends StatefulWidget {
   const VideoSchedulePage({super.key});
 
