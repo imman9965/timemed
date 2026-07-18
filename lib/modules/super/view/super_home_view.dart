@@ -21,10 +21,10 @@ class _SuperHomeViewState extends State<SuperHomeView> {
   void _navigate(int index) {
     switch (index) {
       case 0:
-        context.push(AppRoutes.patientSelection);
+        context.push(AppRoutes.patientLogin);
         break;
       case 1:
-        context.push(AppRoutes.doctorWaitingList);
+        context.push(AppRoutes.doctorLogin);
         break;
       case 2:
         context.push(AppRoutes.pharmacyLogin);

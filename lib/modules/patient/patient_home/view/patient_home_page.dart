@@ -314,7 +314,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
           children: [
             Expanded(
               child: CommonButton(
-                isOutlined: true,
+
                 title: "Clinical Visit",
                 onPressed: () {
                   context.push(AppRoutes.clinicalFilter);
@@ -387,8 +387,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
           itemCount: displayList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 6,
             mainAxisExtent: 84,
           ),
           itemBuilder: (context, index) {
@@ -414,8 +414,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 52,
-                    width: 52,
+                    height: 55,
+                    width: 55,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: AppColors.primary.withOpacity(0.3),
@@ -427,7 +427,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     ),
                     child: Image.asset(
                       "assets/icons/speciality2/${item["image"]}",
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(height: 4),

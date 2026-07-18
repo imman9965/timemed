@@ -150,8 +150,8 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
                   _buildDepartmentDropdown(),
                   const SizedBox(height: 12),
                   _buildTestsField(),
-                  const SizedBox(height: 16),
-                  _buildAddTestPanel(),
+                  // const SizedBox(height: 16),
+                  // _buildAddTestPanel(),
                   const SizedBox(height: 16),
                   _buildInstructionsField(),
                   const SizedBox(height: 16),
@@ -286,6 +286,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
                     t,
                     style: const TextStyle(fontSize: 12),
                   ),
+
                   backgroundColor:
                   DoctorColors.primary.withOpacity(0.1),
                   side: BorderSide(
@@ -309,65 +310,65 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
   }
 
   // ---------- "Please Add New Test here" panel ----------
-  Widget _buildAddTestPanel() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-      decoration: BoxDecoration(
-        color: DoctorColors.cardWhite,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: DoctorColors.fieldBorder),
-      ),
-      child: Column(
-        children: [
-          RichText(
-            textAlign: TextAlign.center,
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 15,
-                color: DoctorColors.textSecondary,
-                fontWeight: FontWeight.w500,
-              ),
-              children: [
-                TextSpan(text: 'Please '),
-                TextSpan(
-                  text: 'Add New Test',
-                  style: TextStyle(
-                    color: DoctorColors.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(text: ' here.'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 14),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: _openTestSelector,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: DoctorColors.success,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                'Add New Test',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildAddTestPanel() {
+  //   return Container(
+  //     width: double.infinity,
+  //     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+  //     decoration: BoxDecoration(
+  //       color: DoctorColors.cardWhite,
+  //       borderRadius: BorderRadius.circular(12),
+  //       border: Border.all(color: DoctorColors.fieldBorder),
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         RichText(
+  //           textAlign: TextAlign.center,
+  //           text: const TextSpan(
+  //             style: TextStyle(
+  //               fontSize: 15,
+  //               color: DoctorColors.textSecondary,
+  //               fontWeight: FontWeight.w500,
+  //             ),
+  //             children: [
+  //               TextSpan(text: 'Please '),
+  //               TextSpan(
+  //                 text: 'Add New Test',
+  //                 style: TextStyle(
+  //                   color: DoctorColors.primary,
+  //                   fontWeight: FontWeight.w700,
+  //                 ),
+  //               ),
+  //               TextSpan(text: ' here.'),
+  //             ],
+  //           ),
+  //         ),
+  //         const SizedBox(height: 14),
+  //         SizedBox(
+  //           width: double.infinity,
+  //           height: 50,
+  //           child: ElevatedButton(
+  //             onPressed: _openTestSelector,
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: DoctorColors.success,
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(10),
+  //               ),
+  //               elevation: 0,
+  //             ),
+  //             child: const Text(
+  //               'Add New Test',
+  //               style: TextStyle(
+  //                 fontSize: 17,
+  //                 fontWeight: FontWeight.w700,
+  //                 color: Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   // ---------- Instructions ----------
   Widget _buildInstructionsField() {
