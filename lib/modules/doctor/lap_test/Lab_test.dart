@@ -622,7 +622,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
             onTap: () => setState(() => _isUrgent = false),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8),
         Expanded(
           child: _requestTypeCard(
             selected: _isUrgent,
@@ -637,6 +637,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
     );
   }
 
+
   Widget _requestTypeCard({
     required bool selected,
     required IconData icon,
@@ -649,7 +650,7 @@ class _LabTestRequestScreenState extends State<LabTestRequestScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         decoration: BoxDecoration(
           color: selected ? accent.withOpacity(0.08) : DoctorColors.background,
           borderRadius: BorderRadius.circular(10),

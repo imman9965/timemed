@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timesmed_project/core/widgets/common/curved_header.dart';
 import 'package:timesmed_project/modules/doctor/doctor_prescription/template_details_dialog.dart';
+import 'package:timesmed_project/modules/doctor/doctor_prescription/template_editor.dart';
 import 'package:timesmed_project/modules/doctor/theme/doctor_theme.dart';
-
 
 final List<PrescriptionTemplate> templates = [
   PrescriptionTemplate(
@@ -82,13 +82,49 @@ class TemplateListScreen extends StatefulWidget {
 }
 
 class _TemplateListScreenState extends State<TemplateListScreen> {
-  // ---------- Dummy data ----------
-
-
   final Set<String> _selectedIds = {};
+  final TextEditingController _searchCtrl = TextEditingController();
+  String _query = '';
 
-  String _formatDate(DateTime dt) {
-    return '${dt.month}/${dt.day.toString().padLeft(2, '0')}/${dt.year}';
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  // ---------- Helpers ----------
+  static const List<String> _months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  String _formatDate(DateTime dt) =>
+      '${dt.day} ${_months[dt.month - 1]} ${dt.year}';
+
+  List<PrescriptionTemplate> get _filtered {
+    if (_query.trim().isEmpty) return templates;
+    final q = _query.toLowerCase();
+    return templates
+        .where((t) =>
+            t.name.toLowerCase().contains(q) ||
+            t.description.toLowerCase().contains(q))
+        .toList();
+  }
+
+  int _drugCount(String id) => templateDrugsMap[id]?.length ?? 0;
+
+  String _newId() {
+    var max = 0;
+    for (final t in templates) {
+      final n = int.tryParse(t.id) ?? 0;
+      if (n > max) max = n;
+    }
+    return '${max + 1}';
+  }
+
+  void _snack(String msg) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(msg)));
   }
 
   void _toggleSelection(String id) {
@@ -99,6 +135,48 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
         _selectedIds.add(id);
       }
     });
+  }
+
+  // ---------- CRUD ----------
+  Future<void> _createTemplate() async {
+    final result = await showTemplateEditor(context);
+    if (result == null) return;
+    final id = _newId();
+    setState(() {
+      templates.insert(
+        0,
+        PrescriptionTemplate(
+          id: id,
+          name: result.name,
+          description: result.description,
+          date: DateTime.now(),
+        ),
+      );
+      templateDrugsMap[id] = result.drugs;
+    });
+    _snack('Template created');
+  }
+
+  Future<void> _editTemplate(PrescriptionTemplate t) async {
+    final result = await showTemplateEditor(
+      context,
+      initialName: t.name,
+      initialDescription: t.description,
+      initialDrugs: templateDrugsMap[t.id],
+    );
+    if (result == null) return;
+    final index = templates.indexWhere((e) => e.id == t.id);
+    if (index == -1) return;
+    setState(() {
+      templates[index] = PrescriptionTemplate(
+        id: t.id,
+        name: result.name,
+        description: result.description,
+        date: t.date,
+      );
+      templateDrugsMap[t.id] = result.drugs;
+    });
+    _snack('Template updated');
   }
 
   void _viewTemplate(PrescriptionTemplate t) {
@@ -112,22 +190,50 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
     );
   }
 
-  Future<void> _onDelete() async {
+  Future<void> _deleteOne(PrescriptionTemplate t) async {
+    final confirmed = await _confirmDelete(
+      title: 'Delete Template?',
+      message: 'Delete "${t.name}"? This cannot be undone.',
+    );
+    if (confirmed != true) return;
+    setState(() {
+      templateDrugsMap.remove(t.id);
+      templates.removeWhere((e) => e.id == t.id);
+      _selectedIds.remove(t.id);
+    });
+    _snack('Template deleted');
+  }
+
+  Future<void> _deleteSelected() async {
     if (_selectedIds.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select templates to delete')),
-      );
+      _snack('Please select templates to delete');
       return;
     }
-    final confirmed = await showDialog<bool>(
+    final n = _selectedIds.length;
+    final confirmed = await _confirmDelete(
+      title: 'Delete Templates?',
+      message:
+          'Delete $n selected template${n > 1 ? 's' : ''}? This cannot be undone.',
+    );
+    if (confirmed != true) return;
+    setState(() {
+      for (final id in _selectedIds) {
+        templateDrugsMap.remove(id);
+      }
+      templates.removeWhere((t) => _selectedIds.contains(t.id));
+      _selectedIds.clear();
+    });
+    _snack('Templates deleted');
+  }
+
+  Future<bool?> _confirmDelete(
+      {required String title, required String message}) {
+    return showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16)),
-        title: const Text('Delete Templates?'),
-        content: Text(
-          'Delete ${_selectedIds.length} selected template${_selectedIds.length > 1 ? 's' : ''}? This cannot be undone.',
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(title),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -141,127 +247,162 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
         ],
       ),
     );
-    if (confirmed == true) {
-      setState(() {
-        for (final id in _selectedIds) {
-          templateDrugsMap.remove(id);
-        }
-        templates.removeWhere((t) => _selectedIds.contains(t.id));
-        _selectedIds.clear();
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Templates deleted')),
-        );
-      }
-    }
   }
 
   void _onSelect() {
     if (_selectedIds.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a template')),
-      );
+      _snack('Please select a template');
       return;
     }
-    // Collect all drugs from selected templates
     final List<TemplateDrug> allDrugs = [];
     for (final id in _selectedIds) {
       final drugs = templateDrugsMap[id];
-      if (drugs != null) {
-        allDrugs.addAll(drugs);
-      }
+      if (drugs != null) allDrugs.addAll(drugs);
     }
     context.pop(allDrugs);
   }
 
+  // ======================================================================
+  //  BUILD
+  // ======================================================================
   @override
   Widget build(BuildContext context) {
+    final list = _filtered;
     return Scaffold(
-      backgroundColor: DoctorColors.backgroundWarm,
-      body: SafeArea(
-        child: Column(
-          children: [
-            CurvedHeader(title: "TEMPLATE"),
-            Expanded(
-              child: templates.isEmpty
-                  ? _buildEmpty()
-                  : ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                itemCount: templates.length,
-                separatorBuilder: (_, __) =>
-                const SizedBox(height: 12),
-                itemBuilder: (_, i) => _buildTemplateCard(templates[i]),
-              ),
-            ),
-          ],
+      backgroundColor: DoctorColors.background,
+      body: Column(
+        children: [
+          const CurvedHeader(title: "TEMPLATES"),
+          _buildSearchBar(),
+          _buildCountRow(list.length),
+          Expanded(
+            child: templates.isEmpty
+                ? _buildEmpty(
+                    icon: Icons.description_outlined,
+                    text: 'No templates yet',
+                    subtext: 'Tap + to create your first template',
+                  )
+                : list.isEmpty
+                    ? _buildEmpty(
+                        icon: Icons.search_off,
+                        text: 'No matching templates',
+                        subtext: 'Try a different search',
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                        itemCount: list.length,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(height: 12),
+                        itemBuilder: (_, i) => _buildTemplateCard(list[i]),
+                      ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _createTemplate,
+        backgroundColor: DoctorColors.primary,
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text(
+          'New Template',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _onDelete,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: DoctorColors.errorRed,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+      bottomNavigationBar: _buildBottomBar(),
+    );
+  }
+
+  // ---------- Search ----------
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+      child: TextField(
+        controller: _searchCtrl,
+        onChanged: (v) => setState(() => _query = v),
+        style: const TextStyle(fontSize: 14.5, color: DoctorColors.textPrimary),
+        decoration: InputDecoration(
+          hintText: 'Search templates...',
+          hintStyle:
+              const TextStyle(fontSize: 14.5, color: DoctorColors.textSecondary),
+          prefixIcon:
+              const Icon(Icons.search, color: DoctorColors.textSecondary),
+          suffixIcon: _query.isEmpty
+              ? null
+              : IconButton(
+                  icon: const Icon(Icons.close,
+                      color: DoctorColors.textSecondary, size: 20),
+                  onPressed: () {
+                    _searchCtrl.clear();
+                    setState(() => _query = '');
+                  },
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _onSelect,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: DoctorColors.success,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      _selectedIds.isEmpty
-                          ? 'Select'
-                          : 'Select (${_selectedIds.length})',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          isDense: true,
+          filled: true,
+          fillColor: DoctorColors.cardWhite,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: DoctorColors.fieldBorder),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: DoctorColors.fieldBorder),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide:
+                const BorderSide(color: DoctorColors.primary, width: 1.5),
           ),
         ),
       ),
     );
   }
 
-  // ---------- Header ----------
+  Widget _buildCountRow(int shown) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 2, 18, 8),
+      child: Row(
+        children: [
+          Text(
+            '$shown template${shown == 1 ? '' : 's'}',
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: DoctorColors.textSecondary,
+            ),
+          ),
+          const Spacer(),
+          if (_selectedIds.isNotEmpty)
+            GestureDetector(
+              onTap: () => setState(() => _selectedIds.clear()),
+              child: Row(
+                children: [
+                  Text(
+                    '${_selectedIds.length} selected',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: DoctorColors.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.close,
+                      size: 15, color: DoctorColors.primary),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
   // ---------- Empty ----------
-  Widget _buildEmpty() {
+  Widget _buildEmpty({
+    required IconData icon,
+    required String text,
+    required String subtext,
+  }) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -273,13 +414,22 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
               color: DoctorColors.primarySoft,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.description_outlined,
-                size: 40, color: DoctorColors.primary),
+            child: Icon(icon, size: 38, color: DoctorColors.primary),
           ),
-          const SizedBox(height: 12),
-          const Text(
-            'No templates yet',
-            style: TextStyle(color: DoctorColors.textSecondary, fontSize: 15),
+          const SizedBox(height: 14),
+          Text(
+            text,
+            style: const TextStyle(
+              color: DoctorColors.textPrimary,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtext,
+            style: const TextStyle(
+                color: DoctorColors.textSecondary, fontSize: 13),
           ),
         ],
       ),
@@ -289,122 +439,184 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
   // ---------- Card ----------
   Widget _buildTemplateCard(PrescriptionTemplate t) {
     final isSelected = _selectedIds.contains(t.id);
-    return InkWell(
-      onTap: () => _toggleSelection(t.id),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: DoctorColors.cardWhite,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? DoctorColors.primary : DoctorColors.fieldBorder,
-            width: isSelected ? 1.5 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: DoctorColors.primary.withOpacity(0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
+    final drugCount = _drugCount(t.id);
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      decoration: BoxDecoration(
+        color: DoctorColors.cardWhite,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isSelected ? DoctorColors.primary : DoctorColors.fieldBorder,
+          width: isSelected ? 1.6 : 1,
         ),
-        child: IntrinsicHeight(
-          child: Row(
-            children: [
-              // Checkbox
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 12, 6, 12),
-                child: _buildCheckbox(isSelected),
-              ),
-              // Vertical divider
-              Container(
-                width: 1,
-                color: DoctorColors.fieldBorder,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-              ),
-              // Name + description
-              Expanded(
-                flex: 5,
-                child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        t.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: DoctorColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        t.description,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: DoctorColors.textSecondary,
-                        ),
-                      ),
-                    ],
+        boxShadow: [
+          BoxShadow(
+            color: DoctorColors.primary.withOpacity(isSelected ? 0.12 : 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // ---- Tappable info area (selects the template) ----
+          InkWell(
+            onTap: () => _toggleSelection(t.id),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildCheckbox(isSelected),
+                  const SizedBox(width: 12),
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: DoctorColors.primary.withOpacity(0.09),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.description_outlined,
+                        color: DoctorColors.primary, size: 23),
                   ),
-                ),
-              ),
-              // Vertical divider
-              Container(
-                width: 1,
-                color: DoctorColors.fieldBorder,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-              ),
-              // Date
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_today,
-                          size: 18, color: DoctorColors.primary),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          _formatDate(t.date),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: DoctorColors.primary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: DoctorColors.textPrimary,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // View eye button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () => _viewTemplate(t),
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: DoctorColors.successLightBg,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: DoctorColors.primary.withOpacity(0.3)),
-                      ),
-                      child: const Icon(Icons.visibility_outlined,
-                          color: DoctorColors.success, size: 20),
+                        const SizedBox(height: 3),
+                        Text(
+                          t.description.isEmpty
+                              ? 'No description'
+                              : t.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: DoctorColors.textSecondary,
+                            height: 1.35,
+                          ),
+                        ),
+                        const SizedBox(height: 9),
+                        _buildMetaRow(drugCount, t.date),
+                      ],
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          const Divider(height: 1, color: DoctorColors.dividerCool),
+          // ---- Action bar: three equal thirds, cannot overflow ----
+          Row(
+            children: [
+              _footerAction(
+                icon: Icons.visibility_outlined,
+                label: 'View',
+                color: DoctorColors.primary,
+                onTap: () => _viewTemplate(t),
+              ),
+              _verticalDivider(),
+              _footerAction(
+                icon: Icons.edit_outlined,
+                label: 'Edit',
+                color: DoctorColors.warningPending,
+                onTap: () => _editTemplate(t),
+              ),
+              _verticalDivider(),
+              _footerAction(
+                icon: Icons.delete_outline,
+                label: 'Delete',
+                color: DoctorColors.errorRed,
+                onTap: () => _deleteOne(t),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetaRow(int drugCount, DateTime date) {
+    return Row(
+      children: [
+        const Icon(Icons.medication_outlined,
+            size: 14, color: DoctorColors.textSecondary),
+        const SizedBox(width: 4),
+        Text(
+          '$drugCount drug${drugCount == 1 ? '' : 's'}',
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: DoctorColors.textSecondary,
+          ),
+        ),
+        Container(
+          width: 1,
+          height: 12,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          color: DoctorColors.dividerCool,
+        ),
+        const Icon(Icons.calendar_today_outlined,
+            size: 13, color: DoctorColors.textSecondary),
+        const SizedBox(width: 4),
+        Flexible(
+          child: Text(
+            _formatDate(date),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: DoctorColors.textSecondary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _verticalDivider() {
+    return Container(
+      width: 1,
+      height: 26,
+      color: DoctorColors.dividerCool,
+    );
+  }
+
+  Widget _footerAction({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 18, color: color),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                  color: color,
                 ),
               ),
             ],
@@ -419,9 +631,10 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
       duration: const Duration(milliseconds: 150),
       width: 22,
       height: 22,
+      margin: const EdgeInsets.only(top: 2),
       decoration: BoxDecoration(
         color: selected ? DoctorColors.primary : Colors.transparent,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: selected ? DoctorColors.primary : DoctorColors.fieldBorder,
           width: 1.5,
@@ -430,6 +643,78 @@ class _TemplateListScreenState extends State<TemplateListScreen> {
       child: selected
           ? const Icon(Icons.check, size: 16, color: Colors.white)
           : null,
+    );
+  }
+
+  // ---------- Bottom bar ----------
+  Widget _buildBottomBar() {
+    final hasSelection = _selectedIds.isNotEmpty;
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+        decoration: BoxDecoration(
+          color: DoctorColors.cardWhite,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 50,
+                child: OutlinedButton.icon(
+                  onPressed: hasSelection ? _deleteSelected : null,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: DoctorColors.errorRed,
+                    side: BorderSide(
+                      color: hasSelection
+                          ? DoctorColors.errorRed
+                          : DoctorColors.fieldBorder,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: const Icon(Icons.delete_outline, size: 20),
+                  label: const Text(
+                    'Delete',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _onSelect,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DoctorColors.success,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    hasSelection ? 'Use (${_selectedIds.length})' : 'Use',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -451,121 +736,9 @@ class PrescriptionTemplate {
   });
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'name': name,
-    'description': description,
-    'date': date.toIso8601String(),
-  };
-}
-
-// ============================================================
-// Preview dialog (when eye icon tapped)
-// ============================================================
-class _TemplatePreviewDialog extends StatelessWidget {
-  final PrescriptionTemplate template;
-  const _TemplatePreviewDialog({required this.template});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Header
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [DoctorColors.primaryDark, DoctorColors.primaryLight],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
-              padding: const EdgeInsets.fromLTRB(16, 14, 8, 14),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'TEMPLATE PREVIEW',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.6,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-            ),
-            // Body
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    template.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: DoctorColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_today,
-                          size: 16, color: DoctorColors.primary),
-                      const SizedBox(width: 6),
-                      Text(
-                        '${template.date.month}/${template.date.day.toString().padLeft(2, '0')}/${template.date.year}',
-                        style: const TextStyle(
-                          color: DoctorColors.primary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Description',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: DoctorColors.textSecondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    template.description,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: DoctorColors.textPrimary,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+        'id': id,
+        'name': name,
+        'description': description,
+        'date': date.toIso8601String(),
+      };
 }

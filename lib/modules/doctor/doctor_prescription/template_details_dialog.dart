@@ -95,11 +95,11 @@ class _TemplateDetailDialogState extends State<TemplateDetailDialog> {
                   itemBuilder: (_, i) => _buildDrugRow(_drugs[i], i),
                 ),
               ),
-              if (_drugs.isNotEmpty)
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(14, 0, 14, 14),
-                  child: SignatureView(showName: false),
-                ),
+              // if (_drugs.isNotEmpty)
+              //   const Padding(
+              //     padding: EdgeInsets.fromLTRB(14, 0, 14, 14),
+              //     child: SignatureView(showName: false),
+              //   ),
             ],
           ),
         ),

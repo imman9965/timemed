@@ -1475,8 +1475,7 @@ class _HospitalDialogState extends State<_HospitalDialog> {
                     // Charge fields follow the selected consultation type:
                     // Text only → text charge, Video only → video charge,
                     // Both → both fields. Digits only.
-                    if (_consultType == ConsultationType.textOnly ||
-                        _consultType == ConsultationType.both) ...[
+                    if (_consultType == ConsultationType.textOnly ) ...[
                       const SizedBox(height: 12),
                       TextField(
                         controller: _textFeeCtrl,
@@ -1490,8 +1489,21 @@ class _HospitalDialogState extends State<_HospitalDialog> {
                             Icons.chat_bubble_outline_rounded),
                       ),
                     ],
-                    if (_consultType == ConsultationType.videoOnly ||
-                        _consultType == ConsultationType.both) ...[
+                    if (_consultType == ConsultationType.both ) ...[
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _textFeeCtrl,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        decoration: _fieldDecoration(
+                            'Both Charges',
+                            Icons.chat_bubble_outline_rounded),
+                      ),
+                    ],
+                    if (_consultType == ConsultationType.videoOnly ) ...[
                       const SizedBox(height: 12),
                       TextField(
                         controller: _videoFeeCtrl,
