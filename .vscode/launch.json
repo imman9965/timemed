@@ -1,0 +1,74 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "TimesMed Super App",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "superApp"]
+    },
+    {
+      "name": "TimesMed Doctor",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_doctor.dart",
+      "args": ["--flavor", "doctor"]
+    },
+    {
+      "name": "TimesMed Patient",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_patient.dart",
+      "args": ["--flavor", "patient"]
+    },
+    {
+      "name": "TimesMed Super App (profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "superApp"]
+    },
+    {
+      "name": "TimesMed Super App (release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "superApp"]
+    },
+    {
+      "name": "TimesMed Doctor (profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_doctor.dart",
+      "args": ["--flavor", "doctor"]
+    },
+    {
+      "name": "TimesMed Doctor (release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_doctor.dart",
+      "args": ["--flavor", "doctor"]
+    },
+    {
+      "name": "TimesMed Patient (profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_patient.dart",
+      "args": ["--flavor", "patient"]
+    },
+    {
+      "name": "TimesMed Patient (release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_patient.dart",
+      "args": ["--flavor", "patient"]
+    }
+  ]
+}
