@@ -10,11 +10,7 @@ import '../../../routes/app_routes.dart';
 /// Logout) with a profile-photo header.
 class DoctorBadge extends StatelessWidget {
   final String doctor;
-
-  /// Optional profile photo. When null/empty, the avatar shows initials.
   final String? photoUrl;
-
-  /// Optional subtitle shown under the name in the menu header.
   final String? subtitle;
 
   const DoctorBadge({
@@ -26,6 +22,7 @@ class DoctorBadge extends StatelessWidget {
 
   // Menu action values
   static const String _basicDetails = 'basic';
+  static const String _doctors = 'doctors';
   static const String _hospitalList = 'hospital';
   static const String _profile = 'profile';
   static const String _notification = 'notification';
@@ -69,6 +66,9 @@ class DoctorBadge extends StatelessWidget {
     switch (value) {
       case _basicDetails:
         context.push(AppRoutes.basicDetails);
+        break;
+      case _doctors:
+        context.push(AppRoutes.doctorList);
         break;
       case _hospitalList:
         context.push(AppRoutes.hospitalList);
@@ -180,6 +180,7 @@ class DoctorBadge extends StatelessWidget {
         ),
         const PopupMenuDivider(),
         _menuItem(_basicDetails, Icons.person_outline, 'Basic Details'),
+        _menuItem(_doctors, Icons.groups_outlined, 'Doctors'),
         _menuItem(_hospitalList, Icons.local_hospital_outlined, 'Hospital List'),
         _menuItem(_profile, Icons.perm_identity_rounded, 'Profile'),
         _menuItem(_notification, Icons.notifications_none_rounded, 'Notifications'),

@@ -62,6 +62,50 @@ class DoctorFormData {
   String?      category;
   List<String> languages      = ['Tamil'];
   String       address        = '';
+
+  Map<String, dynamic> toJson() => {
+        'firstName': firstName,
+        'lastName': lastName,
+        'dateOfBirth': dateOfBirth?.toIso8601String(),
+        'gender': gender.index,
+        'mobile': mobile,
+        'email': email,
+        'experience': experience,
+        'qualification': qualification,
+        'specialisations': specialisations,
+        'category': category,
+        'languages': languages,
+        'address': address,
+      };
+
+  static DoctorFormData fromJson(Map<String, dynamic> j) {
+    final f = DoctorFormData();
+    f.firstName = (j['firstName'] as String?) ?? '';
+    f.lastName = (j['lastName'] as String?) ?? '';
+    final dob = j['dateOfBirth'] as String?;
+    f.dateOfBirth =
+        (dob != null && dob.isNotEmpty) ? DateTime.tryParse(dob) : null;
+    final gi = j['gender'];
+    f.gender = (gi is int && gi >= 0 && gi < Gender.values.length)
+        ? Gender.values[gi]
+        : Gender.male;
+    f.mobile = (j['mobile'] as String?) ?? '';
+    f.email = (j['email'] as String?) ?? '';
+    f.experience = (j['experience'] as num?)?.toInt() ?? 0;
+    f.qualification = j['qualification'] as String?;
+    f.specialisations =
+        (j['specialisations'] as List?)?.map((e) => e.toString()).toList() ??
+            <String>[];
+    f.category = j['category'] as String?;
+    f.languages =
+        (j['languages'] as List?)?.map((e) => e.toString()).toList() ??
+            <String>[];
+    f.address = (j['address'] as String?) ?? '';
+    return f;
+  }
+
+  /// Deep copy via JSON round-trip.
+  DoctorFormData copy() => DoctorFormData.fromJson(toJson());
 }
 
 // ════════════════════════════════════════════════════════

@@ -141,6 +141,7 @@ abstract class AppRoutes {
   // Sub-pages (pushed on top of shell)
   static const hospitalList = '/hospitalList';
   static const basicDetails = '/basicDetails';
+  static const doctorList = '/doctorList';
   static const rescheduleAppointment = '/rescheduleAppointment';
   static const scheduleAppointment = '/scheduleAppointment';
   static const medicalRecords = '/medicalRecords';

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
-import '../../../routes/app_routes.dart';
 import '../theme/doctor_theme.dart';
 import '../../../core/widgets/common/curved_header.dart';
 import 'dummy_data_5.dart';
 import 'signature_pad.dart';
+import '../doctor_management/doctor_registry.dart';
 
 class SectionLabel extends StatelessWidget {
   final String text;
@@ -76,7 +75,29 @@ class GenderButton extends StatelessWidget {
 // ════════════════════════════════════════════════════════
 
 class DoctorBasicDetailsScreen extends StatefulWidget {
-  const DoctorBasicDetailsScreen({super.key});
+  /// Form to edit. When null the screen edits the persistent main doctor
+  /// (the account owner). Pass a specific form to add/edit a sub-doctor.
+  final DoctorFormData? initialForm;
+
+  /// Called after a successful save. When non-null the screen behaves as a
+  /// sub-doctor editor (skips the prescription signature sync and returns to
+  /// the caller on OK). When null it saves the main doctor.
+  final VoidCallback? onSaved;
+
+  /// Header title override.
+  final String? title;
+
+  /// Whether to show the hand-drawn signature section (main doctor only).
+  final bool showSignature;
+
+  const DoctorBasicDetailsScreen({
+    super.key,
+    this.initialForm,
+    this.onSaved,
+    this.title,
+    this.showSignature = true,
+  });
+
   @override
   State<DoctorBasicDetailsScreen> createState() =>
       _DoctorBasicDetailsScreenState();
@@ -85,7 +106,8 @@ class DoctorBasicDetailsScreen extends StatefulWidget {
 class _DoctorBasicDetailsScreenState
     extends State<DoctorBasicDetailsScreen> {
 
-  final _form = DoctorFormData();
+  late final DoctorFormData _form;
+  bool get _isSubDoctor => widget.onSaved != null;
 
   // Controllers
   final _firstNameCtrl      = TextEditingController();
@@ -117,6 +139,12 @@ class _DoctorBasicDetailsScreenState
   @override
   void initState() {
     super.initState();
+
+    // Main doctor (default) edits the persistent registry record; a sub-doctor
+    // editor receives its own form via [initialForm].
+    _form = widget.initialForm ?? DoctorRegistry.instance.mainDoctor.form;
+    _seedControllers();
+
     _firstNameCtrl.addListener(() => _form.firstName = _firstNameCtrl.text);
     _lastNameCtrl.addListener (() => _form.lastName  = _lastNameCtrl.text);
     _addressCtrl.addListener  (() => _form.address   = _addressCtrl.text);
@@ -133,6 +161,32 @@ class _DoctorBasicDetailsScreenState
     _experienceCtrl.addListener(() {
       _form.experience = int.tryParse(_experienceCtrl.text) ?? 0;
     });
+  }
+
+  // Pre-fill the text controllers from the bound form so editing an existing
+  // doctor (main or sub) shows the saved values.
+  void _seedControllers() {
+    _firstNameCtrl.text  = _form.firstName;
+    _lastNameCtrl.text   = _form.lastName;
+    _mobileCtrl.text     = _form.mobile;
+    _emailCtrl.text      = _form.email;
+    _addressCtrl.text    = _form.address;
+    if (_form.experience > 0) {
+      _experienceCtrl.text = _form.experience.toString();
+    }
+    final dob = _form.dateOfBirth;
+    if (dob != null) {
+      _dobCtrl.text =
+          '${dob.day.toString().padLeft(2, '0')}/'
+          '${dob.month.toString().padLeft(2, '0')}/${dob.year}';
+    }
+    final cat = _form.category;
+    if (cat != null) {
+      _categoryCtrl.text = categoryOptions
+          .firstWhere((o) => o.value == cat,
+              orElse: () => DropdownOption(value: cat, label: cat))
+          .label;
+    }
   }
 
   @override
@@ -289,10 +343,18 @@ class _DoctorBasicDetailsScreenState
       return;
     }
 
-    // Push the collected details into the shared store so the prescription
-    // template shows the real doctor name / qualification / specialisation.
-    doctorSignature.updateFrom(_form);
-    DoctorProfileStore.save(); // persist to local DB
+    if (_isSubDoctor) {
+      // Sub-doctor: persist via the caller's callback (add/update + registry
+      // save). The prescription letterhead belongs to the main doctor only.
+      widget.onSaved!.call();
+    } else {
+      // Main doctor: push details into the shared prescription store and
+      // persist both the letterhead and the registry (the main doctor's form
+      // is the same object edited here).
+      doctorSignature.updateFrom(_form);
+      DoctorProfileStore.save();
+      DoctorRegistry.instance.save();
+    }
 
     showDialog(
       context: context,
@@ -319,18 +381,20 @@ class _DoctorBasicDetailsScreenState
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Profile Saved',
-                style: TextStyle(
+              Text(
+                _isSubDoctor ? 'Doctor Saved' : 'Profile Saved',
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Doctor profile has been saved successfully.',
+              Text(
+                _isSubDoctor
+                    ? 'Doctor details have been saved successfully.'
+                    : 'Doctor profile has been saved successfully.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
@@ -348,8 +412,9 @@ class _DoctorBasicDetailsScreenState
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
-                    // context.push(AppRoutes.prescription);
+                    Navigator.pop(context); // close the success dialog
+                    // Sub-doctor editor returns to the doctor list on OK.
+                    if (_isSubDoctor) Navigator.pop(context);
                   },
                   child: const Text('OK'),
                 ),
@@ -376,7 +441,7 @@ class _DoctorBasicDetailsScreenState
         },
         child: Column(
           children: [
-            const CurvedHeader(title: 'Doctor Basic Details'),
+            CurvedHeader(title: widget.title ?? 'Doctor Basic Details'),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
@@ -404,8 +469,10 @@ class _DoctorBasicDetailsScreenState
                     _buildLanguageSection(),
                     const SizedBox(height: AppDimens1.l),
                     _buildAddressSection(),
-                    const SizedBox(height: AppDimens1.l),
-                    _buildSignatureSection(),
+                    if (widget.showSignature) ...[
+                      const SizedBox(height: AppDimens1.l),
+                      _buildSignatureSection(),
+                    ],
                     const SizedBox(height: AppDimens1.xxl),
                     _buildSaveButton(),
                   ],

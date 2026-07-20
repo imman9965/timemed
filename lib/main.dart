@@ -3,6 +3,7 @@ import 'app/app.dart';
 import 'core/config/app_config.dart';
 import 'core/services/local_notification_service.dart';
 import 'modules/doctor/doctor_basic_details/dummy_data_5.dart';
+import 'modules/doctor/doctor_management/doctor_registry.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +13,7 @@ void main() async {
     flavor: AppFlavor.superApp,
   );
   await DoctorProfileStore.load();
+  await DoctorRegistry.instance.load();
   await LocalNotificationService.instance.init();
   runApp(const MyApp());
 }

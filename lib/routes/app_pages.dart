@@ -89,6 +89,7 @@ import '../modules/doctor/doctor_prescription/prescription_screen.dart';
 import '../modules/doctor/doctor_profile/doctor_profile.dart';
 import '../modules/doctor/doctor_shell/doctor_shell.dart';
 import '../modules/doctor/hospital_list_doctor/hospital_list_based_on_doctor.dart';
+import '../modules/doctor/doctor_management/doctor_list_screen.dart';
 import '../modules/doctor/lap_test/Lab_test.dart';
 import '../modules/doctor/medical_records/medical_records.dart';
 import '../modules/doctor/missed_call_page/missed_call.dart';
@@ -640,6 +641,11 @@ class AppRouter {
         path: AppRoutes.hospitalList,
         name: AppRoutes.hospitalList,
         builder: (context, state) => HospitalListScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorList,
+        name: AppRoutes.doctorList,
+        builder: (context, state) => const DoctorListScreen(),
       ),
       GoRoute(
         path: AppRoutes.rescheduleAppointment,
